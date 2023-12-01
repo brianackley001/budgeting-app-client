@@ -19,17 +19,14 @@ export const PageLayout = (props) => {
 
     return (
         <>
-            <Navbar bg="primary" variant="dark" className="navbarStyle">
+            <Navbar bg="success" variant="dark" className="navbarStyle">
                 <a className="navbar-brand" href="/">
-                    Microsoft Identity Platform
+                    Budget and Transaction Mangement
                 </a>
                 <div className="collapse navbar-collapse justify-content-end">
                     {isAuthenticated ? <SignOutButton /> : <SignInButton />}
                 </div>
             </Navbar>
-            <h5>
-                <center>Welcome to the Microsoft Authentication Library For Javascript - React Quickstart</center>
-            </h5>
             <br />
             <br />
             {props.children}

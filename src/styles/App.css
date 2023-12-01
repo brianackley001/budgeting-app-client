@@ -6,3 +6,12 @@
   padding: .5rem 1rem !important
 }
 
+.iconStyle {
+  margin-right: 7px;
+}
+
+#homePageLogo {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
