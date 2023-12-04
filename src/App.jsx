@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import "./scss/App.scss";
-import { PageLayout } from "./components/PageLayout";
-import { Home } from './components/Home';
+
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
   useMsal,
 } from "@azure/msal-react";
+
 import { loginRequest } from "./authConfig";
 import { callMsGraph } from "./graph";
 import Image from 'react-bootstrap/Image';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import ErrorPage from './routes/error-page';
+import { Accounts } from './routes/accounts';
+import { Transactions } from './routes/transactions';
+import { Settings } from './routes/settings';
+import { Home } from './routes/home';
+
+
+import {  NavBar } from "./components/navBar/NavBar";
+//import {router} from "./routes/router";
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -51,22 +62,37 @@ import Image from 'react-bootstrap/Image';
  */
 const MainContent = () => {
   return (
-    <div className="App">
+    <>
       <AuthenticatedTemplate>
-        <Home />
       </AuthenticatedTemplate>
 
       <UnauthenticatedTemplate>
         <Image id="homePageLogo" src="/icon-3.png" fluid />
       </UnauthenticatedTemplate>
-    </div>
+      </>
   );
 };
 
 export default function App() {
   return (
-    <PageLayout>
-      <MainContent />
-    </PageLayout>
+    <>
+    <div className="App">
+    <Router>
+        <NavBar />
+        <AuthenticatedTemplate>
+      <Routes>
+          <Route path="/" element={Home} errorElement={ErrorPage} />
+          <Route path="/accounts" element={Accounts} errorElement={ErrorPage} />
+          <Route path="/transactions" element={Transactions} errorElement={ErrorPage} />
+          <Route path="/settings" element={Settings} errorElement={ErrorPage} />
+      </Routes>
+        </AuthenticatedTemplate>
+
+      <UnauthenticatedTemplate>
+        <Image id="homePageLogo" src="/icon-3.png" fluid />
+      </UnauthenticatedTemplate>
+    </Router>
+    </div>
+    </>
   );
 }

@@ -3,21 +3,19 @@
  * Licensed under the MIT License.
  */
 import { useIsAuthenticated } from "@azure/msal-react";
-import { AuthenticatedNavBar } from "./navBar/authenticatedNavBar";
-import { UnAuthenticatedNavBar } from "./navBar/unAuthenticatedNavBar";
+import { AuthenticatedNavBar } from "./authenticatedNavBar";
+import { UnAuthenticatedNavBar } from "./unAuthenticatedNavBar";
 
 /**
  * Renders the navbar component with a sign-in or sign-out button depending on whether or not a user is authenticated
  * @param props
  */
-export const PageLayout = (props) => {
+export const NavBar = (props) => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
     <>
     {isAuthenticated ? <AuthenticatedNavBar /> : <UnAuthenticatedNavBar />}
-    <br />
-    {props.children}
 </>
   );
 };
