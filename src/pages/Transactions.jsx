@@ -1,4 +1,4 @@
-
+import{ Card, Row, Col } from "react-bootstrap";
 
 export const Transactions = () => {
   return (

@@ -1,8 +1,8 @@
-import ErrorPage from './error-page';
-import { Accounts } from './accounts';
-import { Transactions } from './transactions';
-import { Settings } from './settings';
-import { Home } from './home';
+import ErrorPage from '../pages/ErrorPage';
+import { Accounts } from '../pages/Accounts';
+import { Transactions } from '../pages/Transactions';
+import { Settings } from '../pages/Settings';
+import { Home } from '../pages/Dashboard';
 import { createBrowserRouter} from 'react-router-dom';
 
 

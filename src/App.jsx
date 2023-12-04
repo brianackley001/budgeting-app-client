@@ -12,14 +12,14 @@ import { callMsGraph } from "./graph";
 import Image from 'react-bootstrap/Image';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import ErrorPage from './routes/error-page';
-import { Accounts } from './routes/accounts';
-import { Transactions } from './routes/transactions';
-import { Settings } from './routes/settings';
-import { Home } from './routes/home';
+import ErrorPage from './pages/ErrorPage';
+import { Accounts } from './pages/Accounts';
+import { Transactions } from './pages/Transactions';
+import { Settings } from './pages/Settings';
+import { Dashboard } from './pages/Dashboard';
 
-
-import {  NavBar } from "./components/navBar/NavBar";
+import {UnAuthenticatedNavBar} from './components/navBar/UnAuthenticatedNavBar';
+import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
 //import {router} from "./routes/router";
 
 /**
@@ -76,23 +76,40 @@ const MainContent = () => {
 export default function App() {
   return (
     <>
-    <div className="App">
-    <Router>
-        <NavBar />
+      <div className="App">
         <AuthenticatedTemplate>
-      <Routes>
-          <Route path="/" element={Home} errorElement={ErrorPage} />
-          <Route path="/accounts" element={Accounts} errorElement={ErrorPage} />
-          <Route path="/transactions" element={Transactions} errorElement={ErrorPage} />
-          <Route path="/settings" element={Settings} errorElement={ErrorPage} />
-      </Routes>
+          <Router>
+            <AuthenticatedNavBar />
+            <Routes>
+              <Route
+                path="/"
+                element={<Dashboard />}
+                errorElement={ErrorPage}
+              />
+              <Route
+                path="/accounts"
+                element={<Accounts />}
+                errorElement={ErrorPage}
+              />
+              <Route
+                path="/transactions"
+                element={<Transactions />}
+                errorElement={ErrorPage}
+              />
+              <Route
+                path="/settings"
+                element={<Settings />}
+                errorElement={ErrorPage}
+              />
+            </Routes>
+          </Router>
         </AuthenticatedTemplate>
 
-      <UnauthenticatedTemplate>
-        <Image id="homePageLogo" src="/icon-3.png" fluid />
-      </UnauthenticatedTemplate>
-    </Router>
-    </div>
+        <UnauthenticatedTemplate>
+          <UnAuthenticatedNavBar />
+          <Image id="homePageLogo" src="/icon-3.png" fluid />
+        </UnauthenticatedTemplate>
+      </div>
     </>
   );
 }

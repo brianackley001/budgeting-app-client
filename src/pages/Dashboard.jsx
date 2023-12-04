@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
+import{ Card, Row, Col } from "react-bootstrap";
+
+
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
 import axios from "axios";
 
@@ -74,7 +74,7 @@ const transactionItems = [
   },
 ];
 
-export const Home = () => {
+export const Dashboard = () => {
   const tokenValue = useAcquireAccessToken();
   return (
     <>

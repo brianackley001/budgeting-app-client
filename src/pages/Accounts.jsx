@@ -1,7 +1,7 @@
 
+import{ Card, Row, Col } from "react-bootstrap";
 
-
-export const Settings = () => {
+export const Accounts = () => {
   return (
     <>
       <div className="d-flex justify-content-around">
@@ -12,9 +12,9 @@ export const Settings = () => {
           <Col xs={8}>
             <Card style={{ width: "22rem" }}>
               <Card.Body>
-                <Card.Header>Settings</Card.Header>
+                <Card.Header>Accounts</Card.Header>
                 <Card.Text>
-                Settings Page
+                  Accounts Page
                 </Card.Text>
               </Card.Body>
             </Card>
