@@ -20,7 +20,6 @@ import { Dashboard } from './pages/Dashboard';
 
 import {UnAuthenticatedNavBar} from './components/navBar/UnAuthenticatedNavBar';
 import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
-//import {router} from "./routes/router";
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -57,21 +56,6 @@ import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
 //   );
 // };
 
-/**
- * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
- */
-const MainContent = () => {
-  return (
-    <>
-      <AuthenticatedTemplate>
-      </AuthenticatedTemplate>
-
-      <UnauthenticatedTemplate>
-        <Image id="homePageLogo" src="/icon-3.png" fluid />
-      </UnauthenticatedTemplate>
-      </>
-  );
-};
 
 export default function App() {
   return (

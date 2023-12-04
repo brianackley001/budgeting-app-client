@@ -24,7 +24,7 @@ export const AuthenticatedNavBar = () => {
         <Navbar.Brand as={NavLink} to="/">Mint Lite</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
+            <Nav className="me-auto" id="topNav">
               <Nav.Link as={NavLink} to="/accounts">Accounts</Nav.Link>
               <Nav.Link as={NavLink} to="/transactions">Transactions</Nav.Link>
               <Nav.Link as={NavLink} to="/settings">Settings</Nav.Link>
@@ -37,6 +37,7 @@ export const AuthenticatedNavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <br />
     </>
   );
 };

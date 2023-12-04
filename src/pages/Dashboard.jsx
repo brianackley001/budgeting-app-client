@@ -39,41 +39,6 @@ const accountItems = [
   { id: 10, name: "Account 10" },
 ];
 
-const transactionItems = [
-  {
-    id: "1",
-    name: "Transaction 1",
-    amount: 100,
-    accountId: 1,
-    bankAccountName: "Account 1",
-    date: "2022-01-01",
-  },
-  {
-    id: "2",
-    name: "Transaction 2",
-    amount: 200,
-    accountId: 2,
-    bankAccountName: "Account 2",
-    date: "2022-08-02",
-  },
-  {
-    id: "3",
-    name: "Transaction 3",
-    amount: 99.42,
-    accountId: 1,
-    bankAccountName: "Account 1",
-    date: "2022-01-01",
-  },
-  {
-    id: "4",
-    name: "Transaction 4",
-    amount: 200,
-    accountId: 2,
-    bankAccountName: "Account 2",
-    date: "2022-03-02",
-  },
-];
-
 export const Dashboard = () => {
   const tokenValue = useAcquireAccessToken();
   return (
