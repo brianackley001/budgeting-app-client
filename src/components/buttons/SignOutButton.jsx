@@ -22,7 +22,7 @@ export const SignOutButton = () => {
 
     
     return (
-        <Button variant="light" className="ml-auto" onClick={() => handleLogout("redirect")}>
+        <Button variant="light" className="ml-auto" onClick={() => handleLogout("popup")}>
              Log Out
       </Button>
     )
