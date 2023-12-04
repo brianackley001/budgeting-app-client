@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles/App.css";
+import "./scss/App.scss";
 import { PageLayout } from "./components/PageLayout";
 import { Home } from './components/Home';
 import {

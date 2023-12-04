@@ -1,8 +1,5 @@
-import React from "react";
 import { useMsal } from "@azure/msal-react";
 import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Renders a sign-out button
@@ -26,8 +23,7 @@ export const SignOutButton = () => {
     
     return (
         <Button variant="light" className="ml-auto" onClick={() => handleLogout("redirect")}>
-            <FontAwesomeIcon icon={faLock} className="iconStyle" />
-        Log Out
+             Log Out
       </Button>
     )
 }
