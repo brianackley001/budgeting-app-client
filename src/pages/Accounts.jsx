@@ -1,20 +1,22 @@
+import React, { useCallback, useState } from "react";
 
-import{ Card, Row, Col, Button } from "react-bootstrap";
-
+import { Card, Row, Col, Button } from "react-bootstrap";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
+import SimplePlaidLink from "../components/SimplePlaidLink";
+
 import axios from "axios";
 
-let tokenValue = null;
+let msalTokenValue = null;
 const initAddAccount = () => {
   //console.log("add account - BEGIN");
 
   let config = {
     headers: {
-      Authorization: "Bearer " + tokenValue,
+      Authorization: "Bearer " + msalTokenValue,
     },
   };
   const bodyParameters = {};
-  //console.log(`tokenValue: ${tokenValue}`)
+  console.log(`tokenValue: ${msalTokenValue}`);
 
   axios
     .post("http://localhost:8000/api/create_link_token", bodyParameters, config)
@@ -27,27 +29,26 @@ const initAddAccount = () => {
 };
 
 export const Accounts = () => {
-  tokenValue = useAcquireAccessToken();
+  msalTokenValue = useAcquireAccessToken();
   return (
     <>
       <div className="d-flex justify-content-around">
         <Row>
-          <Col xs={1}>
-            &nbsp;
-          </Col>
+          <Col xs={1}>&nbsp;</Col>
           <Col xs={8}>
             <Card style={{ width: "22rem" }}>
               <Card.Body>
                 <Card.Header>Accounts</Card.Header>
                 <Card.Text>
-                  <Button variant="primary" onClick={initAddAccount}>Add Account</Button>
+                  {/* <Button variant="primary" onClick={initAddAccount}>
+                    Add Account
+                  </Button> */}
+                  <SimplePlaidLink msalTokenValue={msalTokenValue} />
                 </Card.Text>
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={1}>
-            &nbsp;
-          </Col>
+          <Col xs={1}>&nbsp;</Col>
         </Row>
       </div>
     </>
