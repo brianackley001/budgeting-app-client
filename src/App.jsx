@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { EventType } from "@azure/msal-browser";
 import "./scss/App.scss";
 
 import {
@@ -20,6 +22,8 @@ import { Dashboard } from './pages/Dashboard';
 
 import {UnAuthenticatedNavBar} from './components/navBar/UnAuthenticatedNavBar';
 import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
+
+import { useMsalEvents } from "./hooks/useMsalEvents";
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -58,6 +62,7 @@ import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
 
 
 export default function App() {
+  useMsalEvents();
   return (
     <>
       <div className="App">
