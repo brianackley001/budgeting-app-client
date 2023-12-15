@@ -6,30 +6,32 @@ import SimplePlaidLink from "../components/SimplePlaidLink";
 
 import axios from "axios";
 
-let msalTokenValue = null;
-const initAddAccount = () => {
-  //console.log("add account - BEGIN");
+//let msalTokenValue = null;
+// const initAddAccount = () => {
+//   //console.log("add account - BEGIN");
 
-  let config = {
-    headers: {
-      Authorization: "Bearer " + msalTokenValue,
-    },
-  };
-  const bodyParameters = {};
-  console.log(`tokenValue: ${msalTokenValue}`);
+//   let config = {
+//     headers: {
+//       Authorization: "Bearer " + msalTokenValue,
+//     },
+//   };
+//   const bodyParameters = {};
+//   console.log(`tokenValue: ${msalTokenValue}`);
 
-  axios
-    .post("http://localhost:8000/api/create_link_token", bodyParameters, config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
+//   axios
+//     .post(`${process.env.REACT_APP_API_URL}/api/create_link_token`, bodyParameters, config)
+//     .then((response) => {
+//       console.log(response.data);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// };
 
 export const Accounts = () => {
-  msalTokenValue = useAcquireAccessToken();
+  // const [msalTokenValue, setMsalTokenValue] = useState(null)
+  // setMsalTokenValue(useAcquireAccessToken());
+  // console.log(`msalTokenValue: ${msalTokenValue}`);
   return (
     <>
       <div className="d-flex justify-content-around">
@@ -43,7 +45,7 @@ export const Accounts = () => {
                   {/* <Button variant="primary" onClick={initAddAccount}>
                     Add Account
                   </Button> */}
-                  <SimplePlaidLink msalTokenValue={msalTokenValue} />
+                  {/* <SimplePlaidLink  msalTokenValue={msalTokenValue} /> */}
                 </Card.Text>
               </Card.Body>
             </Card>

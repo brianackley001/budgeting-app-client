@@ -17,7 +17,7 @@ const SimplePlaidLink = ({msalTokenValue}) => {
     };
     
     const createLinkToken = async () => {
-      const response = await fetch('http://localhost:8000/api/create_link_token', config);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/create_link_token`, config);
       const { link_token } = await response.json();
       
       setToken(link_token);

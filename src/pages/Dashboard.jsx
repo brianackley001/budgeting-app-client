@@ -17,7 +17,7 @@ const getApiPublicToken = (tokenValue) => {
   };
 
   axios
-    .post("http://localhost:8000/api/info", bodyParameters, config)
+    .post(`${process.env.REACT_APP_API_URL}/api/info`, bodyParameters, config)
     .then((response) => {
       console.log(response.data);
     })
