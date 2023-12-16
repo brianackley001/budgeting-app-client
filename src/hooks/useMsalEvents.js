@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
+import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
+import { setAccessToken, setUid } from "../store/msalSlice";
 
 const useMsalEvents = () => {
-  // const { instance, accounts } = useMsal();
-  // const account = useAccount(accounts[0] || {});
-  const [accessToken, setAccessToken] = useState("");
+  const [token, setToken] = useState("");
   
   const { instance } = useMsal();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const callbackId = instance.addEventCallback((event) => {
       if (event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS  && event.payload.account) {
-        setAccessToken(event.payload.accessToken);
-        console.log(event.payload.accessToken);
+        setToken(event.payload.accessToken);
+        dispatch(setAccessToken(event.payload.accessToken));
+        dispatch(setUid(event.payload.uniqueId));
       }
     });
 
@@ -24,6 +26,7 @@ const useMsalEvents = () => {
     };
   }, [instance]);
 
-  return accessToken;
+
+  return token;
 };
 export { useMsalEvents };

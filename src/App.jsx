@@ -62,7 +62,7 @@ import { useMsalEvents } from "./hooks/useMsalEvents";
 
 
 export default function App() {
-  useMsalEvents();
+  useMsalEvents();  // ensure that AccessToken is directed towards the App Redux Store
   return (
     <>
       <div className="App">

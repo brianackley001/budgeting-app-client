@@ -5,7 +5,7 @@ import App from "./App";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
-import store from "./Store.js";
+import store from "./store/store.ts";
 import { Provider } from "react-redux";
 
 /**
