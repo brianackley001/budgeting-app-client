@@ -1,0 +1,104 @@
+{
+  "status": null,
+  "link_session_id": "fbea95e8-5562-4d8b-98d7-53a64ff503d3",
+  "institution": {
+      "name": "Wells Fargo",
+      "institution_id": "ins_127991"
+  },
+  "accounts": [
+      {
+          "id": "4NDMBrBjzWH5KrmDvKaGsGJnBoBKv3hJdopA3",
+          "name": "Plaid Checking",
+          "mask": "0000",
+          "type": "depository",
+          "subtype": "checking",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "Nv6AmRmbBZIwJe7ydJrnswd6EWEnpxuyW385x",
+          "name": "Plaid Saving",
+          "mask": "1111",
+          "type": "depository",
+          "subtype": "savings",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "Pv6m9b9Xx1IbmojWRmGesgJVRMRKpwso71LW8",
+          "name": "Plaid CD",
+          "mask": "2222",
+          "type": "depository",
+          "subtype": "cd",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "jBNw1b1X94T9nGZwWn8dhDX3Z1ZNAbC61EKLQ",
+          "name": "Plaid Credit Card",
+          "mask": "3333",
+          "type": "credit",
+          "subtype": "credit card",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "77m8dpd3xntvnl1DJnw5HyNvmEm4BpTdgZbn3",
+          "name": "Plaid Money Market",
+          "mask": "4444",
+          "type": "depository",
+          "subtype": "money market",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "el3b7v7QGBSGDrLZED4nHZAj7e7k5atrLgv5e",
+          "name": "Plaid IRA",
+          "mask": "5555",
+          "type": "investment",
+          "subtype": "ira",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "Qw69vJvgdLTe67zRV63gS7wbvLvrxnuwp1P7A",
+          "name": "Plaid 401k",
+          "mask": "6666",
+          "type": "investment",
+          "subtype": "401k",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "ZX6drqrDZnSkZzL6BZeESJnXrQrPzAceg3aXA",
+          "name": "Plaid Student Loan",
+          "mask": "7777",
+          "type": "loan",
+          "subtype": "student",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "Mv6Eb7bGzQI9X71Q8XmkhroDKBKVpRCL9KXPj",
+          "name": "Plaid Mortgage",
+          "mask": "8888",
+          "type": "loan",
+          "subtype": "mortgage",
+          "verification_status": null,
+          "class_type": null
+      }
+  ],
+  "account": {
+      "id": "4NDMBrBjzWH5KrmDvKaGsGJnBoBKv3hJdopA3",
+      "name": "Plaid Checking",
+      "mask": "0000",
+      "type": "depository",
+      "subtype": "checking",
+      "verification_status": null,
+      "class_type": null
+  },
+  "account_id": "4NDMBrBjzWH5KrmDvKaGsGJnBoBKv3hJdopA3",
+  "transfer_status": null,
+  "wallet": null,
+  "public_token": "public-sandbox-8f3c038a-234a-4b97-9da2-d6d3fbaa1524"
+}

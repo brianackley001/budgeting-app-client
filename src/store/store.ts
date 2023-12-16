@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import msalSlice from './msalSlice';
+import plaidSlice from './plaidSlice';
 
 export const store = configureStore({
   reducer: {
-    msalSlice: msalSlice
+    msalSlice: msalSlice,
+    plaidSlice: plaidSlice
   },
 })
 
