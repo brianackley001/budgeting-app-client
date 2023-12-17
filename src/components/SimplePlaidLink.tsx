@@ -10,7 +10,6 @@ import { usePlaidLink, PlaidLinkOnSuccess } from 'react-plaid-link';
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const msalTokenValue =  MsalUtils();
-  //const publicokenStoreValue = useAppSelector(selectPublicToken);
   const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
@@ -36,6 +35,7 @@ const SimplePlaidLink = () => {
     // send public_token to your server
     // https://plaid.com/docs/api/tokens/#token-exchange-flow
     console.log(publicToken, metadata);
+    sessionStorage.setItem('plaidApiPublicToken',publicToken);
     dispatch(setPublicToken(publicToken));
   }, []);
  
