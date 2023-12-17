@@ -26,7 +26,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "node", "react-redux"],
+    "types": ["vite/client", "node", "react-redux", "vitest/globals"],
     "noImplicitAny": false,
 
     
