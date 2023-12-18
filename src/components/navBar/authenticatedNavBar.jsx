@@ -19,6 +19,7 @@ export const AuthenticatedNavBar = () => {
         expand="lg"
         className="bg-success"
         id="authenticatedNavBar"
+        data-testid="authenticatedNavBar"
       >
         <Container>
         <Navbar.Brand as={NavLink} to="/">Mint Lite</Navbar.Brand>

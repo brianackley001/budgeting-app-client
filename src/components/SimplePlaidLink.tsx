@@ -4,12 +4,12 @@ import { useAppDispatch } from "../hooks/storeHooks";
 import { setPublicToken } from "../store/plaidSlice";
 
 
-import MsalUtils from  '../utils/msalToken'
+import {getAccessToken} from  '../utils/msalToken'
 import { usePlaidLink, PlaidLinkOnSuccess } from 'react-plaid-link';
 
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
-  const msalTokenValue =  MsalUtils();
+  const msalTokenValue =  getAccessToken();
   const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
