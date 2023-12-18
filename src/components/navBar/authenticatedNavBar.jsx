@@ -24,11 +24,11 @@ export const AuthenticatedNavBar = () => {
         <Container>
         <Navbar.Brand as={NavLink} to="/">Mint Lite</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarCollapse" />
-          <Navbar.Collapse id="navbarCollapse">
+          <Navbar.Collapse id="navbarCollapse" data-testid="navbar-collapse">
             <Nav className="me-auto" id="topNav">
-              <Nav.Link as={NavLink} eventKey={1} to="/accounts">Accounts</Nav.Link>
-              <Nav.Link as={NavLink} eventKey={2} to="/transactions">Transactions</Nav.Link>
-              <Nav.Link as={NavLink} eventKey={3} to="/settings">Settings</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={1} to="/accounts" data-testid="navlink-accounts">Accounts</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={2} to="/transactions" data-testid="navlink-transactions">Transactions</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={3} to="/settings" data-testid="navlink-settings">Settings</Nav.Link>
             </Nav>
             <Nav>
               <Nav.Link eventKey={4}>

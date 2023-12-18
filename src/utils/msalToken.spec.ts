@@ -1,6 +1,6 @@
 import Store from "../store/store";
 import { msalConfig } from "../../src/authConfig";
-import {getAccessToken, getSessionValue, getStoreValue} from "./msalToken";
+import MsalToken from "./msalToken";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { selectAccessToken, setAccessToken } from "../store/msalSlice";
 import { afterEach, describe, expect, test, vi } from "vitest";
