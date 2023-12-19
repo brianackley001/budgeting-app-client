@@ -16,22 +16,26 @@ function AccountListItem(props: AccountListItemType) {
   //const { name, mask, type, balances, includeInTransactions } = props;
   const [formAccountName, setFormAccountName] = useState(props.name);
   const [formUseInTrasactions, setFormUseInTransactions] = useState(props.includeInTransactions);
-  const [show, setShow] = useState(false);
+  const [validated, setValidated] = useState(false);
 
-//   const onAccordionClick = () => {
-//     setShow(!show);
-//     console.log("onAccordionClick: " + show);
-// }
+
+
 
   function handleTextareaChange(e) {
     setFormAccountName(e.target.value);
   }
   function handleCheckboxChange(e) {
-    setFormUseInTransactions(e.target.value);
   }
-  function saveAccount() {
-    console.log("Saving account...");
-  }
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    setValidated(true);
+  };
 
   return (
     <Accordion data-testid="accordian-container">
@@ -43,11 +47,21 @@ function AccountListItem(props: AccountListItemType) {
               <b>{props.official_name}</b>
             </Col>
           </Row>
-          <Form>
+          <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordian-form">
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridAccountName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control placeholder="Enter account name" value={formAccountName} onChange={handleTextareaChange} />
+                <Form.Control required 
+                  placeholder="Enter account name" 
+                  type="text" 
+                  name="accountName" 
+                  data-testid="accordian-form-account-name" 
+                  defaultValue={formAccountName} 
+                  onChange={handleTextareaChange} />
+                <Form.Control.Feedback data-testid="accordian-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid" data-testid="accordian-form-account-name-is-invalid">
+                  Please provide a valid account name.
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridAccountType">
@@ -63,17 +77,20 @@ function AccountListItem(props: AccountListItemType) {
             </Row>
             <Row className="mb-3">
               <Col>
+              <Form.Group className="mb-3">
                 <Form.Check
                   type="switch"
                   id="includeInTransactions"
                   label="Include in transactions"
                   defaultChecked={formUseInTrasactions}
-                  onChange={handleCheckboxChange} 
+                  onChange={handleCheckboxChange}
+                  data-testid="accordian-form-include-in-transactions" 
                 />
+                </Form.Group>
               </Col>
             </Row>
 
-            <Button variant="primary" type="button" onClick={saveAccount}>
+            <Button variant="primary" type="submit" data-testid="accordian-form-submit-btn"> 
               Save
             </Button>
           </Form>
