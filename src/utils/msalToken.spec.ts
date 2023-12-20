@@ -1,9 +1,9 @@
 import Store from "../store/store";
 import { msalConfig } from "../../src/authConfig";
-import MsalToken from "./msalToken";
-import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
-import { selectAccessToken, setAccessToken } from "../store/msalSlice";
+import * as storeHooks from "../hooks/storeHooks";
+import msalSlice, { selectAccessToken, setAccessToken } from "../store/msalSlice";
 import { afterEach, describe, expect, test, vi } from "vitest";
+import MsalUtils from "./msalToken";
 
 const localSessionStorageMock: Storage = (() => {
   let store: Record<string, string> = {};
@@ -26,20 +26,19 @@ const localSessionStorageMock: Storage = (() => {
 
 const msalTokenValue = "";
 let originalSessionStorage: Storage;
-const store = Store;
 
-const storeUseDispatchSpy = vi.mock('src/hooks/storeHooks', () => ({ 
-  useAppDispatch: vi.fn()}));
+const expectedSessionStorageTokenValue = "Test1234567.Tenant1234567-login.windows.net-accesstoken-RandomTokenValueXYZ-Tenant1234567-api://GUID_ID/appName.read api://GUID_ID/appName.readwrite--";
+// const storeUseDispatchSpy = vi.mock('src/hooks/storeHooks', () => ({ 
+//   useAppDispatch: vi.fn()}));
   
-const storeUseSelectorSpy = vi.mock('src/hooks/storeHooks', () => ({ 
-  useAppSelector: vi.fn()}));
+// const storeUseSelectorSpy = vi.mock('src/hooks/storeHooks', () => ({ 
+//   useAppSelector: vi.fn()}));
 
-//vi.spyOn(useAppDispatch, useAppDispatch as never).mockImplementation(() => {});
+//vi.spyOn(useAppDispatch, ).mockImplementation(() => {});
 
 beforeAll((): void => {
   originalSessionStorage = window.sessionStorage;
   (window as any).sessionStorage = localSessionStorageMock;
-  //vi.spyOn(store.dispatch, 'setAccessToken').mockImplementation(() => {});
 });
 
 afterAll((): void => {
@@ -49,12 +48,12 @@ afterAll((): void => {
 describe("utils.msalToken", (): void => {
   // assign the spy instance to a const
   const getItemSpy = vi.spyOn(Storage.prototype, "getItem");
-  const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
 
   afterEach(() => {
     getItemSpy.mockClear(); // clear call history
     sessionStorage.clear();
+    vi.restoreAllMocks()
   });
 
   it("Successfully retrives value from session storage", (): void => {
@@ -84,4 +83,17 @@ describe("utils.msalToken", (): void => {
     expect(sessionMsalTokens).toBe(JSON.stringify(keysStorage))
     //expect(getItemSpy).toHaveBeenCalledWith(JSON.stringify(keysStorage));
   });
+
+  // it("Successfully retrieves the MSAL Token Value from the Store", (): void => {
+  //   // Arrange
+  //   vi.mock("../store/msalSlice", () => ({ selectAccessToken: () => '' }))
+  //   vi.mock("../hooks/storeHooks", () => ({ useAppDispatch: async () => { type: 'increase-counter' } }))
+  //   vi.mock("../hooks/storeHooks", () => ({ useAppSelector: () => '' }))
+  //   // const useAppDispatchSpy = vi.spyOn(storeHooks, 'useAppDispatch')//selectAccessToken
+  //   // const useAppSelectorSpy = vi.spyOn(storeHooks, 'useAppSelector').mockReturnValue('');
+
+  //   // Act
+  //   const sut = MsalUtils();
+  //   // Assert
+  // });
 });
