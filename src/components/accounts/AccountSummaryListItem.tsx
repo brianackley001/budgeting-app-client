@@ -1,6 +1,8 @@
 import ListGroupItem from 'react-bootstrap/ListGroupItem'
 import { AccountSummaryListItemType } from "../../types/accountSummaryListItem.ts";
 import { Col, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Renders information about the user obtained from MS Graph
@@ -30,7 +32,7 @@ function AccountSummaryListItem(props: AccountSummaryListItemType) {
           <i>{props.institution_name}</i>
         </Col>
         <Col xs="3" data-testid="list-item-status-icon">
-        <i className="fa-regular fa-circle-check"></i>
+        <FontAwesomeIcon color='green' icon={faCheckCircle} />
         </Col>
       </Row>
     </ListGroupItem>

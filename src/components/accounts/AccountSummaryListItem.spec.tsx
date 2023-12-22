@@ -22,7 +22,7 @@ const accountSummaryListItem: AccountSummaryListItemType = {
   subtype: "checking",
   official_name: "Plaid Gold Standard 0% Interest Checking",
   includeInTransactions: true
-};;
+};
 
 beforeEach(() => {
   let item = render(<AccountSummaryListItem {...accountSummaryListItem} />);
