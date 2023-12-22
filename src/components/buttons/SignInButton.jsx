@@ -20,6 +20,7 @@ export const SignInButton = () => {
     <Button
       variant="light"
       className="ml-auto"
+      data-testid="button-sign-in"
       onClick={() => handleLogin("popup")}
     >
       Log In

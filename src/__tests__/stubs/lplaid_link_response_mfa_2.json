@@ -1,0 +1,50 @@
+{
+  "status": null,
+  "link_session_id": "2e439b59-730a-45dc-9d89-77071de7c9c0",
+  "institution": {
+      "name": "Bank of America",
+      "institution_id": "ins_127989"
+  },
+  "accounts": [
+      {
+          "id": "xvMQAe9vb3irvDm4gX5ptV6q9brAxwC6jL11y",
+          "name": "Plaid Checking",
+          "mask": "0000",
+          "type": "depository",
+          "subtype": "checking",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "d1bmxnj14PsAwBvzMkbaTno18EJXxLcJKrkkD",
+          "name": "Plaid Saving",
+          "mask": "1111",
+          "type": "depository",
+          "subtype": "savings",
+          "verification_status": null,
+          "class_type": null
+      },
+      {
+          "id": "aQDmzW4QxatXJG5qkKo3CnDmeZwVyzcZwVNNe",
+          "name": "Plaid Mortgage",
+          "mask": "8888",
+          "type": "loan",
+          "subtype": "mortgage",
+          "verification_status": null,
+          "class_type": null
+      }
+  ],
+  "account": {
+      "id": "xvMQAe9vb3irvDm4gX5ptV6q9brAxwC6jL11y",
+      "name": "Plaid Checking",
+      "mask": "0000",
+      "type": "depository",
+      "subtype": "checking",
+      "verification_status": null,
+      "class_type": null
+  },
+  "account_id": "xvMQAe9vb3irvDm4gX5ptV6q9brAxwC6jL11y",
+  "transfer_status": null,
+  "wallet": null,
+  "public_token": "public-sandbox-f0192a2d-4436-4579-83e5-7ae1a491778f"
+}

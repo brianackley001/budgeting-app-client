@@ -1,10 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { Button } from "react-bootstrap";
+import { useAppDispatch } from "../hooks/storeHooks";
+import { setPublicToken } from "../store/plaidSlice";
 
+
+import MsalUtils from  '../utils/msalToken'
 import { usePlaidLink, PlaidLinkOnSuccess } from 'react-plaid-link';
 
-const SimplePlaidLink = ({msalTokenValue}) => {
-  const [token, setToken] = useState<string | null>(null);
+const SimplePlaidLink = () => {
+  const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
+  const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
+  const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
   React.useEffect(() => {
@@ -17,11 +23,10 @@ const SimplePlaidLink = ({msalTokenValue}) => {
     };
     
     const createLinkToken = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/create_link_token`, config);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create_link_token`, config);
       const { link_token } = await response.json();
       
-      setToken(link_token);
-      console.log(`link_token: ${link_token}`);
+      setPlaidLinkToken(link_token);
     };
     createLinkToken();
   }, []);
@@ -30,10 +35,12 @@ const SimplePlaidLink = ({msalTokenValue}) => {
     // send public_token to your server
     // https://plaid.com/docs/api/tokens/#token-exchange-flow
     console.log(publicToken, metadata);
+    sessionStorage.setItem('plaidApiPublicToken',publicToken);
+    dispatch(setPublicToken(publicToken));
   }, []);
-
+ 
   const { open, ready } = usePlaidLink({
-    token,
+    token: plaidLinkToken,
     onSuccess,
     // onEvent
     // onExit

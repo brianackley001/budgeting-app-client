@@ -1,4 +1,6 @@
 /// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
@@ -15,6 +17,12 @@ export default defineConfig({
         open: true,
         // this sets a default port to 3000  
         port: 3000, 
+    },
+    test: {
+      globals: true,
+      environment: "jsdom",
+      setupFiles: './src/__tests__/setUpTests.ts',
+      css: true,
     },
     resolve: {
       alias: {

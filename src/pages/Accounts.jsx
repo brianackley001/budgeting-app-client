@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
 
 import { Card, Row, Col, Button } from "react-bootstrap";
-import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
+import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
+import { selectUid, selectAccessToken } from "../store/msalSlice";
 import SimplePlaidLink from "../components/SimplePlaidLink";
 
 import axios from "axios";
@@ -19,7 +20,7 @@ import axios from "axios";
 //   console.log(`tokenValue: ${msalTokenValue}`);
 
 //   axios
-//     .post(`${process.env.REACT_APP_API_URL}/api/create_link_token`, bodyParameters, config)
+//     .post(`${import.meta.env.VITE_API_URL}/api/create_link_token`, bodyParameters, config)
 //     .then((response) => {
 //       console.log(response.data);
 //     })
@@ -29,9 +30,7 @@ import axios from "axios";
 // };
 
 export const Accounts = () => {
-  // const [msalTokenValue, setMsalTokenValue] = useState(null)
-  // setMsalTokenValue(useAcquireAccessToken());
-  // console.log(`msalTokenValue: ${msalTokenValue}`);
+  const accessToken = useAppSelector(selectAccessToken);
   return (
     <>
       <div className="d-flex justify-content-around">
@@ -45,7 +44,7 @@ export const Accounts = () => {
                   {/* <Button variant="primary" onClick={initAddAccount}>
                     Add Account
                   </Button> */}
-                  {/* <SimplePlaidLink  msalTokenValue={msalTokenValue} /> */}
+                  <SimplePlaidLink />
                 </Card.Text>
               </Card.Body>
             </Card>
