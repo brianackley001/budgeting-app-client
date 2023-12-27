@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@azure/msal-browser": "^3.5.0",
+        "@azure/msal-common": "^14.5.0",
         "@azure/msal-react": "^2.0.7",
         "@fortawesome/fontawesome-svg-core": "^6.5.1",
         "@fortawesome/free-brands-svg-icons": "^6.5.1",
@@ -52,6 +53,7 @@
     "scripts": {
         "start": "vite",
         "build": "tsc -p tsconfig.build.json && vite build",
+        "debug": "node vite",
         "preview": "vite preview",
         "test": "vitest",
         "test:coverage": "vitest run --coverage --watch=false"

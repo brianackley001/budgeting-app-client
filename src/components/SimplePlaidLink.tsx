@@ -2,6 +2,12 @@ import React, { useCallback, useState } from 'react';
 import { Button } from "react-bootstrap";
 import { useAppDispatch } from "../hooks/storeHooks";
 import { setPublicToken } from "../store/plaidSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { useAppSelector } from "../hooks/storeHooks";
+import { selectAccessToken } from "../store/msalSlice";
+import { axiosInstance } from '../utils/axiosInstance';
+// import { useAxiosInterceptor } from '@/hooks/useAxiosInterceptor';
 
 
 import MsalUtils from  '../utils/msalToken'
@@ -9,22 +15,24 @@ import { usePlaidLink, PlaidLinkOnSuccess } from 'react-plaid-link';
 
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
-  const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
+  const accessToken = useAppSelector(selectAccessToken);
+ // const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
   const dispatch = useAppDispatch();
+  // const { axBe } = useAxiosInterceptor();
 
   // get link_token from your server when component mounts
-  React.useEffect(() => {
+  React.useEffect(() => {//
     const config = {
       headers: {
         'Content-type': 'application/json',
-        'Authorization': `Bearer ${msalTokenValue}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
       method: 'POST'
     };
     
     const createLinkToken = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create_link_token`, config);
-      const { link_token } = await response.json();
+      const response = await axiosInstance.post('create_link_token', {}, config);
+      const { link_token } = await response.data;
       
       setPlaidLinkToken(link_token);
     };
@@ -47,9 +55,10 @@ const SimplePlaidLink = () => {
   });
 
   return (
-    <Button variant="primary" onClick={() => open()} disabled={!ready}>
-      Connect a bank account
-    </Button>
+    <>
+      <FontAwesomeIcon icon={faPlus} className='iconStyle' onClick={() => open()} /><span onClick={() => open()}>Add Account</span>
+    
+    </>
   );
 };
 

@@ -1,30 +1,12 @@
-import Container from "react-bootstrap/Container";
+
+import React from 'react';
 import{ Card, Row, Col } from "react-bootstrap";
-
-
+import { useAppSelector } from "../hooks/storeHooks";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
-import axios from "axios";
+import { selectAccessToken } from "../store/msalSlice";
+import { axiosInstance } from '../utils/axiosInstance';
 
-const getApiPublicToken = (tokenValue) => {
-  console.log("get token");
-  let config = {
-    headers: {
-      Authorization: "Bearer " + tokenValue,
-    },
-  };
-  const bodyParameters = {
-    key: "value",
-  };
 
-  axios
-    .post(`${import.meta.env.VITE_API_URL}/api/info`, bodyParameters, config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
 
 const accountItems = [
   { id: 1, name: "Account 1" },
@@ -40,7 +22,30 @@ const accountItems = [
 ];
 
 export const Dashboard = () => {
-  const tokenValue = useAcquireAccessToken();
+  useAcquireAccessToken();
+  const accessToken = useAppSelector(selectAccessToken);
+  
+const  getApiPublicToken = () => {
+  console.log("get token");
+  let config = {
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  };
+  const bodyParameters = {
+    key: "value",
+  };
+
+  axiosInstance
+    .post(`info`, bodyParameters, config)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
   return (
     <>
       <div className="d-flex justify-content-around">
@@ -55,6 +60,8 @@ export const Dashboard = () => {
                 <Card.Text>
                   Add external financial accounts to your dashboard to start
                   pulling in transaction data.
+                  <br />  
+                  <button onClick={() => getApiPublicToken()}>Get Info from API</button>
                 </Card.Text>
               </Card.Body>
             </Card>

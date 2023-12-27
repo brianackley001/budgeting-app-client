@@ -1,5 +1,5 @@
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authConfig";
+import { loginRequest } from "../../config/authConfig";
 import Button from "react-bootstrap/Button";
 
 export const SignInButton = () => {
