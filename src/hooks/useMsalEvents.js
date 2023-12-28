@@ -3,8 +3,8 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { setAccessToken, setUid } from "../store/msalSlice";
-import { setName, setUserId, setUserName } from "../store/userSlice";
-import { selectName, selectUserName, selectUserId } from "../store/userSlice";
+// import { setName, setUserId, setUserName } from "../store/userSlice";
+// import { selectName, selectUserName, selectUserId } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
 //import {saveUser} from '../types/saveUser.ts'
 
@@ -22,7 +22,6 @@ const useMsalEvents = () => {
         event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS &&
         event.payload.account
       ) {
-        // const userInfoSaved = useAppSelector(selectUserInfoSaved);
         setToken(event.payload.accessToken);
         dispatch(setAccessToken(event.payload.accessToken));
         dispatch(setUid(event.payload.uniqueId));
@@ -47,18 +46,13 @@ const useMsalEvents = () => {
           axiosInstance
             .post(`user`, saveUserPayload, config)
             .then((response) => {
-              console.log(response.data);
+              //console.log(response.data);
               sessionStorage.removeItem('msal_LOGIN_SUCCESS');
             })
             .catch((error) => {
               console.error(error);
             });
         }
-
-        //dispatch(setUserInfoSaved(false));
-
-        //   setUserInfoSaved(true);
-        // }
       }
 
       // persist user to data store

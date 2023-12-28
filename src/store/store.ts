@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import msalSlice from './msalSlice';
 import plaidSlice from './plaidSlice';
+import userSlice from './userSlice';
+import accountSlice from './accountSlice';
 
 export const store = configureStore({
   reducer: {
+    accountSlice: accountSlice,
     msalSlice: msalSlice,
-    plaidSlice: plaidSlice
+    plaidSlice: plaidSlice,
+    userSlice: userSlice
   },
 });
 
