@@ -36,9 +36,12 @@ const useMsalEvents = () => {
           };
 
           const saveUserPayload = {
-            userId: sessionStorage.getItem("userId"), // useAppSelector(selectUserId), //event.payload.localAccountId,
-            userName: sessionStorage.getItem("userName"), // useAppSelector(selectUserName), //eevent.payload.username,
-            userShortName: sessionStorage.getItem("userShortName"), // useAppSelector(selectName), //eevent.payload.name,
+            id: sessionStorage.getItem("userId"),
+            userId: sessionStorage.getItem("userId"),
+            userName: sessionStorage.getItem("userName"),
+            userShortName: sessionStorage.getItem("userShortName"),
+            linkedItems: [{id: -100, name: "placeholder"}],
+            transactions_cursor: "",
           };
 
           axiosInstance
