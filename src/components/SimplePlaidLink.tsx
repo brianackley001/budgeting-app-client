@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from "../hooks/storeHooks";
 import { selectAccessToken, selectUid } from "../store/msalSlice";
+import { setAccounts } from "../store/accountSlice";
 import { axiosInstance } from '../utils/axiosInstance';
 // import { useAxiosInterceptor } from '@/hooks/useAxiosInterceptor';
 
@@ -70,6 +71,7 @@ const SimplePlaidLink = () => {
         axiosInstance.post('institution_accounts',institutionAccounts, config)
           .then((response) => {
             console.log(response.data);
+            dispatch(setAccounts(response.data.accounts));
           }
           ).catch((error) => {
             console.log(error);
