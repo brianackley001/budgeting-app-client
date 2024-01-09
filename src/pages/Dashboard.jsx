@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import{ Card, Row, Col } from "react-bootstrap";
-import { useAppSelector } from "../hooks/storeHooks";
+import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
 import { selectAccessToken } from "../store/msalSlice";
 import { axiosInstance } from '../utils/axiosInstance';
+import AlertDismissible from '../components/notifications/progressAlert';
+import { setHeaderText, setMessageText, setInProgress, setShowAlert } from '../store/alertSlice'
 
 
 
@@ -23,28 +25,29 @@ const accountItems = [
 
 export const Dashboard = () => {
   useAcquireAccessToken();
-  const accessToken = useAppSelector(selectAccessToken);
+  const accessToken = useAppSelector(selectAccessToken);  
+  const [localInProgress, setLocalInProgress] = useState(false);
+  const [localShowAlert, setLocalShowAlert] = useState(false);
   
-const  getApiPublicToken = () => {
-  console.log("get token");
-  let config = {
-    headers: {
-      Authorization: "Bearer " + accessToken,
-    },
-  };
-  const bodyParameters = {
-    key: "value",
-  };
+  const dispatch = useAppDispatch();
 
-  axiosInstance
-    .post(`info`, bodyParameters, config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
+  function toggleAlert () {
+    dispatch(setHeaderText("This is your alert message..."));
+    dispatch(setMessageText("Things are happening..."));
+    setLocalInProgress(!localInProgress);
+    dispatch(setInProgress(localInProgress));
+    setLocalShowAlert(!localShowAlert);
+    dispatch(setShowAlert(localShowAlert));
+  }
+  function toggleProgress () {
+    setLocalInProgress(!localInProgress);
+    dispatch(setInProgress(localInProgress));
+  }
+
+
+  // useEffect(() => {
+    
+  // }, [Dashboard]);
 
   return (
     <>
@@ -61,7 +64,9 @@ const  getApiPublicToken = () => {
                   Add external financial accounts to your dashboard to start
                   pulling in transaction data.
                   <br />  
-                  <button onClick={() => getApiPublicToken()}>Get Info from API</button>
+                  {/* <button onClick={() => getApiPublicToken()}>Get Info from API</button> */}
+                  <button onClick={toggleAlert}>toggleAlert</button> 
+                  <button onClick={toggleProgress}>toggleProgress</button> 
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -71,6 +76,8 @@ const  getApiPublicToken = () => {
           </Col>
         </Row>
       </div>
+      
+      <AlertDismissible />
     </>
   );
 };

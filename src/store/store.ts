@@ -3,10 +3,12 @@ import msalSlice from './msalSlice';
 import plaidSlice from './plaidSlice';
 import userSlice from './userSlice';
 import accountSlice from './accountSlice';
+import alertSlice from './alertSlice';
 
 export const store = configureStore({
   reducer: {
     accountSlice: accountSlice,
+    alertSlice: alertSlice,
     msalSlice: msalSlice,
     plaidSlice: plaidSlice,
     userSlice: userSlice
