@@ -38,37 +38,36 @@ const useMsalEvents = () => {
           axiosInstance
             .get(`/user/${event.payload.uniqueId}`, config)
             .then((response) => {
-              if(response.data.length > 0){
+              //User Exists:
+              if(response.data && response.data.id.length > 0){
                 sessionStorage.setItem("DB_USER_EXISTS", true);
                 sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+              }
+              else{
+                // NEW User, save to DB:
+                const saveUserPayload = {
+                  id: sessionStorage.getItem("userId"),
+                  userId: sessionStorage.getItem("userId"),
+                  userName: sessionStorage.getItem("userName"),
+                  userShortName: sessionStorage.getItem("userShortName"),
+                  dateCreated: new Date().toUTCString(),
+                  dateUpdated: new Date().toUTCString(),
+                };
+    
+                axiosInstance
+                  .post(`user`, saveUserPayload, config)
+                  .then((response) => {
+                    console.log("New User Saved:/n" + JSON.stringify(response.data));
+                    sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });;
               }
             })
             .catch((error) => {
               console.error(error);
             });
-
-          // NEW User, save to DB:
-          const userInfoSavedtoDB = sessionStorage.getItem("DB_USER_EXISTS");
-          if (!userInfoSavedtoDB) {
-            const saveUserPayload = {
-              id: sessionStorage.getItem("userId"),
-              userId: sessionStorage.getItem("userId"),
-              userName: sessionStorage.getItem("userName"),
-              userShortName: sessionStorage.getItem("userShortName"),
-              dateCreated: new Date().toUTCString(),
-              dateUpdated: new Date().toUTCString(),
-            };
-
-            axiosInstance
-              .post(`user`, saveUserPayload, config)
-              .then((response) => {
-                console.log("New User Saved:/n" + JSON.stringify(response.data));
-                sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-          }
         }
       }
 

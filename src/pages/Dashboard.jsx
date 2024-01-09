@@ -5,7 +5,6 @@ import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
 import { selectAccessToken } from "../store/msalSlice";
 import { axiosInstance } from '../utils/axiosInstance';
-import AlertDismissible from '../components/notifications/progressAlert';
 import { setHeaderText, setMessageText, setInProgress, setShowAlert } from '../store/alertSlice'
 
 
@@ -77,7 +76,6 @@ export const Dashboard = () => {
         </Row>
       </div>
       
-      <AlertDismissible />
     </>
   );
 };

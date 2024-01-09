@@ -19,47 +19,12 @@ import { Accounts } from './pages/Accounts';
 import { Transactions } from './pages/Transactions';
 import { Settings } from './pages/Settings';
 import { Dashboard } from './pages/Dashboard';
+import AlertDismissible from './components/notifications/progressAlert';
 
 import {UnAuthenticatedNavBar} from './components/navBar/UnAuthenticatedNavBar';
 import {AuthenticatedNavBar} from './components/navBar/AuthenticatedNavBar';
 
 import { useMsalEvents } from "./hooks/useMsalEvents";
-
-/**
- * Renders information about the signed-in user or a button to retrieve data about the user
- */
-// const ProfileContent = () => {
-//   const { instance, accounts } = useMsal();
-//   const [graphData, setGraphData] = useState(null);
-
-//   function RequestProfileData() {
-//     // Silently acquires an access token which is then attached to a request for MS Graph data
-//     instance
-//       .acquireTokenSilent({
-//         ...loginRequest,
-//         account: accounts[0],
-//       })
-//       .then((response) => {
-//         callMsGraph(response.accessToken).then((response) =>
-//           setGraphData(response)
-//         );
-//       });
-//   }
-
-//   return (
-//     <>
-//       <h5 className="card-title">Welcome {accounts[0].name}</h5>
-//       {/* {graphData ? (
-//         <ProfileData graphData={graphData} />
-//       ) : (
-//         <Button variant="secondary" onClick={RequestProfileData}>
-//           Request Profile Information
-//         </Button>
-//       )} */}
-//     </>
-//   );
-// };
-
 
 export default function App() {
   useMsalEvents();  // ensure that AccessToken is directed towards the App Redux Store
@@ -92,6 +57,8 @@ export default function App() {
               />
             </Routes>
           </Router>
+          
+        <AlertDismissible />
         </AuthenticatedTemplate>
 
         <UnauthenticatedTemplate>

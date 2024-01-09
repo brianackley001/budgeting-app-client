@@ -19,7 +19,7 @@ function AlertDismissible() {
 
   return (
     <>
-      <Alert show={showComponent} variant="dark" dismissible onClose={() => dispatch(setShowAlert(false))} >
+      <Alert show={showComponent} variant="dark" dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter' >
         <Alert.Heading>{headerText}</Alert.Heading>
         {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
         <p>{messageText}</p>
