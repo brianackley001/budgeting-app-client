@@ -19,16 +19,16 @@ function AlertDismissible() {
 
   return (
     <>
-      <Alert show={showComponent} variant="success">
+      <Alert show={showComponent} variant="dark" dismissible onClose={() => dispatch(setShowAlert(false))} >
         <Alert.Heading>{headerText}</Alert.Heading>
-        {inProgress ? <Spinner animation="border" role="status" /> : null}
+        {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
         <p>{messageText}</p>
-        <hr />
+        {/* <hr />
         <div className="d-flex justify-content-end">
           <Button onClick={() => dispatch(setShowAlert(false))} variant="outline-success">
             Dismiss
           </Button>
-        </div>
+        </div> */}
       </Alert>
 
       {/* {!showComponent && <Button onClick={() => dispatch(setShowAlert(true))}>Show Alert</Button>} */}
