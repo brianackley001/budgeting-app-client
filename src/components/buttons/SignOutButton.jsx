@@ -8,6 +8,13 @@ export const SignOutButton = () => {
   const { instance } = useMsal();
 
   const handleLogout = (logoutType) => {
+    sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+    sessionStorage.removeItem("DB_USER_EXISTS");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("userShortName");
+    
+
     if (logoutType === "popup") {
       instance.logoutPopup({
         postLogoutRedirectUri: "/",

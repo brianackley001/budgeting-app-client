@@ -3,14 +3,14 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { setAccessToken, setUid } from "../store/msalSlice";
-// import { setName, setUserId, setUserName } from "../store/userSlice";
+import { setName, setUserId, setUserName } from "../store/userSlice";
 // import { selectName, selectUserName, selectUserId } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
 //import {saveUser} from '../types/saveUser.ts'
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
-  const [userInfoSaved, setUserInfoSaved] = useState(true);
+ // const [userInfoSaved, setUserInfoSaved] = useState(true);
 
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
@@ -26,32 +26,49 @@ const useMsalEvents = () => {
         dispatch(setAccessToken(event.payload.accessToken));
         dispatch(setUid(event.payload.uniqueId));
 
-        const userInfoSaved = sessionStorage.getItem("msal_LOGIN_SUCCESS");
-        if (userInfoSaved) {
+        const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
+        if (userLoginSuccess) {
           const config = {
             headers: {
               Authorization: "Bearer " + event.payload.accessToken,
             },
           };
 
-          const saveUserPayload = {
-            id: sessionStorage.getItem("userId"),
-            userId: sessionStorage.getItem("userId"),
-            userName: sessionStorage.getItem("userName"),
-            userShortName: sessionStorage.getItem("userShortName"),
-            linkedItems: [{id: -100, name: "placeholder"}],
-            transactions_cursor: "",
-          };
-
+          // Get User from DB:
           axiosInstance
-            .post(`user`, saveUserPayload, config)
+            .get(`/user/${event.payload.uniqueId}`, config)
             .then((response) => {
-              //console.log(response.data);
-              sessionStorage.removeItem('msal_LOGIN_SUCCESS');
+              if(response.data.length > 0){
+                sessionStorage.setItem("DB_USER_EXISTS", true);
+                sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+              }
             })
             .catch((error) => {
               console.error(error);
             });
+
+          // NEW User, save to DB:
+          const userInfoSavedtoDB = sessionStorage.getItem("DB_USER_EXISTS");
+          if (!userInfoSavedtoDB) {
+            const saveUserPayload = {
+              id: sessionStorage.getItem("userId"),
+              userId: sessionStorage.getItem("userId"),
+              userName: sessionStorage.getItem("userName"),
+              userShortName: sessionStorage.getItem("userShortName"),
+              dateCreated: new Date().toUTCString(),
+              dateUpdated: new Date().toUTCString(),
+            };
+
+            axiosInstance
+              .post(`user`, saveUserPayload, config)
+              .then((response) => {
+                console.log("New User Saved:/n" + JSON.stringify(response.data));
+                sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          }
         }
       }
 
@@ -61,10 +78,10 @@ const useMsalEvents = () => {
         event.payload.account
       ) {
         console.log(event.payload.account);
-        setUserInfoSaved(false);
-        // dispatch(setUserId(event.payload.account.localAccountId));
-        // dispatch(setUserName(event.payload.account.username));
-        // dispatch(setName(event.payload.account.name));
+        //setUserInfoSaved(false);
+        dispatch(setUserId(event.payload.account.localAccountId));
+        dispatch(setUserName(event.payload.account.username));
+        dispatch(setName(event.payload.account.name));
         sessionStorage.setItem("msal_LOGIN_SUCCESS", true);
         sessionStorage.setItem("userId", event.payload.account.localAccountId);
         sessionStorage.setItem("userName", event.payload.account.username);

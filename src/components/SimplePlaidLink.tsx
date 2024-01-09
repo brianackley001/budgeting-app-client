@@ -12,13 +12,21 @@ import { axiosInstance } from '../utils/axiosInstance';
 
 
 import MsalUtils from '../utils/msalToken'
-import { usePlaidLink, PlaidLinkOnSuccess } from 'react-plaid-link';
+import {
+  usePlaidLink,
+  PlaidLinkOnSuccessMetadata,
+  PlaidLinkOnExitMetadata,
+  PlaidLinkError,
+  PlaidLinkOptionsWithLinkToken,
+  PlaidLinkOnEventMetadata,
+  PlaidLinkStableEvent,
+} from 'react-plaid-link';
 
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const accessToken = useAppSelector(selectAccessToken);
   const userId = useAppSelector(selectUid);
-  // const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
+  const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
   const dispatch = useAppDispatch();
   // const { axBe } = useAxiosInterceptor();
 
@@ -41,7 +49,7 @@ const SimplePlaidLink = () => {
     createLinkToken();
   }, []);
 
-  const onSuccess = useCallback<PlaidLinkOnSuccess>((publicToken, metadata) => {
+  const onSuccess = useCallback((publicToken:string, metadata: PlaidLinkOnSuccessMetadata) => {
     const linkedItemObject = {
       public_token: publicToken,
       user_id: userId,
@@ -68,10 +76,10 @@ const SimplePlaidLink = () => {
     axiosInstance.post('set_access_token', linkedItemObject, config)
       .then((response) => {
         console.log(response.data);
-        axiosInstance.post('institution_accounts',institutionAccounts, config)
+        axiosInstance.get(`item/${response.data.item_id}/${userId}`, config)
           .then((response) => {
             console.log(response.data);
-            dispatch(setAccounts(response.data.accounts));
+            //dispatch(setAccounts(response.data.accounts));
           }
           ).catch((error) => {
             console.log(error);
