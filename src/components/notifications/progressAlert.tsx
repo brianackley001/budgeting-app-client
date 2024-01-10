@@ -26,10 +26,10 @@ function AlertDismissible() {
         <Alert.Heading as={DivStyledAsH6}>{headerText}</Alert.Heading>
         {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
         <p>
-          <span>
-            {icon.iconType === 'error' && icon.isVisible ?   <FontAwesomeIcon icon={faTriangleExclamation} className='iconStyle' /> : null}
-            {icon.iconType === 'success' && icon.isVisible ? <FontAwesomeIcon icon={faCheckCircle} className='iconStyle' /> : null}
-            {icon.iconType === 'sync' && icon.isVisible ? <FontAwesomeIcon icon={faRotate} className='iconStyle' /> : null}
+          <span className='iconStyle'>
+            {icon.iconType === 'error' && icon.isVisible ?   <FontAwesomeIcon icon={faTriangleExclamation}  /> : null}
+            {icon.iconType === 'success' && icon.isVisible ? <FontAwesomeIcon icon={faCheckCircle} /> : null}
+            {icon.iconType === 'sync' && icon.isVisible ? <FontAwesomeIcon icon={faRotate} /> : null}
             </span>
           {messageText}
         </p>
