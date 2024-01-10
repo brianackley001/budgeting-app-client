@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Renders information about tde user obtained from MS Graph
+ * Renders information about the transaction list item
  * @param props
  */
 export const ListItem = (item) => {

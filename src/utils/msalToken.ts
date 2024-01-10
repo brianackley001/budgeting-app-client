@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { selectAccessToken, setAccessToken } from "../store/msalSlice";
-import { msalConfig } from "../../src/authConfig";
+import { msalConfig } from "../config/authConfig";
 
 
 const MsalUtils = () => {
@@ -26,5 +26,6 @@ const MsalUtils = () => {
   }
   return msalTokenStoreValue;
 }
+
 
 export default MsalUtils;
