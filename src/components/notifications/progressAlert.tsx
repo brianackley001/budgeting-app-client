@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from "../../hooks/storeHooks";
-import { selectInProgress, selectHeaderText, selectMessageText, selectShowAlert, setInProgress, setShowAlert } from "../../store/alertSlice";
+import { selectInProgress, selectHeaderText, selectMessageText, selectShowAlert, selectVariantStyle, setShowAlert } from "../../store/alertSlice";
 import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
 
@@ -14,12 +14,13 @@ function AlertDismissible() {
   const headerText = useAppSelector(selectHeaderText);
   const messageText = useAppSelector(selectMessageText);
   const inProgress = useAppSelector(selectInProgress); //dispatch(setAccessToken(event.payload.accessToken));
+  const variantStyle = useAppSelector(selectVariantStyle);
   // useEffect(() => {
   // }, []);
 
   return (
     <>
-      <Alert show={showComponent} variant="dark" dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter' >
+      <Alert show={showComponent} variant={variantStyle} dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter' >
         <Alert.Heading>{headerText}</Alert.Heading>
         {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
         <p>{messageText}</p>

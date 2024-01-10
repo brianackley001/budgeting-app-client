@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
-import { setAccessToken, setUid } from "../store/msalSlice";
+import { selectAccessToken,setAccessToken, setUid } from "../store/msalSlice";
 import { setName, setUserId, setUserName } from "../store/userSlice";
 // import { selectName, selectUserName, selectUserId } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
 //import {saveUser} from '../types/saveUser.ts'
+import { loginSync } from '../utils/loginStateUtils';
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
@@ -14,6 +15,8 @@ const useMsalEvents = () => {
 
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
+  // const appSelector = useAppSelector();
+  const useSyncUser = loginSync;
 
   useEffect(() => {
     const callbackId = instance.addEventCallback((event) => {
@@ -25,6 +28,7 @@ const useMsalEvents = () => {
         setToken(event.payload.accessToken);
         dispatch(setAccessToken(event.payload.accessToken));
         dispatch(setUid(event.payload.uniqueId));
+        let accessTokenValue = event.payload.accessToken;
 
         const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
@@ -37,11 +41,12 @@ const useMsalEvents = () => {
           // Get User from DB:
           axiosInstance
             .get(`/user/${event.payload.uniqueId}`, config)
-            .then((response) => {
+            .then(async (response) => {
               //User Exists:
               if(response.data && response.data.id.length > 0){
                 sessionStorage.setItem("DB_USER_EXISTS", true);
                 sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+                await useSyncUser(response.data, dispatch, accessTokenValue);
               }
               else{
                 // NEW User, save to DB:
@@ -57,7 +62,7 @@ const useMsalEvents = () => {
                 axiosInstance
                   .post(`user`, saveUserPayload, config)
                   .then((response) => {
-                    console.log("New User Saved:/n" + JSON.stringify(response.data));
+                    //console.log("New User Saved:/n" + JSON.stringify(response.data));
                     sessionStorage.removeItem("msal_LOGIN_SUCCESS");
                   })
                   .catch((error) => {

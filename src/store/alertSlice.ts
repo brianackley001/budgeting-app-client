@@ -7,7 +7,8 @@ interface AlertState {
   headerText: string,
   inProgress: boolean,
   messageText: string,
-  showAlert: boolean
+  showAlert: boolean,
+  variantStyle: string
 }
 
 // Define the initial state using that type
@@ -15,7 +16,8 @@ const initialState: AlertState = {
   inProgress: false,
   headerText: '',
   messageText: '',
-  showAlert: false
+  showAlert: false,
+  variantStyle: 'dark'
 }
 
 export const alertSlice = createSlice({
@@ -36,15 +38,19 @@ export const alertSlice = createSlice({
     setShowAlert: (state, action: PayloadAction<boolean>) => {
       state.showAlert = action.payload
     },
+    setVariantStyle: (state, action: PayloadAction<string>) => {
+      state.variantStyle = action.payload
+    },
   },
 })
 
-export const { setHeaderText, setInProgress, setMessageText, setShowAlert } = alertSlice.actions
+export const { setHeaderText, setInProgress, setMessageText, setShowAlert, setVariantStyle } = alertSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectInProgress = (state: RootState) => state.alertSlice.inProgress
 export const selectHeaderText= (state: RootState) => state.alertSlice.headerText
 export const selectMessageText = (state: RootState) => state.alertSlice.messageText
 export const selectShowAlert = (state: RootState) => state.alertSlice.showAlert
+export const selectVariantStyle = (state: RootState) => state.alertSlice.variantStyle
 
 export default alertSlice.reducer
