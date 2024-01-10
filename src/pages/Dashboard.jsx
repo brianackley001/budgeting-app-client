@@ -5,7 +5,10 @@ import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken";
 import { selectAccessToken } from "../store/msalSlice";
 import { axiosInstance } from '../utils/axiosInstance';
-import { setHeaderText, setMessageText, setInProgress, setShowAlert } from '../store/alertSlice'
+import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTriangleExclamation, faRotate } from '@fortawesome/free-solid-svg-icons'
+import { setHeaderText, setIcon,  setMessageText, setInProgress, setShowAlert, setVariantStyle } from '../store/alertSlice'
 
 
 
@@ -30,13 +33,45 @@ export const Dashboard = () => {
   
   const dispatch = useAppDispatch();
 
-  function toggleAlert () {
-    dispatch(setHeaderText("This is your alert message..."));
-    dispatch(setMessageText("Things are happening..."));
-    setLocalInProgress(!localInProgress);
-    dispatch(setInProgress(localInProgress));
-    setLocalShowAlert(!localShowAlert);
-    dispatch(setShowAlert(localShowAlert));
+  const beginSyncOperation = async (dispatch) => {
+    dispatch(setInProgress(true));
+    dispatch(setHeaderText("Syncing"));
+    dispatch(setMessageText("Please wait while we sync your accounts..."));
+    dispatch(setIcon({iconType: 'sync', isVisible: true}));
+    dispatch(setVariantStyle("secondary"));
+    dispatch(setShowAlert(true));
+  };
+  const broadcastSyncError = async (dispatch, error) => {
+    dispatch(setInProgress(false));
+    dispatch(setHeaderText(error.header));
+    dispatch(setMessageText(error.message));
+    dispatch(setVariantStyle("danger"));
+    dispatch(setIcon({iconType: 'error', isVisible: true}));
+    dispatch(setShowAlert(true));
+  };
+  
+  const endSyncOperation = async (dispatch) => {
+    dispatch(setInProgress(false));
+    dispatch(setHeaderText("Sync Completed"));
+    dispatch(setMessageText("Your account sync is complete."));
+    dispatch(setVariantStyle("success"));
+    dispatch(setIcon({iconType: 'success', isVisible: true}));
+    dispatch(setShowAlert(true));
+  };
+  function toggleAlert (alertType) {
+    switch (alertType) {
+      case 0:
+        beginSyncOperation(dispatch);
+        break;
+      case 1:
+        endSyncOperation(dispatch);
+        break;
+      case 2:
+        broadcastSyncError(dispatch, {header: "Sync Error", message: "There was an error syncing your account."});
+        break;
+      default:
+        break;
+    }
   }
   function toggleProgress () {
     setLocalInProgress(!localInProgress);
@@ -64,8 +99,26 @@ export const Dashboard = () => {
                   pulling in transaction data.
                   <br />  
                   {/* <button onClick={() => getApiPublicToken()}>Get Info from API</button> */}
-                  <button onClick={toggleAlert}>toggleAlert</button> 
-                  <button onClick={toggleProgress}>toggleProgress</button> 
+                  {/* <button onClick={toggleAlert}>toggleAlert</button> 
+                  <button onClick={toggleProgress}>toggleProgress</button>  */}
+                  <Button
+                    variant="secondary"
+                    className='iconStyle'
+                    onClick={() => toggleAlert(0)}>
+                      <FontAwesomeIcon icon={faRotate} size='xs' />
+                    </Button>
+                  <Button
+                    variant="success"
+                    className='iconStyle'
+                    onClick={() => toggleAlert(1)}>
+                      <FontAwesomeIcon icon={faCheckCircle} size='xs' />
+                    </Button>
+                  <Button
+                    variant="danger"
+                    className='iconStyle'
+                    onClick={() => toggleAlert(2)}>
+                      <FontAwesomeIcon icon={faTriangleExclamation} size='xs' />
+                    </Button>
                 </Card.Text>
               </Card.Body>
             </Card>

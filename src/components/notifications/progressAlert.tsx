@@ -1,38 +1,39 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from "../../hooks/storeHooks";
-import { selectInProgress, selectHeaderText, selectMessageText, selectShowAlert, selectVariantStyle, setShowAlert } from "../../store/alertSlice";
+import { selectHeaderText, selectIcon, selectInProgress, selectMessageText, selectShowAlert, selectVariantStyle, setShowAlert } from "../../store/alertSlice";
 import Alert from 'react-bootstrap/Alert';
-// import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTriangleExclamation, faRotate } from '@fortawesome/free-solid-svg-icons'
+import divWithClassName from 'react-bootstrap/esm/divWithClassName';
 
 function AlertDismissible() {
-  //const [show, setShow] = useState(true);
 
   const showComponent = useAppSelector(selectShowAlert);
   const dispatch = useAppDispatch();
   const headerText = useAppSelector(selectHeaderText);
   const messageText = useAppSelector(selectMessageText);
-  const inProgress = useAppSelector(selectInProgress); //dispatch(setAccessToken(event.payload.accessToken));
+  const icon = useAppSelector(selectIcon);
+  const inProgress = useAppSelector(selectInProgress);
   const variantStyle = useAppSelector(selectVariantStyle);
+  const DivStyledAsH6 = divWithClassName('h6')
   // useEffect(() => {
   // }, []);
 
   return (
     <>
       <Alert show={showComponent} variant={variantStyle} dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter' >
-        <Alert.Heading>{headerText}</Alert.Heading>
+        <Alert.Heading as={DivStyledAsH6}>{headerText}</Alert.Heading>
         {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
-        <p>{messageText}</p>
-        {/* <hr />
-        <div className="d-flex justify-content-end">
-          <Button onClick={() => dispatch(setShowAlert(false))} variant="outline-success">
-            Dismiss
-          </Button>
-        </div> */}
+        <p>
+          <span>
+            {icon.iconType === 'error' && icon.isVisible ?   <FontAwesomeIcon icon={faTriangleExclamation} className='iconStyle' /> : null}
+            {icon.iconType === 'success' && icon.isVisible ? <FontAwesomeIcon icon={faCheckCircle} className='iconStyle' /> : null}
+            {icon.iconType === 'sync' && icon.isVisible ? <FontAwesomeIcon icon={faRotate} className='iconStyle' /> : null}
+            </span>
+          {messageText}
+        </p>
       </Alert>
-
-      {/* {!showComponent && <Button onClick={() => dispatch(setShowAlert(true))}>Show Alert</Button>} */}
     </>
   );
 }
