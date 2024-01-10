@@ -3,6 +3,7 @@ import { Accounts } from '../pages/Accounts';
 import { Transactions } from '../pages/Transactions';
 import { Settings } from '../pages/Settings';
 import { Home } from '../pages/Dashboard';
+import { SessionExpired } from '../pages/SessionExpired';
 import { createBrowserRouter} from 'react-router-dom';
 
 
@@ -25,6 +26,11 @@ const routes = [
   {
     path: '/settings',
     component: {Settings},
+    errorElement: {ErrorPage},
+  },,
+  {
+    path: '/session-expired',
+    component: {SessionExpired},
     errorElement: {ErrorPage},
   },
 ];

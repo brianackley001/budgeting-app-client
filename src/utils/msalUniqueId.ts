@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { selectUid, setUid } from "../store/msalSlice";
-import { msalConfig } from "../../src/authConfig";
+import { msalConfig } from "../config/authConfig";
 
 const MsalUidUtils = () => {
   const dispatch = useAppDispatch();

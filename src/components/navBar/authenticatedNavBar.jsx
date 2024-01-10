@@ -5,6 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import { NavLink  } from 'react-router-dom';
 
 import { SignOutButton } from "../buttons/SignOutButton";
+import { StoreRefreshButton } from "../buttons/StoreRefreshButton";
 
 /**
  * Renders the navbar component with a sign-in or sign-out button depending on whether or not a user is authenticated
@@ -19,19 +20,23 @@ export const AuthenticatedNavBar = () => {
         expand="lg"
         className="bg-success"
         id="authenticatedNavBar"
+        data-testid="authenticatedNavBar"
       >
         <Container>
         <Navbar.Brand as={NavLink} to="/">Mint Lite</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarCollapse" />
-          <Navbar.Collapse id="navbarCollapse">
+          <Navbar.Collapse id="navbarCollapse" data-testid="navbar-collapse">
             <Nav className="me-auto" id="topNav">
-              <Nav.Link as={NavLink} eventKey={1} to="/accounts">Accounts</Nav.Link>
-              <Nav.Link as={NavLink} eventKey={2} to="/transactions">Transactions</Nav.Link>
-              <Nav.Link as={NavLink} eventKey={3} to="/settings">Settings</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={1} to="/accounts" data-testid="navlink-accounts">Accounts</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={2} to="/transactions" data-testid="navlink-transactions">Transactions</Nav.Link>
+              <Nav.Link as={NavLink} eventKey={3} to="/settings" data-testid="navlink-settings">Settings</Nav.Link>
             </Nav>
             <Nav>
               <Nav.Link eventKey={4}>
                 <SignOutButton /> 
+              </Nav.Link>
+              <Nav.Link eventKey={4}>
+                <StoreRefreshButton /> 
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

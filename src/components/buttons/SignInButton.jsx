@@ -1,5 +1,5 @@
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authConfig";
+import { loginRequest } from "../../config/authConfig";
 import Button from "react-bootstrap/Button";
 
 export const SignInButton = () => {
@@ -20,6 +20,7 @@ export const SignInButton = () => {
     <Button
       variant="light"
       className="ml-auto"
+      data-testid="button-sign-in"
       onClick={() => handleLogin("popup")}
     >
       Log In
