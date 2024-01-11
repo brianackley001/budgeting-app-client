@@ -1,8 +1,6 @@
 import ListGroupItem from 'react-bootstrap/ListGroupItem'
 import { AccountSummaryListItemType } from "../../types/accountSummaryListItem.ts";
 import { Col, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Renders information about the user obtained from MS Graph
@@ -10,30 +8,21 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
  */
 
 
-function AccountSummaryListItem({item}) {
-  //const { name, mask, type, balances, includeInTransactions } = props;
-
-//<Accordion.Header data-testid="accordian-header">{props.name} (<i>...{props.mask}</i>)&nbsp;-&nbsp;<b>${props.balances.available}</b></Accordion.Header>
-
-
-
+function AccountSummaryListItem({item, balanceIsDebt}) {
   return (
-    <ListGroupItem data-testid="list-group-item-container" key={item.id}>
-      <Row className="mb-3">
-        <Col xs="9" data-testid="list-item-name">
-          <b>{item.name}</b>
+    <ListGroupItem data-testid="list-group-item-container" key={item.id}  variant="flush">
+      <Row >
+        <Col xs="9" data-testid="list-item-name" className='accountSummaryListItemText'>
+          {item.name}
         </Col>
-        <Col xs="3" data-testid="list-item-balance">
-          $<b>{item.balances.current}</b>
+        <Col xs="3" data-testid="list-item-balance" className='accountSummaryListItemBalance'>
+          {balanceIsDebt ? "-" : ""}{item.balances.current.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }
         </Col>
       </Row>
-      <Row className="mb-3">
-        <Col xs="9" data-testid="list-item-institution-name">
+      <Row>
+        <Col xs="9" data-testid="list-item-institution-name" className='accountSummaryListItemText'>
           <i>{item.institutionName}</i>
         </Col>
-        {/* <Col xs="3" data-testid="list-item-status-icon">
-        <FontAwesomeIcon color='green' icon={faCheckCircle} />
-        </Col> */}
       </Row>
     </ListGroupItem>
   );

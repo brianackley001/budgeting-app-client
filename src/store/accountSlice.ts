@@ -9,7 +9,7 @@ interface accountItem {
   subtype: string,
   institutionId: string,
   institutionName: string,
-  balance: {}
+  balances: {available: number, current: number, limit: number, isoCurrencyCode: string, unofficialCurrencyCode: string}
 }
 interface institutionItem {
   id: string,
