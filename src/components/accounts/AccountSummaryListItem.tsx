@@ -10,7 +10,7 @@ import { Col, Row } from 'react-bootstrap';
 
 function AccountSummaryListItem({item, balanceIsDebt}) {
   return (
-    <ListGroupItem data-testid="list-group-item-container" key={item.id}  variant="flush">
+    <ListGroupItem data-testid="list-group-item-container" variant="flush" eventKey={item.accountId}>
       <Row >
         <Col xs="9" data-testid="list-item-name" className='accountSummaryListItemText'>
           {item.name}

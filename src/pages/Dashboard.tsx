@@ -32,9 +32,9 @@ export const Dashboard = () => {
             <Card.Title>Accounts</Card.Title>
             <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>
             <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>
-            <Card.Text>
+            <span className='card-text'>
               <AccountSummaryList items={accountItems} />
-            </Card.Text>
+            </span>
           </Card.Body>
         </Card>
       </div>
