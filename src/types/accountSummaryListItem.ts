@@ -1,8 +1,8 @@
 export type AccountSummaryListItemType = {
-  institution_id: string;
-  item_id: string;
-  institution_name: string;
-  account_id: string;
+  institutionId: string;
+  itemId: string;
+  institutionName: string;
+  accountId: string;
   balances: {
     available: number;
     current: number;

@@ -7,7 +7,7 @@ import { AccountSummaryListItemType} from "../types/accountSummaryListItem.ts";
 
 export const Settings = () => {
   const accountListItem: AccountListItemType = { 
-    account_id: "lv5KvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
+    accountId: "lv5KvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
     balances: {
         available: 100,
         current: 110,
@@ -23,10 +23,10 @@ export const Settings = () => {
     includeInTransactions: true,
   };
   let a: AccountSummaryListItemType = {
-    institution_id: "ins_1234",
-    item_id: "item_1234",
-    institution_name: "Plaid Bank",
-    account_id: "XXXXXXXXvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
+    institutionId: "ins_1234",
+    itemId: "item_1234",
+    institutionName: "Plaid Bank",
+    accountId: "XXXXXXXXvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
     balances: {
       available: 100,
       current: 110,
@@ -42,10 +42,10 @@ export const Settings = () => {
     includeInTransactions: true
   };
   let b: AccountSummaryListItemType = {
-    institution_id: "ins_44555",
-    item_id: "item_7734",
-    institution_name: "Other Bank",
-    account_id: "12121212MeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
+    institutionId: "ins_44555",
+    itemId: "item_7734",
+    institutionName: "Other Bank",
+    accountId: "12121212MeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
     balances: {
       available: 100,
       current: 2110,
@@ -61,10 +61,10 @@ export const Settings = () => {
     includeInTransactions: true
   };
   let c: AccountSummaryListItemType = {
-    institution_id: "ins_6545",
-    item_id: "item_1255",
-    institution_name: "Random Bank",
-    account_id: "ZasDsaMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
+    institutionId: "ins_6545",
+    itemId: "item_1255",
+    institutionName: "Random Bank",
+    accountId: "ZasDsaMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
     balances: {
       available: 100,
       current: 910,
@@ -107,11 +107,11 @@ export const Settings = () => {
             <Card style={{ width: "23rem" }}>
               <Card.Body>
                 <Card.Header>Balances</Card.Header>
-                <ListGroup variant="flush">
+                {/* <ListGroup variant="flush">
                   {accountSummaryItems.map((accountSummaryItem: AccountSummaryListItemType) => (
-                    <AccountSummaryListItem key={accountSummaryItem.account_id} {...accountSummaryItem} />
+                    <AccountSummaryListItem key={accountSummaryItem.accountId} {...accountSummaryItem} />
                   ))}
-                </ListGroup>
+                </ListGroup> */}
               </Card.Body>
             </Card>
           </Col>

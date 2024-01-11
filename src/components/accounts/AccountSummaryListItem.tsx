@@ -10,7 +10,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
  */
 
 
-function AccountSummaryListItem(props: AccountSummaryListItemType) {
+function AccountSummaryListItem({item}) {
   //const { name, mask, type, balances, includeInTransactions } = props;
 
 //<Accordion.Header data-testid="accordian-header">{props.name} (<i>...{props.mask}</i>)&nbsp;-&nbsp;<b>${props.balances.available}</b></Accordion.Header>
@@ -18,22 +18,22 @@ function AccountSummaryListItem(props: AccountSummaryListItemType) {
 
 
   return (
-    <ListGroupItem data-testid="list-group-item-container">
+    <ListGroupItem data-testid="list-group-item-container" key={item.id}>
       <Row className="mb-3">
         <Col xs="9" data-testid="list-item-name">
-          <b>{props.name}</b>
+          <b>{item.name}</b>
         </Col>
         <Col xs="3" data-testid="list-item-balance">
-          $<b>{props.balances.current}</b>
+          $<b>{item.balances.current}</b>
         </Col>
       </Row>
       <Row className="mb-3">
         <Col xs="9" data-testid="list-item-institution-name">
-          <i>{props.institution_name}</i>
+          <i>{item.institutionName}</i>
         </Col>
-        <Col xs="3" data-testid="list-item-status-icon">
+        {/* <Col xs="3" data-testid="list-item-status-icon">
         <FontAwesomeIcon color='green' icon={faCheckCircle} />
-        </Col>
+        </Col> */}
       </Row>
     </ListGroupItem>
   );

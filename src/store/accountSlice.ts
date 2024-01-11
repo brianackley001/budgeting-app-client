@@ -11,15 +11,22 @@ interface accountItem {
   institutionName: string,
   balance: {}
 }
+interface institutionItem {
+  id: string,
+  name: string
+}
 
 // Define a type for the slice state
 interface AccountState {
-  accounts: accountItem[]
+  accounts: accountItem[],
+  institutions: institutionItem[]
 }
 // Define the initial state using that type
 const initialState: AccountState = {
-  accounts: []
+  accounts: [],
+  institutions: []
 }
+
 
 export const accountSlice = createSlice({
   name: 'accounts',
@@ -28,14 +35,18 @@ export const accountSlice = createSlice({
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
     setAccounts: (state, action) => {
-      state.accounts = action.payload
+      state.accounts = action.payload;
+    },
+    setInstitutions: (state, action) => {
+      state.institutions = action.payload;
     },
   },
 })
 
-export const { setAccounts } = accountSlice.actions
+export const { setAccounts, setInstitutions } = accountSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectAccounts = (state: RootState) => state.accountSlice.accounts
+export const selectInstitutions = (state: RootState) => state.accountSlice.institutions
 
 export default accountSlice.reducer 
