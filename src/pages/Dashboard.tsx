@@ -1,16 +1,16 @@
 
 import React, { useCallback, useState, useEffect } from 'react';
 import{ Card, Row, Col } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup';
 import AccountSummaryList from "../components/accounts/AccountSummaryList.tsx";
-import { AccountSummaryListItemType} from "../types/accountSummaryListItem.ts";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks.ts";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken.js";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRotate } from '@fortawesome/free-solid-svg-icons'
 
 
 export const Dashboard = () => {
   useAcquireAccessToken();
-  const accessToken = useAppSelector(state => state.msalSlice.accessToken); 
+  // const accessToken = useAppSelector(state => state.msalSlice.accessToken); 
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const netWorth = accountItems
     .filter((item) => (item.type === 'depository' || item.type === 'investment'))
@@ -29,7 +29,7 @@ export const Dashboard = () => {
       <div className="dashboardAccountContainer">
         <Card>
           <Card.Body>
-            <Card.Title>Accounts</Card.Title>
+            <Card.Title>Accounts <span className='accountHeaderIcon'><FontAwesomeIcon icon={faRotate}/></span></Card.Title>
             <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>
             <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>
             <span className='card-text'>
@@ -38,6 +38,7 @@ export const Dashboard = () => {
           </Card.Body>
         </Card>
       </div>
+      {/* To-Do: Add Trends */}
     </>
   );
 };
