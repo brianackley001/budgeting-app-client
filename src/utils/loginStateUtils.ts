@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { setAccounts } from "../store/accountSlice";
 // import { selectAccessToken} from "../store/msalSlice";
-import { setInstitutions, setLinkedItems } from "../store/plaidSlice";
-import {setTransactions} from "../store/transactionSlice"; 
+import { setInstitutions, setLinkedItems, selectInstitutions } from "../store/plaidSlice";
+import { setTransactions } from "../store/transactionSlice"; 
 import { setName, setUserId, setUserName } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
 import {
@@ -13,6 +13,7 @@ import {
   setShowAlert,
   setVariantStyle,
 } from "../store/alertSlice";
+
 
 
 const beginSyncOperation = async (dispatch) => {
@@ -39,6 +40,7 @@ const endSyncOperation = async (dispatch) => {
 
 const setAccountState = async (dispatch, accounts) => {
   try {
+    
     dispatch(setAccounts(accounts));
     return true;
   } catch (error) {

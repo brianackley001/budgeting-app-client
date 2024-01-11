@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { selectAccessToken,setAccessToken, setUid } from "../store/msalSlice";
+// import plaidSlice, { selectInstitutions } from "../store/plaidSlice";
 import { setName, setUserId, setUserName } from "../store/userSlice";
 // import { selectName, selectUserName, selectUserId } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
@@ -15,7 +16,8 @@ const useMsalEvents = () => {
 
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
-  // const appSelector = useAppSelector();
+  // const institutions = useAppSelector(state => state.plaidSlice.institutions);
+  //const accessToken = useAppSelector(selectAccessToken);
   const useSyncUser = loginSync;
 
   useEffect(() => {
