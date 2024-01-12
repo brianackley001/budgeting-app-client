@@ -1,56 +1,39 @@
 import React, { useCallback, useState } from "react";
-
 import { Card, Row, Col, Button } from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
+import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken.js";
 import { selectUid, selectAccessToken } from "../store/msalSlice";
 import SimplePlaidLink from "../components/SimplePlaidLink";
-
-import axios from "axios";
-
-//let msalTokenValue = null;
-// const initAddAccount = () => {
-//   //console.log("add account - BEGIN");
-
-//   let config = {
-//     headers: {
-//       Authorization: "Bearer " + msalTokenValue,
-//     },
-//   };
-//   const bodyParameters = {};
-//   console.log(`tokenValue: ${msalTokenValue}`);
-
-//   axios
-//     .post(`${import.meta.env.VITE_API_URL}/api/create_link_token`, bodyParameters, config)
-//     .then((response) => {
-//       console.log(response.data);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// };
+import AccountList from "../components/accounts/AccountList.tsx";
+// import axios from "axios";
 
 export const Accounts = () => {
   const accessToken = useAppSelector(selectAccessToken);
+  useAcquireAccessToken();
+  const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const institutions = Array.from(new Set(accountItems.map((item) => item.institutionId)))
+    .map((institutionId) => {
+      return {
+        institutionId: institutionId, 
+        accounts: accountItems.filter((item) => item.institutionId === institutionId),
+      };
+    })
+    .sort((a, b) => a.institutionId.localeCompare(b.institutionId));
+    // console.log(institutions);
   return (
     <>
-      <div className="d-flex justify-content-around">
-        <Row>
-          <Col xs={1}>&nbsp;</Col>
-          <Col xs={8}>
-            <Card style={{ width: "22rem" }}>
-              <Card.Body>
-                <Card.Header>Accounts</Card.Header>
-                <Card.Text>
-                  {/* <Button variant="primary" onClick={initAddAccount}>
-                    Add Account
-                  </Button> */}
-                  <SimplePlaidLink />
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col xs={1}>&nbsp;</Col>
-        </Row>
+    <div className="dashboardAccountContainer">
+        <Card>
+          <Card.Body>
+            <Card.Title>All Accounts <span className='cardHeaderIconRight'><SimplePlaidLink /></span></Card.Title>
+            <Card.Subtitle className="mb-2 mt-4 text-muted"></Card.Subtitle>
+            <span className='card-text'>
+                {institutions.map((institution) => {
+                  return <AccountList key={institution.institutionId} institution={institution} />
+                })}
+              </span>
+          </Card.Body>
+        </Card>
       </div>
     </>
   );

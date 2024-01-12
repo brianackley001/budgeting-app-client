@@ -12,6 +12,7 @@ export const Dashboard = () => {
   useAcquireAccessToken();
   // const accessToken = useAppSelector(state => state.msalSlice.accessToken); 
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  
   const netWorth = accountItems
     .filter((item) => (item.type === 'depository' || item.type === 'investment'))
     .reduce((a, item) => a + item.balances.current, 0);
@@ -29,7 +30,7 @@ export const Dashboard = () => {
       <div className="dashboardAccountContainer">
         <Card>
           <Card.Body>
-            <Card.Title>Accounts <span className='accountHeaderIcon'><FontAwesomeIcon icon={faRotate}/></span></Card.Title>
+            <Card.Title>Accounts <span className='cardHeaderIconRight'><FontAwesomeIcon icon={faRotate}/></span></Card.Title>
             <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>
             <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>
             <span className='card-text'>
