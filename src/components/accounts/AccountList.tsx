@@ -13,7 +13,7 @@ export default function AccountList({institution}) {
   console.log(`institution ${institution}`);
   return (
     <>
-    <Card>
+    <Card className="mb-5">
           <Card.Body>
             {/* <Card.Subtitle>{institution.accounts[0].institutionName} <span className='cardHeaderIconRight'>edit</span></Card.Subtitle> */}
             <InstitutionHeaderItem institution={institution} />
