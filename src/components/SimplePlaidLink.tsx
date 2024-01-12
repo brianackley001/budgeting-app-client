@@ -98,10 +98,9 @@ const SimplePlaidLink = () => {
   });
 
   return (
-    <>
-      <FontAwesomeIcon icon={faPlus} className='iconStyle' onClick={() => open()} /><span onClick={() => open()}>Add Account</span>
-
-    </>
+    <Button variant="outline-success" size="sm" className='addAccountButton' onClick={() => open()}>
+      <FontAwesomeIcon icon={faPlus} className='iconStyle' /><span onClick={() => open()}>Add Account</span>
+    </Button>
   );
 };
 

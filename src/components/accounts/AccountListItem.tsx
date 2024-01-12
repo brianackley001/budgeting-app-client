@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Form } from "react-bootstrap";
 import { AccountListItemType } from "../../types/accountListItem.ts";
 
 /**
@@ -12,12 +11,13 @@ import { AccountListItemType } from "../../types/accountListItem.ts";
  */
 
 
-function AccountListItem(props: AccountListItemType) {
+function AccountListItem({item}) {
   //const { name, mask, type, balances, includeInTransactions } = props;
-  const [formAccountName, setFormAccountName] = useState(props.name);
-  const [formUseInTrasactions, setFormUseInTransactions] = useState(props.includeInTransactions);
+  const [activeAccordianKeys, setActiveAccordianKeys] = useState<string[]>([]);
+  const [formAccountName, setFormAccountName] = useState(item.name);
+  const [formUseInTrasactions, setFormUseInTransactions] = useState(item.includeInTransactions);
   const [validated, setValidated] = useState(false);
-
+  const typeDisplayValue = `${item.type} (${item.subtype})`
 
 
 
@@ -25,6 +25,12 @@ function AccountListItem(props: AccountListItemType) {
     setFormAccountName(e.target.value);
   }
   function handleCheckboxChange(e) {
+  }
+
+  const handleSelect = (eventKey: any) => setActiveAccordianKeys(eventKey as string[]);
+
+  const handleCollapseClick = () => {
+    setActiveAccordianKeys([]);
   }
 
   const handleSubmit = (event) => {
@@ -35,33 +41,32 @@ function AccountListItem(props: AccountListItemType) {
     }
 
     setValidated(true);
+    console.log('form submitted');
+
+    
+    event.preventDefault();
+    handleCollapseClick();
   };
 
   return (
-    <Accordion data-testid="accordian-container">
-      <Accordion.Item eventKey="0">
-        <Accordion.Header data-testid="accordian-header">{props.name} (<i>...{props.mask}</i>)&nbsp;-&nbsp;<b>${props.balances.available}</b></Accordion.Header>
+    <Accordion data-testid="accordian-container"  activeKey={activeAccordianKeys} onSelect={handleSelect}>
+      <Accordion.Item eventKey="0" >
+        <Accordion.Header data-testid="accordian-header">{item.name} (<i>...{item.mask}</i>)</Accordion.Header>
         <Accordion.Body data-testid="accordian-body">
-          <Row className="mb-3">
-            <Col>
-              <b>{props.official_name}</b>
-            </Col>
-          </Row>
           <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordian-form">
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridAccountName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control required 
-                  placeholder="Enter account name" 
+              <Form.Group as={Col} controlId="formGridSystemName">
+                <Form.Label>System Account Name</Form.Label>
+                <Form.Control 
                   type="text" 
                   name="accountName" 
                   data-testid="accordian-form-account-name" 
                   defaultValue={formAccountName} 
-                  onChange={handleTextareaChange} />
-                <Form.Control.Feedback data-testid="accordian-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid" data-testid="accordian-form-account-name-is-invalid">
-                  Please provide a valid account name.
-                </Form.Control.Feedback>
+                  onChange={handleTextareaChange}
+                  aria-label="Disabled input example"
+                  disabled
+                  readOnly
+                  style={{fontSize: ".75em"}} />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridAccountType">
@@ -71,8 +76,26 @@ function AccountListItem(props: AccountListItemType) {
                   aria-label="Disabled input example"
                   disabled
                   readOnly
-                  value={props.type}
+                  style={{fontSize: ".75em"}}
+                  value={typeDisplayValue}
                 />
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="formGridAccountName">
+                <Form.Label>Custom Account Nickname</Form.Label>
+                <Form.Control required 
+                  placeholder="Enter account name" 
+                  type="text" 
+                  name="accountName" 
+                  data-testid="accordian-form-account-name" 
+                  defaultValue={formAccountName} 
+                  onChange={handleTextareaChange}
+                  style={{fontSize: ".90em"}} />
+                <Form.Control.Feedback data-testid="accordian-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid" data-testid="accordian-form-account-name-is-invalid">
+                  Please provide a valid account name.
+                </Form.Control.Feedback>
               </Form.Group>
             </Row>
             <Row className="mb-3">
