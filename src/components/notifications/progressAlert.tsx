@@ -6,6 +6,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTriangleExclamation, faRotate } from '@fortawesome/free-solid-svg-icons'
 import divWithClassName from 'react-bootstrap/esm/divWithClassName';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
 
 function AlertDismissible() {
 
@@ -22,7 +24,10 @@ function AlertDismissible() {
 
   return (
     <>
-      <Alert show={showComponent} variant={variantStyle} dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter' >
+
+    <Container fluid>
+    <Navbar expand="lg" fixed="bottom">
+      <Alert show={showComponent} variant={variantStyle} dismissible onClose={() => dispatch(setShowAlert(false))} className='alertFooter me-auto my-2 my-lg-0 mb-3' >
         <Alert.Heading as={DivStyledAsH6}>{headerText}</Alert.Heading>
         {inProgress ? <Spinner animation="border" role="status" size="sm"  /> : null}
         <p>
@@ -34,6 +39,8 @@ function AlertDismissible() {
           {messageText}
         </p>
       </Alert>
+      </Navbar>
+      </Container>
     </>
   );
 }

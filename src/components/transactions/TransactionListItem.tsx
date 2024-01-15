@@ -5,17 +5,23 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
+import TransactionDetailReadOnly from "./TransactionDetailReadOnly"
+import TransactionDetailForm from "./TransactionDetailForm"
 
 /**
  * Renders information about the transaction list item
  * @param props
  */
-export const TransactionListItem = (item) => {
+export const TransactionListItem = (item) =>{
   const [showDetail, setShowDetail] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   
-  const handleModalClose = () => setShowDetail(false);
+  const handleModalClose = () => {
+    setIsEditMode(false);
+    setShowDetail(false);
+  };
+
   const handleShowDetail = () => setShowDetail(true);
   const handleToggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -41,8 +47,7 @@ export const TransactionListItem = (item) => {
         </Modal.Header>
         <Modal.Body>
           <Card>
-            <CardTitle as="h6">
-              Account: {item.bankAccountName} 
+            <CardTitle as="h6" className='navbarStyle'> {isEditMode ? "Edit Transaction": `Account: ${item.bankAccountName}`} 
             <span className='cardHeaderIconRight' aria-label="Edit Transaction" title="Edit Institution">
               {!isEditMode ?   <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()}>
               <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()}>Edit</span>
@@ -50,36 +55,11 @@ export const TransactionListItem = (item) => {
             </span>
             </CardTitle>
             <CardBody>
-              {!isEditMode ?<span className='card-text>' id='readOnlyTransaction'>
-                <Row>
-                  <Col xs={6}>Date:</Col>
-                  <Col xs={6}>{item.date }</Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>Description:</Col>
-                  <Col xs={6}>{item.merchant}</Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>Amount:</Col>
-                  <Col xs={6}>{item.amount }</Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>Category:</Col>
-                  <Col xs={6} className='text-lowercase'>{item.category}</Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>Notes:</Col>
-                  <Col xs={6}>{item.notes }</Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>Tags:</Col>
-                  <Col xs={6} className='text-lowercase'>{item.tags}</Col>
-                </Row>
-              </span>: null}
-              {isEditMode ?<span className='card-text>' id='readOnlyTransaction'>
-
-              </span> : null }
-            </CardBody>
+              {!isEditMode ?
+                <TransactionDetailReadOnly item={item} />: null}
+              {isEditMode ?
+              <TransactionDetailForm item={item} />: null}
+          </CardBody>
           </Card>
             
         </Modal.Body>
