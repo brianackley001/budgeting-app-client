@@ -25,7 +25,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Category:</Col>
-                  <Col xs={6} className="text-lowercase">{item.category}</Col>
+                  <Col xs={6} >{item.category}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Notes:</Col>
@@ -33,7 +33,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Tags:</Col>
-                  <Col xs={6} className="text-lowercase">{item.tags}</Col>
+                  <Col xs={6}>{item.tags}</Col>
                 </Row>
           </span>
     </>

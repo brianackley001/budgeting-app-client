@@ -7,11 +7,11 @@ import {Button, Card, Col, Row, Form, CardBody } from "react-bootstrap";
  */
 
 export default function TransactionDetailForm(props){ 
-  const { item } = props;
+  const { item, setter } = props;
   const [formTranDescription, setFormTranDescription] = useState(item.merchant);
   const [formTranCategory, setFormTranCategory] = useState(item.category);
   const [formTranNotes, setFormTranNotes] = useState(item.notes);
-  const [formTranLabels, setFormTranLabels] = useState(item.labels);
+  const [formTranTags, setFormTranTags] = useState(item.labels);
   const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
   const [validated, setValidated] = useState(false);
 
@@ -19,22 +19,36 @@ export default function TransactionDetailForm(props){
     switch(e.target.id) {
       case "formGridTransactionDate":
         setFormTranDateValue(e.target.value);
+        updateParent();
         break;
       case "formGridCategory":
         setFormTranCategory(e.target.value);
+        updateParent();
         break;
       case "formGridNotes":
         setFormTranNotes(e.target.value);
+        updateParent();
         break;
       case "formGridLabels":
-        setFormTranLabels(e.target.value);
+        setFormTranTags(e.target.value);
+        updateParent();
         break;
       default:
           setFormTranDescription(e.target.value);
+          updateParent();
     }
   }
   // function handleCheckboxChange(e) {
   // }
+  const updateParent = () => {
+    setter({
+      merchant: formTranDescription,
+      category: formTranCategory,
+      notes: formTranNotes,
+      labels: formTranTags,
+      date: formTranDateValue,
+    });
+  }
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -91,12 +105,12 @@ export default function TransactionDetailForm(props){
                   type="text" 
                   name="categoryName" 
                   data-testid="transaction-detail-form-transaction-category" 
-                  defaultValue={item.category} 
+                  //defaultValue={item.category} 
                   aria-label="Disabled input example"
                   disabled
                   readOnly
                   title={item.category} 
-                  className="text-lowercase"
+                  value={item.category} 
                   style={{fontSize: ".75em"}} />
               </Form.Group>
       </Col>
@@ -135,7 +149,7 @@ export default function TransactionDetailForm(props){
                   aria-label="With textarea" 
                   name="categoryName" 
                   data-testid="transaction-detail-form-transaction-labels"
-                  defaultValue={formTranLabels} 
+                  defaultValue={formTranTags} 
                   style={{fontSize: ".75em"}} />
               </Form.Group>
       </Col>

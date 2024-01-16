@@ -19,13 +19,16 @@ export const Transactions = () => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   };
   const formatCategory = (category) => {  
-    return category.split("_").join(" ");
+    var words = category.split("_");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+  }
+    return words.join(" ");
   }
 
 
   return (
     <>
-      {/* <div className="d-flex justify-content-around"> */}
         <Row>
           <Col xs={1}/>
           <Col xs={10}>
