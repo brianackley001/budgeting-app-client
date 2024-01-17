@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { Accordion, Form } from "react-bootstrap";
+import {Button, Col, Row, Accordion, Form } from "react-bootstrap";
 import { AccountListItemType } from "../../types/accountListItem.ts";
 
 /**

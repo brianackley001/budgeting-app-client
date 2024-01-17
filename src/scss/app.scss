@@ -158,3 +158,15 @@ body {
 .headerBottmMargin {
   margin-bottom: 20px;
 }
+.transactionGridLineItem {
+  padding: 5px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: small;
+}
+.transactionModalSummary {
+  font-size: small;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #9ae7a5;
+  cursor: pointer;
+}

@@ -1,0 +1,181 @@
+[
+  {
+    "accountId": "jZ50y5mvLQC7DQ4ZpPy0TgzBBJv31DIeEnvL3",
+    "institutionId": "ins_127991",
+    "institutionName": "Wells Fargo",
+    "itemId": "b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz",
+    "balances": {
+      "available": 29580.53,
+      "current": 26448.18,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "3544",
+    "name": "EVERYDAY CHECKING ...3544",
+    "subtype": "checking",
+    "type": "depository",
+    "dateCreated": "Thu, 04 Jan 2024 05:29:05 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:14 GMT"
+  },
+  {
+    "accountId": "rO1Kg1exZYuqDYpZnQb4uJmdd38XVBUVoLrve",
+    "institutionId": "ins_127991",
+    "institutionName": "Wells Fargo",
+    "itemId": "b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz",
+    "balances": {
+      "available": 23305,
+      "current": 1437.28,
+      "iso_currency_code": "USD",
+      "limit": 25000,
+      "unofficial_currency_code": null
+    },
+    "mask": "5838",
+    "name": "WELLS FARGO ACTIVE CASH VISA® CARD ...5838",
+    "officialName": "WELLS FARGO ACTIVE CASH VISA® CARD ...5838",
+    "subtype": "credit card",
+    "type": "credit",
+    "dateCreated": "Thu, 04 Jan 2024 05:29:05 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:14 GMT"
+  },
+  {
+    "accountId": "4qV7bVyjzkSjzpPxvb5OcA6VV5XLj4hRaoDX7",
+    "institutionId": "ins_127991",
+    "institutionName": "Wells Fargo",
+    "itemId": "b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz",
+    "balances": {
+      "available": null,
+      "current": 0,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "6696",
+    "name": "MORTGAGE ...6696",
+    "officialName": "MORTGAGE ...6696",
+    "subtype": "mortgage",
+    "type": "loan",
+    "dateCreated": "Thu, 04 Jan 2024 05:29:05 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:14 GMT"
+  },
+  {
+    "accountId": "P61aKZ6ReATrJN53By1bhLNDMrq3v5COJX9yK",
+    "institutionId": "ins_115585",
+    "institutionName": "Boeing Employees Credit Union (BECU) - Personal Online Banking",
+    "itemId": "P61aKZ6ReATrJN53By1bhLKvk0LLk9UmgdEVB",
+    "balances": {
+      "available": 1893.48,
+      "current": 1893.48,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "3246",
+    "name": "Member Advantage Savings",
+    "officialName": null,
+    "subtype": "savings",
+    "type": "depository",
+    "dateCreated": "Thu, 04 Jan 2024 06:33:04 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:15 GMT"
+  },
+  {
+    "accountId": "1yvmnzyJ8aUV7Oqn1N4jueLV9jZJABfYA3PVE",
+    "institutionId": "ins_115585",
+    "institutionName": "Boeing Employees Credit Union (BECU) - Personal Online Banking",
+    "itemId": "P61aKZ6ReATrJN53By1bhLKvk0LLk9UmgdEVB",
+    "balances": {
+      "available": 282.11,
+      "current": 282.11,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "3254",
+    "name": "Member Advantage Checking",
+    "officialName": null,
+    "subtype": "checking",
+    "type": "depository",
+    "dateCreated": "Thu, 04 Jan 2024 06:33:04 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:15 GMT"
+  },
+  {
+    "accountId": "D9A4xQ9Rewt1V9ekD3jnIekMVLJ6jrfXgJ5Ng",
+    "institutionId": "ins_115585",
+    "institutionName": "Boeing Employees Credit Union (BECU) - Personal Online Banking",
+    "itemId": "P61aKZ6ReATrJN53By1bhLKvk0LLk9UmgdEVB",
+    "balances": {
+      "available": 289.19,
+      "current": 289.19,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "4884",
+    "name": "Checking",
+    "officialName": null,
+    "subtype": "checking",
+    "type": "depository",
+    "dateCreated": "Thu, 04 Jan 2024 06:33:04 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:15 GMT"
+  },
+  {
+    "accountId": "qQJgrwQp53iqJrn4K0BZf9b73BzOgpI1nedjA",
+    "institutionId": "ins_115585",
+    "institutionName": "Boeing Employees Credit Union (BECU) - Personal Online Banking",
+    "itemId": "P61aKZ6ReATrJN53By1bhLKvk0LLk9UmgdEVB",
+    "balances": {
+      "available": 18755,
+      "current": 44.87,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "9385",
+    "name": "Visa Credit Card",
+    "officialName": null,
+    "subtype": "credit card",
+    "type": "credit",
+    "dateCreated": "Thu, 04 Jan 2024 06:33:04 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:15 GMT"
+  },
+  {
+    "accountId": "6M8LJdN1LmUPymgynANbU7EPDbwpK5twDrbVN",
+    "institutionId": "ins_115616",
+    "institutionName": "Vanguard",
+    "itemId": "VkdrE1vNr9H9R3gRLVqBc40rOeoMk8FrDMyoM",
+    "balances": {
+      "available": null,
+      "current": 139711.41,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "4033",
+    "name": "**4033",
+    "officialName": "PARTICIPANT",
+    "subtype": "401k",
+    "type": "investment",
+    "dateCreated": "Wed, 10 Jan 2024 05:43:17 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:14 GMT"
+  },
+  {
+    "accountId": "w4ZgMN9zgOugjbAjrLmku1mbLgzjDNTKxb8eR",
+    "institutionId": "ins_115616",
+    "institutionName": "Vanguard",
+    "itemId": "VkdrE1vNr9H9R3gRLVqBc40rOeoMk8FrDMyoM",
+    "balances": {
+      "available": null,
+      "current": 1309594.65,
+      "iso_currency_code": "USD",
+      "limit": null,
+      "unofficial_currency_code": null
+    },
+    "mask": "4930",
+    "name": "****4930",
+    "officialName": "JOINT_TENANTS_WROS",
+    "subtype": "brokerage",
+    "type": "investment",
+    "dateCreated": "Wed, 10 Jan 2024 05:43:17 GMT",
+    "dateUpdated": "Fri, 12 Jan 2024 15:04:14 GMT"
+  }
+]

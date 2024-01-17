@@ -1,25 +1,35 @@
-import { axiosInstance as api } from "../utils/axiosInstance";
+import { axiosInstance} from "../utils/axiosInstance";
 import React from 'react';
 //import { toast } from 'react-toastify';
 import { PlaidLinkOnSuccessMetadata } from 'react-plaid-link';
 import { useAppSelector } from "../hooks/storeHooks";
 import { selectAccessToken, selectUid } from "../store/msalSlice";
 
-export default () => {
-  const accessToken = useAppSelector(selectAccessToken);
-    // get link_token from your server when component mounts
-    React.useEffect(() => {//
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-        method: 'POST'
-      };
-      api.options
-      
-    }, []);
+
+const accessToken = useAppSelector(selectAccessToken);
+const config = {
+  headers: {
+    'Content-type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`,
+  },
+  method: 'POST'
 };
+axiosInstance.options = config as any;
+    // get link_token from your server when component mounts
+    // React.useEffect(() => {//
+    //   const config = {
+    //     headers: {
+    //       'Content-type': 'application/json',
+    //       'Authorization': `Bearer ${accessToken}`,
+    //     },
+    //     method: 'POST'
+    //   };
+    //   api.options
+      
+    // }, []);
+const api = axiosInstance;
+export default api;
+
 
 const getLoginUser = (userId: string) =>
   api.post("/sessions", { userId });
@@ -69,6 +79,10 @@ export const getTransactionsByItem = (itemId: number) =>
   api.get(`/items/${itemId}/transactions`);
 export const getTransactionsByUser = (userId: number) =>
   api.get(`/users/${userId}/transactions`);
+export const upsertTransaction = (transaction: any) =>
+    api.post(`/transaction/${transaction.transactionId}`, {
+      transaction
+    });
 
 // institutions
 export const getInstitutionById = (instId: string) =>
