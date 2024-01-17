@@ -55,6 +55,13 @@
         "_self": "dbs/mVQIAA==/colls/mVQIAITdOL4=/docs/mVQIAITdOL4pAgAAAAAAAA==/",
         "_etag": "\"00000000-0000-0000-4568-9b5e39f001da\"",
         "_attachments": "attachments/",
+        "userDescription": "Fred Meyer (TEST 2)",
+        "userNotes": "A sample test description for notes data",
+        "tags": [
+            "Test2",
+            "NeedsVerification",
+            "Reimbursment"
+        ],
         "_ts": 1705071854
     },
     {

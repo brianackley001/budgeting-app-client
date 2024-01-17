@@ -1,5 +1,5 @@
 
-import{ Row, Col} from "react-bootstrap";
+import{ Badge , Row, Col} from "react-bootstrap";
 
 /**
  * Renders information about the transaction list item
@@ -33,7 +33,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Tags:</Col>
-                  <Col xs={6}>{item.tags}</Col>
+                  <Col xs={6}>{item.tags.map((tag, index) => (<Badge pill bg="secondary" key={index}>{tag}</Badge>))}</Col>
                 </Row>
           </span>
     </>

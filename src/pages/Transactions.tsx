@@ -50,6 +50,11 @@ export const Transactions = () => {
                     amount={formatAmount(item.amount)}
                     category={formatCategory(item.personalFinanceCategory.detailed)}
                     bankAccountName={item.accountName}
+                    accountId={item.accountId}
+                    transactionId={item.id}
+                    userNotes={item.userNotes === null ? "" : item.userNotes}
+                    tags={item.tags === null ? [] : item.tags}
+                    userDescription={item.userDescription === null ? "" : item.userDescription}
                     className="list-group-transaction-hover"
                   />
                 ))}
@@ -58,7 +63,6 @@ export const Transactions = () => {
           </Col>
           <Col xs={1}/>
         </Row>
-      {/* </div> */}
     </>
   );
 };
