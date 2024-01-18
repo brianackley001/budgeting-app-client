@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import {TransactionListItem} from "../components/transactions/TransactionListItem";
 import tData from '../__tests__/stubs/transactions.json'
 import uaData from '../__tests__/stubs/userAccounts.json'
+import SortableHeader from "../components/transactions/SortableHeader";
 
 
 export const Transactions = () => {
@@ -30,22 +31,22 @@ export const Transactions = () => {
   return (
     <>
         <Row>
-          <Col xs={1}/>
-          <Col xs={10}>
-            <Table  hover responsive id="transactions-table">
+          <Col xs={12}>
+            <Table  hover responsive id="transactions-table" className="transactionTableContainer">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Merchant</th>
-                  <th>Amount</th>
-                  <th>Category</th>
+                  <th>Date <SortableHeader sortBy={"date"}></SortableHeader></th>
+                  <th>Merchant <SortableHeader sortBy={"merchant"}></SortableHeader></th>
+                  <th>Amount <SortableHeader sortBy={"amount"}></SortableHeader></th>
+                  <th>Category <SortableHeader sortBy={"category"}></SortableHeader></th>
                 </tr>
               </thead>
               <tbody>
                 {tData.map((item) => (
                   <TransactionListItem
                     key={item.id}
-                    merchant={item.name}
+                    merchant={item.merchantName}
+                    name={item.name}
                     date={formatDate(item.date)}
                     amount={formatAmount(item.amount)}
                     category={formatCategory(item.personalFinanceCategory.detailed)}
@@ -61,7 +62,6 @@ export const Transactions = () => {
               </tbody>
             </Table>
           </Col>
-          <Col xs={1}/>
         </Row>
     </>
   );

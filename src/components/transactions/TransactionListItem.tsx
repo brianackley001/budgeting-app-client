@@ -8,6 +8,7 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { axiosInstance} from "../../utils/axiosInstance";
 import {setHeaderText,setMessageText,setShowAlert,setVariantStyle} from "../../store/alertSlice";
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly"
+import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
 
 /**
  * Renders read-only view and an update form for a selected transaction list item
@@ -135,11 +136,12 @@ export const TransactionListItem = (item) =>{
     dispatch(setShowAlert(true));
     dispatch(setVariantStyle("danger"));
   }
+
   return (
     <>
     <tr onClick={handleShowDetail}>
       <td className="transactionGridLineItem">{item.date}</td>
-      <td className="transactionGridLineItem">{item.merchant}</td>
+      <td className="transactionGridLineItem">{formatMerchantDisplayName(item.merchant,item.name)}</td>
       <td className="transactionGridLineItem">{item.amount}</td>
       <td className="transactionGridLineItem">{item.category}</td>
     </tr>
@@ -169,7 +171,7 @@ export const TransactionListItem = (item) =>{
               {isEditMode ?
               <span className="card-text" id="transactionDetailEditFormTransaction" data-testid="transaction-detail=read-only-container">
               <Row className="mb-3 transactionModalSummary">
-                <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{item.merchant}</b>" on <b>{item.date}</b></Col>
+                <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchant,item.name)}</b>" on <b>{item.date}</b></Col>
               </Row>
               <Row className="mb-3">
                 <Col xs={2}>

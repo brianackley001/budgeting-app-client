@@ -1,5 +1,6 @@
-
+import React from "react";
 import{ Badge , Row, Col} from "react-bootstrap";
+import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
 
 /**
  * Renders information about the transaction list item
@@ -17,7 +18,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Description:</Col>
-                  <Col xs={6}>{item.merchant}</Col>
+                  <Col xs={6}>{formatMerchantDisplayName(item.merchant,item.name)}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Amount:</Col>
@@ -33,7 +34,10 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Tags:</Col>
-                  <Col xs={6}>{item.tags.map((tag, index) => (<Badge pill bg="secondary" key={index}>{tag}</Badge>))}</Col>
+                  <Col xs={6}>{item.tags && item.tags !== undefined ? 
+                    item.tags.map((tag, index) => (<Badge pill bg="secondary" key={index}>{tag}</Badge>)): 
+                    null}
+                  </Col>
                 </Row>
           </span>
     </>

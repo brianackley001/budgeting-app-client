@@ -166,6 +166,14 @@ body {
 .transactionModalSummary {
   font-size: small;
 }
+.transactionTableContainer {
+
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 98%;
+  height: 100%;
+}
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #9ae7a5;
   cursor: pointer;
