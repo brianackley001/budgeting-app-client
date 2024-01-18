@@ -1,21 +1,27 @@
-import { Card, Row, Col } from "react-bootstrap";
+import React , { useState } from 'react';
+import { Card, Col, Pagination, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import {TransactionListItem} from "../components/transactions/TransactionListItem";
+import {TransactionListItem} from "@components/transactions/TransactionListItem";
+import { selectTransactionPagination } from "@store/transactionSlice";
+import { useAppSelector} from "@hooks/storeHooks";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import tData from '../__tests__/stubs/transactions.json'
 import uaData from '../__tests__/stubs/userAccounts.json'
-import SortableHeader from "../components/transactions/SortableHeader";
+import SortableHeader from "@components/transactions/SortableHeader";
+import TransactionPagination from "@components/transactions/TransactionPagination";
+import PageSizeComponent from '@/components/transactions/PageSizeComponent';
 
 
-export const Transactions = () => {
+export const  Transactions = () =>{
+  useAcquireAccessToken();
+  const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
+
   let dataSet = tData.map((item) => {
     let accountName = uaData.find((ua) => ua.accountId === item.accountId)?.name;
     item.accountName = accountName;
     return item;
   });
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-us', {  year:"numeric", month:"short", day:"numeric"})
-  };
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   };
@@ -25,7 +31,10 @@ export const Transactions = () => {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
   }
     return words.join(" ");
-  }
+  };
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-us', {  year:"numeric", month:"short", day:"numeric"})
+  };
 
 
   return (
@@ -63,6 +72,8 @@ export const Transactions = () => {
             </Table>
           </Col>
         </Row>
+        <TransactionPagination collectionTotal={100} itemsPerPage={10} currentPage={1}></TransactionPagination>
+        <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
     </>
   );
 };

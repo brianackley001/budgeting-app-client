@@ -22,7 +22,7 @@ const accountListItem: AccountListItemType = {
 };
 
 beforeEach(() => {
-  let item = render(<AccountListItem {...accountListItem} />);
+  let item = render(<AccountListItem item={undefined} {...accountListItem} />);
 });
 afterEach(() => {
   vi.restoreAllMocks()

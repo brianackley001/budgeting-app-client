@@ -8,8 +8,13 @@
     /* Paths */
     "paths": {
       "@/*": ["src/*"],
+      "@config/*": ["src/config/*"],
       "@components/*": ["src/components/*"],
-      "@stores/*": ["src/stores/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@store/*": ["src/store/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"]
     },
 
     "skipLibCheck": true,

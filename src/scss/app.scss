@@ -167,12 +167,18 @@ body {
   font-size: small;
 }
 .transactionTableContainer {
-
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  width: 98%;
+  width: 97%;
   height: 100%;
+}
+.transactionPaginationContainer {
+  margin-top: 75px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 80%;
 }
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #9ae7a5;
