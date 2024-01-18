@@ -40,9 +40,9 @@ export default function  SortableHeader(props){
 
   return (
     <>
-        {sortDirection === "" ? <FontAwesomeIcon size="sm" icon={faSort} onClick={() => handleSort("")}  />: null}
-        {sortDirection === "asc" ? <FontAwesomeIcon size="sm" icon={faSortUp} onClick={() => handleSort("asc")} /> : null}
-        {sortDirection === "desc" ? <FontAwesomeIcon size="sm" icon={faSortDown} onClick={() => handleSort("desc")} /> : null}
+        {sortDirection === "" ? <FontAwesomeIcon size="sm" icon={faSort} style={{color: "#9997a1",}} onClick={() => handleSort("")}  />: null}
+        {sortDirection === "asc" ? <FontAwesomeIcon size="sm" icon={faSortUp} style={{color: "#9997a1",}} onClick={() => handleSort("asc")} /> : null}
+        {sortDirection === "desc" ? <FontAwesomeIcon size="sm" icon={faSortDown} style={{color: "#9997a1",}} onClick={() => handleSort("desc")} /> : null}
     </>
   );
 }
