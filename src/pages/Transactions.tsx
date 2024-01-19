@@ -72,7 +72,7 @@ export const  Transactions = () =>{
             </Table>
           </Col>
         </Row>
-        <TransactionPagination collectionTotal={100} itemsPerPage={10} currentPage={1}></TransactionPagination>
+        <TransactionPagination collectionTotal={107} itemsPerPage={paginationConfig.pageSize} currentPage={1}></TransactionPagination>
         <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
     </>
   );
