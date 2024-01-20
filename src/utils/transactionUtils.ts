@@ -12,14 +12,69 @@ export const formatMerchantDisplayName = (merchantName, itemName) => {
   return displayValue;
 };
 
-export const nextPageClickHandler = (page, setPage, totalPage) => {
-  if (page < totalPage) {
-    setPage(page + 1);
+export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, prev: boolean, next: boolean) => {
+  // Presuming 5 actionable page number link-set as maximum pagination buttons
+  let paginationLinkSet: number[] = [];
+
+  //TotalPages value is <= than setCount (5), e.g. 2,3,4,5 (presuming hidden pagination control with only a single page of results)
+  if(totalPageCount <= setCount) {
+    for(let i = 1; i <= totalPageCount; i++) {
+      paginationLinkSet.push(i);
+    }
+    return paginationLinkSet;
   }
+
+  // First Page Button is clicked => return 1 through setCount pages
+  if(clickedPage === 1) {
+    for(let i = 1; i <= setCount; i++) {
+      paginationLinkSet.push(i);
+    }
+    return paginationLinkSet;
+  }
+
+  // LastPage button is clicked (> 5 pages)
+  if(clickedPage === totalPageCount) {
+    for(let i = totalPageCount - setCount + 1; i <= totalPageCount; i++) {
+      paginationLinkSet.push(i);
+    }
+    return paginationLinkSet;
+  }
+
+  // Clicking the "prev" button
+  if (prev) {
+    // PREV click lands in the initial setCount range (e.g. 1-5): 
+    if(currentPage - 1 <= setCount) {
+      for(let i = 1; i <= setCount; i++) {
+        paginationLinkSet.push(i);
+      }
+      return paginationLinkSet;
+    }
+    else{
+      let startIndex = currentPage - 3;
+      for(let i = startIndex; i < startIndex + setCount; i++) {
+        paginationLinkSet.push(i);
+      }
+      return paginationLinkSet;
+    }
+  }
+
+  // Clicking the "next" button
+  if (next) { 
+    // Next click lands in the last setCount range before the last page:
+    if(currentPage >= totalPageCount - setCount) {
+      for(let i = (totalPageCount - setCount) + 1; i <= totalPageCount; i++) {
+        paginationLinkSet.push(i);
+      }
+      return paginationLinkSet;
+    }
+    else{
+      let startIndex = currentPage - 1;
+      for(let i = startIndex; i < (startIndex + setCount); i++) {
+        paginationLinkSet.push(i);
+      }
+      return paginationLinkSet;
+    }
+  }
+  return paginationLinkSet;
 };
 
-export const previousPageClickHandler = (page, setPage) => {
-  if (page > 1) {
-    setPage(page - 1);
-  }
-};

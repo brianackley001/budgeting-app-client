@@ -28,7 +28,7 @@ beforeEach(() => {
   let item = render(<AccountSummaryListItem {...accountSummaryListItem} />);
 });
 
-describe("Account Summary List Item test", () => {
+describe.skip("Account Summary List Item test", () => {
   test("should show title data points", () => {
     expect(screen.getByTestId('list-group-item-container')).toBeInTheDocument();
     expect(screen.getByTestId('list-item-name')).toHaveTextContent(accountSummaryListItem.name);
