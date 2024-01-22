@@ -7,6 +7,7 @@ import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import SortableHeader from "@components/transactions/SortableHeader";
 import TransactionPagination from "@components/transactions/TransactionPagination";
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
+import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
 
 
 export const  Transactions = () =>{
@@ -74,9 +75,10 @@ export const  Transactions = () =>{
           <Col xs={6}>
         <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
         </Col>
-        <Col xs={6}>
+        <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={paginationConfig.pageSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
+        {/* <Col xs={6}>
           <i>Showing {startRecord}-{endRecord} of {totalItems}</i>
-        </Col>
+        </Col> */}
         </Row>
     </>
   );
