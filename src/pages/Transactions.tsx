@@ -76,9 +76,6 @@ export const  Transactions = () =>{
         <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
         </Col>
         <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={paginationConfig.pageSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
-        {/* <Col xs={6}>
-          <i>Showing {startRecord}-{endRecord} of {totalItems}</i>
-        </Col> */}
         </Row>
     </>
   );
