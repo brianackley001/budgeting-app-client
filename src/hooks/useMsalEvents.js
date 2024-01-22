@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { selectAccessToken,setAccessToken, setUid } from "../store/msalSlice";
+import { selectTransactionPagination } from "../store/transactionSlice"; 
 // import plaidSlice, { selectInstitutions } from "../store/plaidSlice";
 import { setName, setUserId, setUserName } from "../store/userSlice";
 // import { selectName, selectUserName, selectUserId } from "../store/userSlice";
@@ -16,6 +17,7 @@ const useMsalEvents = () => {
 
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
+  const paginationSelector = useAppSelector(selectTransactionPagination);
   // const institutions = useAppSelector(state => state.plaidSlice.institutions);
   //const accessToken = useAppSelector(selectAccessToken);
   const useSyncUser = loginSync;
@@ -48,7 +50,7 @@ const useMsalEvents = () => {
               if(response.data && response.data.id.length > 0){
                 sessionStorage.setItem("DB_USER_EXISTS", true);
                 sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-                await useSyncUser(response.data, dispatch, accessTokenValue);
+                await useSyncUser(response.data, dispatch, paginationSelector, accessTokenValue);
               }
               else{
                 // NEW User, save to DB:

@@ -2,11 +2,8 @@ import React , { useState } from 'react';
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import {TransactionListItem} from "@components/transactions/TransactionListItem";
-import { selectTransactionPagination } from "@store/transactionSlice";
 import { useAppSelector} from "@hooks/storeHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import tData from '../__tests__/stubs/transactions.json'
-import uaData from '../__tests__/stubs/userAccounts.json'
 import SortableHeader from "@components/transactions/SortableHeader";
 import TransactionPagination from "@components/transactions/TransactionPagination";
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
@@ -15,12 +12,10 @@ import PageSizeComponent from '@/components/transactions/PageSizeComponent';
 export const  Transactions = () =>{
   useAcquireAccessToken();
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
-
-  let dataSet = tData.map((item) => {
-    let accountName = uaData.find((ua) => ua.accountId === item.accountId)?.name;
-    item.accountName = accountName;
-    return item;
-  });
+  const startRecord = ((paginationConfig.pageNumber) - 1 * (paginationConfig.pageSize)) + 1;
+  const endRecord = startRecord + paginationConfig.pageSize;
+  const totalItems = paginationConfig.total;
+  const transactionItems = useAppSelector(state => state.transactionSlice.pagedTransactions.pages[paginationConfig.pageNumber - 1]);
 
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -51,10 +46,10 @@ export const  Transactions = () =>{
                 </tr>
               </thead>
               <tbody>
-                {tData.map((item) => (
+                {transactionItems.items.map((item) => (
                   <TransactionListItem
                     key={item.id}
-                    merchant={item.merchantName}
+                    merchantName={item.merchantName}
                     name={item.name}
                     date={formatDate(item.date)}
                     amount={formatAmount(item.amount)}
@@ -73,17 +68,16 @@ export const  Transactions = () =>{
           </Col>
         </Row>
         <Row className='topMarginSpacer transactionTableContainer'>
-          <TransactionPagination collectionTotal={121} itemsPerPage={paginationConfig.pageSize} currentPage={1}></TransactionPagination>
+          <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={paginationConfig.pageSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
         </Row>
         <Row  className='topMarginSpacer transactionTableContainer'>
           <Col xs={6}>
         <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
         </Col>
         <Col xs={6}>
-          <i>Showing 1-10 of 121</i>
+          <i>Showing {startRecord}-{endRecord} of {totalItems}</i>
         </Col>
         </Row>
-        {/* <TransactionPagination collectionTotal={187} itemsPerPage={paginationConfig.pageSize} currentPage={11}></TransactionPagination> */}
     </>
   );
 };

@@ -18,7 +18,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Description:</Col>
-                  <Col xs={6}>{formatMerchantDisplayName(item.merchant,item.name)}</Col>
+                  <Col xs={6}>{formatMerchantDisplayName(item.merchantName,item.name)}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Amount:</Col>

@@ -1,6 +1,7 @@
 import { loginSync } from '../../utils/loginStateUtils.ts';
 import { useAppSelector, useAppDispatch } from "../../hooks/storeHooks";
-import { selectAccessToken, selectUid} from "../../store/msalSlice";
+import { selectAccessToken, selectUid} from "@store/msalSlice";
+import { selectTransactionPagination } from "@store/transactionSlice"; 
 import { axiosInstance } from "../../utils/axiosInstance";
 import Button from "react-bootstrap/Button";
 
@@ -8,6 +9,7 @@ export const StoreRefreshButton = () => {
   const dispatch = useAppDispatch();
   const useSyncUser = loginSync;
   const accessToken = useAppSelector(selectAccessToken);
+  const paginationSelector = useAppSelector(selectTransactionPagination);
   const userId = useAppSelector(selectUid);
 
   const config = {
@@ -24,7 +26,7 @@ export const StoreRefreshButton = () => {
     .then(async (response) => {
       //User Exists:
       if(response.data && response.data.id.length > 0){
-        await useSyncUser(response.data, dispatch, accessToken);
+        await useSyncUser(response.data, dispatch, paginationSelector, accessToken);
       }
     })
     .catch((error) => {

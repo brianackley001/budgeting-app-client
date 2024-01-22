@@ -1,21 +1,16 @@
-import React , { useState } from 'react';
+import React from 'react';
 import { Pagination} from "react-bootstrap";
-import {paginationLinkSet} from "@utils/transactionUtils"
+import { paginationLinkSet } from "@utils/transactionUtils"
 
 
 export default function TrasactionPagination(props) {
   const {collectionTotal, itemsPerPage, currentPage} = props;
   const pages = Math.ceil(collectionTotal / itemsPerPage);
   const maxInteractivePages = 5;
-  //let interactivePages = [2,3,4,5,6];
-  //let interactivePages = [7,8,9,10,11];
-  let interactivePages = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, -1, false, false); //[3,4,5,6,7];
+  let interactivePages = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, -1, false, false); 
   const showLeftEllipsis = interactivePages[0] > 2;
   const showRightEllipsis = interactivePages[interactivePages.length-1] <= pages - 1;
   const showLast = !interactivePages.includes(pages);
-  // const [paginationTotalItems, setPaginationTotalItems] = useState(100);
-  // const [paginationItemsPerPage, setPaginationItemsPerPage] = useState(10);
-  // const [paginationCurrentPage, setPaginationCurrentPage] = useState(1);
 
   const handlePrevClick = () => {
     console.log('prev');

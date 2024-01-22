@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 interface transactionItem {
+  [x: string]: any
   id: string,
   transactionId: string,
   institutionId: string,
@@ -26,6 +27,17 @@ interface transactionItem {
   userNotes: string,
   tags: [],
   accountName: string,
+  accountId: string,
+}
+
+interface PagedTransactions{
+  pages: [
+    {
+      pageNumber: number,
+      items: transactionItem[],
+      transactionPagination: TransactionPagination
+    }
+  ]
 }
 
 interface TransactionPagination {
@@ -45,27 +57,48 @@ interface TransactionPagination {
 
 // Define a type for the slice state
 interface TransactionState {
-  transactions: transactionItem[],
+  pagedTransactions: PagedTransactions,
   transactionPagination: TransactionPagination
 }
 // Define the initial state using that type
 const initialState: TransactionState = {
-  transactions: [],
+  pagedTransactions: {
+    pages: [
+      {
+        pageNumber: 1,
+        items: [],
+        transactionPagination: {
+          accountIds: "",
+          total: 0,
+          limit: 0,
+          offset: 0,
+          pageSize: 10,
+          pageNumber: 1,
+          sortBy: "date",
+          sortDirection: "desc",
+          startDate: "",
+          endDate: "",
+          tagSearchValue: "",
+          userNotesSearchValue: "",
+        },
+      },
+    ],
+  },
   transactionPagination: {
-    accountIds: '',
+    accountIds: "",
     total: 0,
     limit: 0,
     offset: 0,
     pageSize: 10,
     pageNumber: 1,
-    sortBy: 'date',
-    sortDirection: 'desc',
-    startDate: '',
-    endDate: '',
-    tagSearchValue: '',
-    userNotesSearchValue: ''
-  }
-}
+    sortBy: "date",
+    sortDirection: "desc",
+    startDate: "",
+    endDate: "",
+    tagSearchValue: "",
+    userNotesSearchValue: "",
+  },
+};
 
 export const transactionSlice = createSlice({
   name: 'transactions',
@@ -73,8 +106,16 @@ export const transactionSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setTransactions: (state, action) => {
-      state.transactions = action.payload
+    setPagedTransactions: (state, action) => {
+      state.transactionPagination.total = action.payload.total;
+      // Look for cahched page:
+      let targetPage = state.pagedTransactions.pages.find((page) => page.pageNumber === action.payload.pageNumber);
+      if(targetPage && targetPage.transactionPagination && targetPage.transactionPagination === state.transactionPagination){
+        targetPage.items = action.payload.items;
+      }
+      else{
+        state.pagedTransactions.pages[state.transactionPagination.pageNumber - 1] = {items: action.payload.items, pageNumber: state.transactionPagination.pageNumber, transactionPagination: state.transactionPagination};
+      }
     },
     setPaginationSortBy: (state, action) => {
       state.transactionPagination.sortBy = action.payload
@@ -120,10 +161,10 @@ export const {
   setPaginationTagSearchValue,
   setPaginationTotal,
   setPaginationUserNotesSearchValue,
-  setTransactions } = transactionSlice.actions
+  setPagedTransactions } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectTransactions = (state: RootState) => state.transactionSlice.transactions
+export const selectPagedTransactions = (state: RootState) => state.transactionSlice.pagedTransactions
 export const selectTransactionPagination = (state: RootState) => state.transactionSlice.transactionPagination
 
 export default transactionSlice.reducer 

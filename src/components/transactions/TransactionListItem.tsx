@@ -30,8 +30,8 @@ export const TransactionListItem = (item) =>{
     "" : 
     item.tags.join(", "));
   const [formTranDescription, setFormTranDescription] = useState(
-    item.userDescription === null ||  item.userDescription === undefined ? 
-    item.merchant : 
+    item.userDescription === null ||  item.userDescription === undefined || item.userDescription === "" ? 
+    formatMerchantDisplayName(item.merchantName, item.name) : 
     item.userDescription);
   const [formTranNotes, setFormTranNotes] = useState(item.userNotes === null ||  item.userNotes === undefined ? 
     "" :  
@@ -171,7 +171,7 @@ export const TransactionListItem = (item) =>{
               {isEditMode ?
               <span className="card-text" id="transactionDetailEditFormTransaction" data-testid="transaction-detail=read-only-container">
               <Row className="mb-3 transactionModalSummary">
-                <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchant,item.name)}</b>" on <b>{item.date}</b></Col>
+                <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchantName,item.name)}</b>" on <b>{item.date}</b></Col>
               </Row>
               <Row className="mb-3">
                 <Col xs={2}>
@@ -192,9 +192,8 @@ export const TransactionListItem = (item) =>{
                 <Col xs={5}>
                   <Form.Group as={Col} controlId="formGridTransactionDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control required 
-                      placeholder="Description" 
-                      type="text" 
+                    <Form.Control 
+                      required
                       name="transactionDescription" 
                       data-testid="transaction-detail-form-transaction-name" 
                       value={formTranDescription} 
@@ -252,7 +251,8 @@ export const TransactionListItem = (item) =>{
                             aria-label="With textarea"
                             name="categoryName"
                             data-testid="transaction-detail-form-transaction-notes"
-                            defaultValue={formTranNotes}
+                            value={formTranNotes}
+                            onChange={handleTextAreaChange}
                             style={{ fontSize: ".75em" }} />
                         </Form.Group>
                       </Col>
@@ -263,7 +263,8 @@ export const TransactionListItem = (item) =>{
                             aria-label="With textarea" 
                             name="tagName" 
                             data-testid="transaction-detail-form-transaction-tags"
-                            defaultValue={formTranTags} 
+                            value={formTranTags} 
+                            onChange={handleTextAreaChange}
                             style={{fontSize: ".75em"}} />
                         </Form.Group>
                 </Col>
