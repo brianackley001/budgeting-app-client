@@ -72,8 +72,18 @@ export const  Transactions = () =>{
             </Table>
           </Col>
         </Row>
-        <TransactionPagination collectionTotal={107} itemsPerPage={paginationConfig.pageSize} currentPage={1}></TransactionPagination>
+        <Row className='topMarginSpacer transactionTableContainer'>
+          <TransactionPagination collectionTotal={121} itemsPerPage={paginationConfig.pageSize} currentPage={1}></TransactionPagination>
+        </Row>
+        <Row  className='topMarginSpacer transactionTableContainer'>
+          <Col xs={6}>
         <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
+        </Col>
+        <Col xs={6}>
+          <i>Showing 1-10 of 121</i>
+        </Col>
+        </Row>
+        {/* <TransactionPagination collectionTotal={187} itemsPerPage={paginationConfig.pageSize} currentPage={11}></TransactionPagination> */}
     </>
   );
 };

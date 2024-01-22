@@ -12,7 +12,7 @@ export const formatMerchantDisplayName = (merchantName, itemName) => {
   return displayValue;
 };
 
-export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, prev: boolean, next: boolean) => {
+export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, currentRangeIndex: number, prev: boolean, next: boolean) => {
   // Presuming 5 actionable page number link-set as maximum pagination buttons
   let paginationLinkSet: number[] = [];
 
@@ -75,6 +75,20 @@ export const paginationLinkSet = (currentPage: number, clickedPage: number, setC
       return paginationLinkSet;
     }
   }
+  // Providing a set of page numbers based on the current page number and range
+  if(clickedPage > 0  && currentPage > setCount && currentPage < (totalPageCount - setCount)) {
+    let startIndex = currentRangeIndex > 1 ? clickedPage - currentRangeIndex: clickedPage;
+    for(let i = startIndex; i <= setCount; i++) {
+      paginationLinkSet.push(i);
+    }
+    return paginationLinkSet;
+  }
+  else{
+    for(let i = currentPage; i < currentPage + setCount; i++) {
+      paginationLinkSet.push(i);
+    }
+  }
+
   return paginationLinkSet;
 };
 
