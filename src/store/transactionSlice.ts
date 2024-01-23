@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 interface transactionItem {
-  [x: string]: any
   id: string,
   transactionId: string,
   institutionId: string,
@@ -43,8 +42,6 @@ interface PagedTransactions{
 interface TransactionPagination {
   accountIds: string,
   total: number,
-  limit: number,
-  offset: number,
   pageSize: number,
   pageNumber: number,
   sortBy: string,
@@ -52,6 +49,7 @@ interface TransactionPagination {
   startDate: string,
   endDate: string,
   tagSearchValue: string,
+  userId: string,
   userNotesSearchValue: string
 }
 
@@ -70,8 +68,6 @@ const initialState: TransactionState = {
         transactionPagination: {
           accountIds: "",
           total: 0,
-          limit: 0,
-          offset: 0,
           pageSize: 10,
           pageNumber: 1,
           sortBy: "date",
@@ -79,6 +75,7 @@ const initialState: TransactionState = {
           startDate: "",
           endDate: "",
           tagSearchValue: "",
+          userId: "",
           userNotesSearchValue: "",
         },
       },
@@ -87,8 +84,6 @@ const initialState: TransactionState = {
   transactionPagination: {
     accountIds: "",
     total: 0,
-    limit: 0,
-    offset: 0,
     pageSize: 10,
     pageNumber: 1,
     sortBy: "date",
@@ -96,6 +91,7 @@ const initialState: TransactionState = {
     startDate: "",
     endDate: "",
     tagSearchValue: "",
+    userId: "",
     userNotesSearchValue: "",
   },
 };
@@ -117,32 +113,35 @@ export const transactionSlice = createSlice({
         state.pagedTransactions.pages[state.transactionPagination.pageNumber - 1] = {items: action.payload.items, pageNumber: state.transactionPagination.pageNumber, transactionPagination: state.transactionPagination};
       }
     },
+    setPaginationAccountIds: (state, action) => {
+      state.transactionPagination.accountIds = action.payload
+    },
+    setPaginationEndDate: (state, action) => {
+      state.transactionPagination.endDate = action.payload
+    },
+    setPaginationPageNumber: (state, action) => {
+      state.transactionPagination.pageNumber = action.payload
+    },
+    setPaginationPageSize: (state, action) => {
+      state.transactionPagination.pageSize = action.payload
+    },
     setPaginationSortBy: (state, action) => {
       state.transactionPagination.sortBy = action.payload
     },
     setPaginationSortDirection: (state, action) => {
       state.transactionPagination.sortDirection = action.payload
     },
-    setPaginationAccountIds: (state, action) => {
-      state.transactionPagination.accountIds = action.payload
+    setPaginationStartDate: (state, action) => {
+      state.transactionPagination.startDate = action.payload
+    },
+    setPaginationTagSearchValue: (state, action) => {
+      state.transactionPagination.tagSearchValue = action.payload
     },
     setPaginationTotal: (state, action) => {
       state.transactionPagination.total = action.payload
     },
-    setPaginationPageSize: (state, action) => {
-      state.transactionPagination.pageSize = action.payload
-    },
-    setPaginationPageNumber: (state, action) => {
-      state.transactionPagination.pageNumber = action.payload
-    },
-    setPaginationStartDate: (state, action) => {
-      state.transactionPagination.startDate = action.payload
-    },
-    setPaginationEndDate: (state, action) => {
-      state.transactionPagination.endDate = action.payload
-    },
-    setPaginationTagSearchValue: (state, action) => {
-      state.transactionPagination.tagSearchValue = action.payload
+    setPaginationUserId: (state, action) => {
+      state.transactionPagination.userId = action.payload
     },
     setPaginationUserNotesSearchValue: (state, action) => {
       state.transactionPagination.userNotesSearchValue = action.payload
@@ -151,6 +150,7 @@ export const transactionSlice = createSlice({
 })
 
 export const { 
+  setPagedTransactions,
   setPaginationAccountIds,
   setPaginationEndDate,
   setPaginationPageNumber, 
@@ -160,8 +160,8 @@ export const {
   setPaginationStartDate,
   setPaginationTagSearchValue,
   setPaginationTotal,
-  setPaginationUserNotesSearchValue,
-  setPagedTransactions } = transactionSlice.actions
+  setPaginationUserId,
+  setPaginationUserNotesSearchValue } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectPagedTransactions = (state: RootState) => state.transactionSlice.pagedTransactions

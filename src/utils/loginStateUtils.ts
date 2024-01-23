@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
 import { setAccounts } from "../store/accountSlice";
 // import { selectAccessToken} from "../store/msalSlice";
-import { setInstitutions, setLinkedItems, selectInstitutions } from "../store/plaidSlice";
-import { selectTransactionPagination, setPagedTransactions } from "../store/transactionSlice"; 
+import { setLinkedItems } from "../store/plaidSlice";
+import { setPagedTransactions, setPaginationAccountIds, setPaginationUserId } from "../store/transactionSlice"; 
 import { setName, setUserId, setUserName } from "../store/userSlice";
 import { axiosInstance } from "../utils/axiosInstance";
 import {
@@ -122,16 +122,19 @@ const setTransactionState = async (accessTokenValue, dispatch, paginationSelecto
       // }
       // GET page one of PagedTransactions from DB...
       const linkedItemAccountIds = user.accounts.map((item) => item.accountId).join(",");
+      dispatch(setPaginationAccountIds(linkedItemAccountIds));
+      dispatch(setPaginationUserId(user.id)); 
+
       const postBody = {
-        "userId": user.id,
         "accountIds": linkedItemAccountIds,
-        "pageSize": paginationSelector.pageSize,
+        "endDate": paginationSelector.endDate,
         "pageNumber": paginationSelector.pageNumber,
+        "pageSize": paginationSelector.pageSize,
         "sortBy": paginationSelector.sortBy,
         "sortDirection": paginationSelector.sortDirection,
         "startDate": paginationSelector.startDate,
-        "endDate": paginationSelector.endDate,
         "tagSearchValue": paginationSelector.tagSearchValue,
+        "userId": user.id,
         "userNotesSearchValue": paginationSelector.userNotesSearchValue
     }
       const response = await axiosInstance.post("/transactions", postBody, config);

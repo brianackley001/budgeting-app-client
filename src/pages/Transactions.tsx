@@ -1,51 +1,45 @@
-import React , { useState } from 'react';
-import { Card, Col, Pagination, Row } from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import {TransactionListItem} from "@components/transactions/TransactionListItem";
-import { useAppSelector} from "@hooks/storeHooks";
+import React, { useState } from 'react';
+import { Col, Row, Table } from "react-bootstrap";
+
+import { useAppSelector } from "@hooks/storeHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import SortableHeader from "@components/transactions/SortableHeader";
+
+import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
+import { TransactionListItem } from "@components/transactions/TransactionListItem";
 import TransactionPagination from "@components/transactions/TransactionPagination";
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
 import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
+import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
 
 
-export const  Transactions = () =>{
+export const Transactions = () => {
   useAcquireAccessToken();
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
-  const startRecord = ((paginationConfig.pageNumber) - 1 * (paginationConfig.pageSize)) + 1;
-  const endRecord = startRecord + paginationConfig.pageSize;
-  const totalItems = paginationConfig.total;
   const transactionItems = useAppSelector(state => state.transactionSlice.pagedTransactions.pages[paginationConfig.pageNumber - 1]);
 
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   };
-  const formatCategory = (category) => {  
+  const formatCategory = (category) => {
     var words = category.split("_");
     for (let i = 0; i < words.length; i++) {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
-  }
+    }
     return words.join(" ");
   };
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-us', {  year:"numeric", month:"short", day:"numeric"})
+    return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
   };
 
 
   return (
     <>
-        <Row>
-          <Col xs={12}>
-            <Table  hover responsive id="transactions-table" className="transactionTableContainer">
-              <thead>
-                <tr>
-                  <th>Date <SortableHeader sortBy={"date"}></SortableHeader></th>
-                  <th>Merchant <SortableHeader sortBy={"merchant"}></SortableHeader></th>
-                  <th>Amount <SortableHeader sortBy={"amount"}></SortableHeader></th>
-                  <th>Category <SortableHeader sortBy={"category"}></SortableHeader></th>
-                </tr>
-              </thead>
+      <Row>
+        <Col xs={12}>
+          <Table hover responsive id="transactions-table" className="transactionTableContainer">
+            <SortableHeaderRow></SortableHeaderRow>
+
+            {transactionItems.items && transactionItems.items.length > 0 &&
               <tbody>
                 {transactionItems.items.map((item) => (
                   <TransactionListItem
@@ -64,19 +58,22 @@ export const  Transactions = () =>{
                     className="list-group-transaction-hover"
                   />
                 ))}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-        <Row className='topMarginSpacer transactionTableContainer'>
-          <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={paginationConfig.pageSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
-        </Row>
-        <Row  className='topMarginSpacer transactionTableContainer'>
-          <Col xs={6}>
-        <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
+              </tbody>}
+          </Table>
+        </Col>
+      </Row>
+      {transactionItems && transactionItems.items.length > 0 && <Row className='topMarginSpacer transactionTableContainer'>
+        <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={paginationConfig.pageSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
+      </Row>}
+
+      {!transactionItems || transactionItems.items.length < 1 && <EmptyTransactionResult></EmptyTransactionResult>}
+
+      <Row className='topMarginSpacer transactionTableContainer'>
+        <Col xs={6}>
+          <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
         </Col>
         <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={paginationConfig.pageSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
-        </Row>
+      </Row>
     </>
   );
 };
