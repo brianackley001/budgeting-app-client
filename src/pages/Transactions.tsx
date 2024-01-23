@@ -39,7 +39,7 @@ export const Transactions = () => {
           <Table hover responsive id="transactions-table" className="transactionTableContainer">
             <SortableHeaderRow></SortableHeaderRow>
 
-            {transactionItems.items && transactionItems.items.length > 0 &&
+            {transactionItems !== undefined && transactionItems.items && transactionItems.items.length > 0 &&
               <tbody>
                 {transactionItems.items.map((item) => (
                   <TransactionListItem

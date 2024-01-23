@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import isEqual from "lodash.isequal"
 import type { RootState } from './store'
 interface transactionItem {
   id: string,
@@ -105,12 +106,14 @@ export const transactionSlice = createSlice({
     setPagedTransactions: (state, action) => {
       state.transactionPagination.total = action.payload.total;
       // Look for cahched page:
-      let targetPage = state.pagedTransactions.pages.find((page) => page.pageNumber === action.payload.pageNumber);
-      if(targetPage && targetPage.transactionPagination && targetPage.transactionPagination === state.transactionPagination){
+      let targetPage = state.pagedTransactions.pages.find(page => page.pageNumber === state.transactionPagination.pageNumber);
+      if(targetPage && targetPage.transactionPagination && isEqual(targetPage.transactionPagination, state.transactionPagination)){
         targetPage.items = action.payload.items;
       }
       else{
-        state.pagedTransactions.pages[state.transactionPagination.pageNumber - 1] = {items: action.payload.items, pageNumber: state.transactionPagination.pageNumber, transactionPagination: state.transactionPagination};
+        const deleteFirstItem = state.pagedTransactions.pages[0].pageNumber === 1 && state.pagedTransactions.pages[0].items.length === 0 ? 1 : 0;
+        state.pagedTransactions.pages.splice(state.transactionPagination.pageNumber - 1, deleteFirstItem, 
+          {items: action.payload.items, pageNumber: state.transactionPagination.pageNumber, transactionPagination: state.transactionPagination});
       }
     },
     setPaginationAccountIds: (state, action) => {
