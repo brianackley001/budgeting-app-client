@@ -12,13 +12,13 @@ export const formatMerchantDisplayName = (merchantName, itemName) => {
   return displayValue;
 };
 
-export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, currentRangeIndex: number, prev: boolean, next: boolean) => {
+export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, prev: boolean, next: boolean) => {
   // Presuming 5 actionable page number link-set as maximum pagination buttons
   let paginationLinkSet: number[] = [];
 
-  //TotalPages value is <= than setCount (5), e.g. 2,3,4,5 (presuming hidden pagination control with only a single page of results)
+  //TotalPages value is <= than setCount (5), e.g. 2,3,4,5 (UI presumes hidden/non-visible pagination control with only a single page of results)
   if(totalPageCount <= setCount) {
-    for(let i = 1; i <= setCount; i++) {
+    for(let i = 1; i <= totalPageCount; i++) {
       paginationLinkSet.push(i);
     }
     return paginationLinkSet;

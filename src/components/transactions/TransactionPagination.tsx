@@ -7,45 +7,46 @@ import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
 
 
 export default function TrasactionPagination(props) {
-  const {collectionTotal, itemsPerPage, currentPage} = props;
+  const { collectionTotal, itemsPerPage, currentPage } = props;
+
   const { axBe } = useAxiosInterceptor();
   const dispatch = useAppDispatch();
+
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   const activePageItems = useAppSelector(state => state.transactionSlice.activePageItems);
 
   const pages = Math.ceil(collectionTotal / itemsPerPage);
-  const maxInteractivePages = 5;
-  const interactivePages = activePageItems.length > 0 ? 
-    activePageItems : 
-    paginationLinkSet(currentPage, -1, maxInteractivePages, pages, -1, false, false); 
+  const maxInteractivePages = Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE);
+  const interactivePages = activePageItems.length > 0 ?
+    activePageItems :
+    paginationLinkSet(currentPage, -1, maxInteractivePages, pages, false, false);
 
   const showLeftEllipsis = interactivePages[0] > 2;
-  const showRightEllipsis = interactivePages[interactivePages.length-1] <= pages - 1;
+  const showRightEllipsis = interactivePages[interactivePages.length - 1] <= pages - 1;
   const showLast = !interactivePages.includes(pages) && paginationConfig.pageNumber != pages;
 
-  const handlePrevClick = () => {
-    const activePageSet = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, -1, true, false);
-    handleStateChange(paginationConfig.pageNumber - 1, activePageSet);
-  };
-  const handleNextClick = () => {
-    const activePageSet = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, -1, false, true);
-    handleStateChange(paginationConfig.pageNumber + 1, activePageSet);
-  };
-
-  const handlePageClick = (page, pageIndex) => {
-    const activePageSet = paginationLinkSet(currentPage, page, maxInteractivePages, pages, pageIndex, false, false);
-    handleStateChange(page, activePageSet);
-  };
-
-  const handleFirstClick = () => {
-    const activePageSet = paginationLinkSet(currentPage, 1, maxInteractivePages, pages, -1, false, false);
-    handleStateChange(1, activePageSet);
-  };
+  // Methods:
   const handleLastClick = () => {
-    const activePageSet = paginationLinkSet(currentPage, pages, maxInteractivePages, pages, -1, false, false);
+    const activePageSet = paginationLinkSet(currentPage, pages, maxInteractivePages, pages, false, false);
     handleStateChange(pages, activePageSet);
   };
 
+  const handleNextClick = () => {
+    const activePageSet = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, false, true);
+    handleStateChange(paginationConfig.pageNumber + 1, activePageSet);
+  };
+
+  const handlePageClick = (page) => {
+    const activePageSet = paginationLinkSet(currentPage, page, maxInteractivePages, pages, false, false);
+    handleStateChange(page, activePageSet);
+  };
+
+  const handlePrevClick = () => {
+    const activePageSet = paginationLinkSet(currentPage, -1, maxInteractivePages, pages, true, false);
+    handleStateChange(paginationConfig.pageNumber - 1, activePageSet);
+  };
+
+  //TO-DO: Refactor to pass paginationConfig as payload once Thunk is in place for axios API call (as needed), axios post will not be called here
   const handleStateChange = (pageNumber, activePageSet) => {
     dispatch(setPaginationPageNumber(pageNumber));
     dispatch(setActivePageItems(activePageSet));
@@ -71,19 +72,18 @@ export default function TrasactionPagination(props) {
       {pages && pages > 1 &&
         <Pagination className='transactionPaginationContainer' data-testid="transaction-pagination-container">
           
-          {currentPage <=interactivePages.length &&  <Pagination.Prev onClick={handlePrevClick} key={-1} />}
+          {currentPage <=interactivePages.length &&  <Pagination.Prev onClick={handlePrevClick} key={-5} />}
 
-          <Pagination.Item active={currentPage === 1} onClick={() => handlePageClick(1, 1)}>{1}</Pagination.Item>
+          <Pagination.Item active={currentPage === 1} onClick={() => handlePageClick(1)}>{1}</Pagination.Item>
           {showLeftEllipsis && <Pagination.Ellipsis className='cursorNotAllowed' disabled />}
-          {currentPage <=interactivePages.length && showLeftEllipsis && <Pagination.Prev onClick={handlePrevClick} key={-1} />}
+          {currentPage <=interactivePages.length && showLeftEllipsis && <Pagination.Prev onClick={handlePrevClick} key={-4} />}
           {currentPage > maxInteractivePages && <Pagination.Prev onClick={handlePrevClick} key={-1} />}
 
           {interactivePages.map((page, index) => (
-            page > 1 && page != pages && <Pagination.Item active={currentPage == page} onClick={() => handlePageClick(page, index)} key={index}>{page}</Pagination.Item> ||
-            !showLast && <Pagination.Item active={currentPage == pages} onClick={() => handlePageClick(page, index)} key={index}>{page}</Pagination.Item>
+            page > 1 && page != pages && <Pagination.Item active={currentPage == page} onClick={() => handlePageClick(page)} key={index}>{page}</Pagination.Item> ||
+            !showLast && <Pagination.Item active={currentPage == pages} onClick={() => handlePageClick(page)} key={index}>{page}</Pagination.Item>
           ))}
           
-
 
           {currentPage != pages  && <Pagination.Next onClick={handleNextClick} key={-2} />}
           {showRightEllipsis && <Pagination.Ellipsis className='cursorNotAllowed' disabled />}
