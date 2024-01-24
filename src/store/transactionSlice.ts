@@ -56,11 +56,13 @@ interface TransactionPagination {
 
 // Define a type for the slice state
 interface TransactionState {
+  activePageItems: number[],
   pagedTransactions: PagedTransactions,
   transactionPagination: TransactionPagination
 }
 // Define the initial state using that type
 const initialState: TransactionState = {
+  activePageItems: [],
   pagedTransactions: {
     pages: [
       {
@@ -103,9 +105,12 @@ export const transactionSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
+    setActivePageItems: (state, action) => {
+      state.activePageItems = action.payload
+    },
     setPagedTransactions: (state, action) => {
       state.transactionPagination.total = action.payload.total;
-      // Look for cahched page:
+      // Look for cached page:  (TO-DO:  THUNKs for cache pull / API retrieval)
       let targetPage = state.pagedTransactions.pages.find(page => page.pageNumber === state.transactionPagination.pageNumber);
       if(targetPage && targetPage.transactionPagination && isEqual(targetPage.transactionPagination, state.transactionPagination)){
         targetPage.items = action.payload.items;
@@ -153,6 +158,7 @@ export const transactionSlice = createSlice({
 })
 
 export const { 
+  setActivePageItems,
   setPagedTransactions,
   setPaginationAccountIds,
   setPaginationEndDate,
@@ -167,6 +173,7 @@ export const {
   setPaginationUserNotesSearchValue } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectActivePageItems = (state: RootState) => state.transactionSlice.activePageItems
 export const selectPagedTransactions = (state: RootState) => state.transactionSlice.pagedTransactions
 export const selectTransactionPagination = (state: RootState) => state.transactionSlice.transactionPagination
 

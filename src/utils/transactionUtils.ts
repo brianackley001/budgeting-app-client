@@ -18,7 +18,7 @@ export const paginationLinkSet = (currentPage: number, clickedPage: number, setC
 
   //TotalPages value is <= than setCount (5), e.g. 2,3,4,5 (presuming hidden pagination control with only a single page of results)
   if(totalPageCount <= setCount) {
-    for(let i = 1; i <= totalPageCount; i++) {
+    for(let i = 1; i <= setCount; i++) {
       paginationLinkSet.push(i);
     }
     return paginationLinkSet;
@@ -75,13 +75,25 @@ export const paginationLinkSet = (currentPage: number, clickedPage: number, setC
       return paginationLinkSet;
     }
   }
-  // Providing a set of page numbers based on the current page number and range
-  if(clickedPage > 0  && currentPage > setCount && currentPage < (totalPageCount - setCount)) {
-    let startIndex = currentRangeIndex > 1 ? clickedPage - currentRangeIndex: clickedPage;
-    for(let i = startIndex; i <= setCount; i++) {
+  // LAST setCount range of pages
+  if(clickedPage >= totalPageCount - setCount) {
+    for(let i = totalPageCount - setCount; i <= totalPageCount; i++) {
       paginationLinkSet.push(i);
     }
     return paginationLinkSet;
+  }
+  // Providing a set of page numbers based on the current page number and range
+  if(clickedPage > 0  && currentPage >= setCount && currentPage < (totalPageCount - setCount)) {
+    let startIndex = clickedPage - Math.floor(setCount / 2);
+    for(let i = startIndex; i < startIndex + setCount; i++) {
+      paginationLinkSet.push(i);
+    }
+    return paginationLinkSet;
+  }
+  else if(clickedPage > 0 && currentPage <= setCount) {
+    for(let i = 1; i <= setCount; i++) {
+      paginationLinkSet.push(i);
+    }
   }
   else{
     for(let i = currentPage; i < currentPage + setCount; i++) {

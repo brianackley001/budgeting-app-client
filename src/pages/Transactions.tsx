@@ -15,7 +15,8 @@ import EmptyTransactionResult from '@/components/transactions/EmptyTransactionRe
 export const Transactions = () => {
   useAcquireAccessToken();
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
-  const transactionItems = useAppSelector(state => state.transactionSlice.pagedTransactions.pages[paginationConfig.pageNumber - 1]);
+  const transactionItems = useAppSelector(state => 
+    state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
 
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
