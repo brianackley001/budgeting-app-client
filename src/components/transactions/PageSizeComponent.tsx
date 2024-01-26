@@ -1,9 +1,9 @@
-import React , { useEffect, useState } from 'react';
-import { Badge, Button, Col, Form, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { setPaginationPageSize } from "../../store/transactionSlice";
-import { useAppDispatch} from "../../hooks/storeHooks";
+import React , { useEffect, useState } from "react";
+import { Badge, Button, Col, Form, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCircleCheck, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { getPagedTransactions, setPaginationPageSize } from "@store/transactionSlice"; //getPagedTransactions, setActivePageItems, setPaginationPageNumber
 
 export default function PageSizeComponent(props) {
   const { pageSize } = props;
@@ -11,6 +11,7 @@ export default function PageSizeComponent(props) {
   const [showCancel, setShowCancel] = useState(true);
   const [editedSize, setEditedSize] = useState(pageSize);
   const dispatch = useAppDispatch();
+  const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   
   useEffect(() => {
     if (editedSize === pageSize) {
@@ -26,6 +27,11 @@ export default function PageSizeComponent(props) {
   const handleFormButtonClick = (action: string) => {
     if (action === "save") {
       dispatch(setPaginationPageSize(editedSize));
+      const updatedPaginationConfig = {
+        ...paginationConfig,
+        pageSize: editedSize
+      };
+      dispatch(getPagedTransactions(updatedPaginationConfig));
     }
     setShowEdit(false);
   }
@@ -39,7 +45,7 @@ export default function PageSizeComponent(props) {
       <div className="cardHeaderIconRight"  data-testid="page-size-component-parent-container">
         {!showEdit ?
           <div data-testid="page-size-component-read-only-container" onClick={() => handleToggleEditMode()}>
-            <FontAwesomeIcon icon={faPencil} className='iconStyle' color="gray" />
+            <FontAwesomeIcon icon={faPencil} className="iconStyle" color="gray" />
             <Badge pill bg="secondary" >
               {pageSize}
             </Badge> items per page
@@ -64,10 +70,10 @@ export default function PageSizeComponent(props) {
                 </Col>
                 <Col xs="auto">
                 { showCancel ? <Button onClick={() => handleFormButtonClick("cancel")} className="mb-2" size="sm">
-                    <span><FontAwesomeIcon icon={faXmark} className='iconStyle' />Cancel</span>
+                    <span><FontAwesomeIcon icon={faXmark} className="iconStyle" />Cancel</span>
                   </Button>: null}
                   {!showCancel ? <Button onClick={() => handleFormButtonClick("save")} className="mb-2" size="sm">
-                    <span><FontAwesomeIcon icon={faCircleCheck} className='iconStyle' />Save</span>
+                    <span><FontAwesomeIcon icon={faCircleCheck} className="iconStyle" />Save</span>
                   </Button> : null}
                 </Col>
               </Row>
