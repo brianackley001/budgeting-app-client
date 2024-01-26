@@ -38,7 +38,7 @@ export const Transactions = () => {
   return (
     <>
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
-      <Row>
+      {!isLoading && <Row>
         <Col xs={12}>
           <Table hover responsive id="transactions-table" className="transactionTableContainer">
             <SortableHeaderRow></SortableHeaderRow>
@@ -65,19 +65,21 @@ export const Transactions = () => {
               </tbody>}
           </Table>
         </Col>
-      </Row>
-      {transactionItems && transactionItems.items.length > 0 && <Row className='topMarginSpacer transactionTableContainer'>
+      </Row>}
+
+      {transactionItems && transactionItems.items.length > 0 && 
+      <Row className='topMarginSpacer transactionTableContainer'>
         <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={paginationConfig.pageSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
       </Row>}
 
-      {!transactionItems || transactionItems.items.length < 1 && <EmptyTransactionResult></EmptyTransactionResult>}
+      {!isLoading && (!transactionItems || transactionItems.items.length < 1) && <EmptyTransactionResult></EmptyTransactionResult>}
 
-      <Row className='topMarginSpacer transactionTableContainer'>
+      {!isLoading && <Row className='topMarginSpacer transactionTableContainer'>
         <Col xs={6}>
           <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
         </Col>
         <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={paginationConfig.pageSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
-      </Row>
+      </Row>}
     </>
   );
 };

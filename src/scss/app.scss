@@ -190,3 +190,9 @@ body {
 .topMarginSpacer {
   margin-top: 20px;
 }
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
