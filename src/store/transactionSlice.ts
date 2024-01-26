@@ -195,6 +195,19 @@ export const transactionSlice = createSlice({
     setPaginationUserNotesSearchValue: (state, action) => {
       state.transactionPagination.userNotesSearchValue = action.payload
     },
+    setUpdatedTransactionItem: (state, action) => {
+      state.pagedTransactions.pages.forEach((page, pageIndex) => {
+        let targetItemIndex = page.items.findIndex((item) => item.id === action.payload.id);
+        if(targetItemIndex > -1){
+          state.pagedTransactions.pages[pageIndex].items[targetItemIndex] = {
+            ...page.items[targetItemIndex],
+            userNotes: action.payload.notes,
+            tags: action.payload.tags,
+            userDescription: action.payload.userDescription,
+          } 
+        }
+      });
+    },
   },
 })
 
@@ -212,7 +225,8 @@ export const {
   setPaginationTagSearchValue,
   setPaginationTotal,
   setPaginationUserId,
-  setPaginationUserNotesSearchValue } = transactionSlice.actions
+  setPaginationUserNotesSearchValue,
+  setUpdatedTransactionItem } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActivePageItems = (state: RootState) => state.transactionSlice.activePageItems

@@ -1,14 +1,14 @@
-import React , { useState, useRef } from 'react';
-import { useAcquireAccessToken } from "../../hooks/useAcquireAccessToken.js";
-import { selectAccessToken } from "../../store/msalSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/storeHooks";
-import{ Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
-import axiosInstance from "../../utils/axiosInstance";
-import {setHeaderText,setMessageText,setShowAlert,setVariantStyle} from "../../store/alertSlice";
-import TransactionDetailReadOnly from "./TransactionDetailReadOnly"
-import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
+import { useState } from 'react';
+import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import { useAppDispatch } from "@hooks/storeHooks";
+import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
+import { setUpdatedTransactionItem } from "@store/transactionSlice";
+import { formatMerchantDisplayName } from "@utils/transactionUtils.ts";
+import axiosInstance from "@utils/axiosInstance";
 
 /**
  * Renders read-only view and an update form for a selected transaction list item
@@ -16,7 +16,6 @@ import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
  */
 export const TransactionListItem = (item) =>{
   useAcquireAccessToken();
-  const accessToken = useAppSelector(selectAccessToken);
   const dispatch = useAppDispatch();
 
   const [showDetail, setShowDetail] = useState(false);
@@ -56,12 +55,6 @@ export const TransactionListItem = (item) =>{
     console.log('form submitted');
 
     // API Call to update transaction
-    const config = {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    };
-
     try {
       let tags = [];
       if (event.currentTarget.elements['formGridTags'].value && event.currentTarget.elements['formGridTags'].value.length > 0) {
@@ -76,11 +69,13 @@ export const TransactionListItem = (item) =>{
           userDescription: event.currentTarget.elements['formGridTransactionDescription'].value,
           notes: event.currentTarget.elements['formGridNotes'].value,
           tags: tags,
-        },
-        config);
+        });
       //Update the specific transaction in pagedItems cache
+      dispatch(setUpdatedTransactionItem(result.data));
+
       handleToggleEditMode();
       setValidated(false);
+
       if (result.status < 400) {
         handleSaveMessageSuccess(
           `${result.data.date} ${result.data.userDescription.length > 0 ?
@@ -146,98 +141,97 @@ export const TransactionListItem = (item) =>{
       <td className="transactionGridLineItem">{item.category}</td>
     </tr>
 
-    <Modal show={showDetail} 
-      onHide={handleModalClose}
-      item={item}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered>
+      <Modal show={showDetail}
+        onHide={handleModalClose}
+        item={item}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered>
         <Form noValidate validated={validated} data-testid="accordian-form" onSubmit={handleFormSubmit}>
-        <Modal.Header closeButton>
-          <Modal.Title as="h6">Transaction Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Card>
-            <CardTitle as="h6" className='navbarStyle'> {isEditMode ? "Edit Transaction": `Account: ${item.bankAccountName}`} 
-            <span className='cardHeaderIconRight' aria-label="Edit Transaction" title="Edit Institution">
-              {!isEditMode ?   <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()}>
-              <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()}>Edit</span>
-            </Button> : null }
-            </span>
-            </CardTitle>
-            <CardBody>
-              {!isEditMode ?
-                <TransactionDetailReadOnly item={item} />: null}
-              {isEditMode ?
-              <span className="card-text" id="transactionDetailEditFormTransaction" data-testid="transaction-detail=read-only-container">
-              <Row className="mb-3 transactionModalSummary">
-                <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchantName,item.name)}</b>" on <b>{item.date}</b></Col>
-              </Row>
-              <Row className="mb-3">
-                <Col xs={2}>
-                  <Form.Group className="mb-3" controlId="formGridTransactionDate">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
-                      style={{fontSize: ".75em"}}
-                      value={formTranDateValue} 
-                      name="transactionDate"
-                      type="date" 
-                      aria-label="Disabled input example"
-                      disabled
-                      readOnly
-                      onChange={handleTextAreaChange}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xs={5}>
-                  <Form.Group as={Col} controlId="formGridTransactionDescription">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control 
-                      required
-                      name="transactionDescription" 
-                      data-testid="transaction-detail-form-transaction-name" 
-                      value={formTranDescription} 
-                      title={formTranDescription} 
-                      onChange={handleTextAreaChange}
-                      style={{fontSize: ".90em"}} />
-                    <Form.Control.Feedback data-testid="transaction-detail-form-transaction-name-is-valid" >Looks good!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid" data-testid="transaction-detail-form-transaction-name-is-invalid">
-                      Please provide a valid  description.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col xs={3}>
-                        <Form.Group as={Col} controlId="formGridCategory">
-                          <Form.Label>Category</Form.Label>
-                          <Form.Control 
-                            type="text" 
-                            name="categoryName" 
-                            data-testid="transaction-detail-form-transaction-category" 
-                            defaultValue={item.category} 
+          <Modal.Header closeButton>
+            <Modal.Title as="h6">Transaction Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Card>
+              <CardTitle as="h6" className='navbarStyle'> {isEditMode ? "Edit Transaction" : `Account: ${item.bankAccountName}`}
+                <span className='cardHeaderIconRight' aria-label="Edit Transaction" title="Edit Institution">
+                  {!isEditMode && <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()}>
+                    <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()}>Edit</span>
+                  </Button>}
+                </span>
+              </CardTitle>
+              <CardBody>
+                {!isEditMode && <TransactionDetailReadOnly item={item} />}
+                {isEditMode &&
+                  <span className="card-text" id="transactionDetailEditFormTransaction" data-testid="transaction-detail=read-only-container">
+                    <Row className="mb-3 transactionModalSummary">
+                      <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchantName, item.name)}</b>" on <b>{item.date}</b></Col>
+                    </Row>
+                    <Row className="mb-3">
+                      <Col xs={2}>
+                        <Form.Group className="mb-3" controlId="formGridTransactionDate">
+                          <Form.Label>Date</Form.Label>
+                          <Form.Control
+                            style={{ fontSize: ".75em" }}
+                            value={formTranDateValue}
+                            name="transactionDate"
+                            type="date"
                             aria-label="Disabled input example"
                             disabled
                             readOnly
-                            title={item.category} 
-                            style={{fontSize: ".75em"}} />
+                            onChange={handleTextAreaChange}
+                          />
                         </Form.Group>
-                </Col>
-                <Col xs={2}>
+                      </Col>
+                      <Col xs={5}>
+                        <Form.Group as={Col} controlId="formGridTransactionDescription">
+                          <Form.Label>Description</Form.Label>
+                          <Form.Control
+                            required
+                            name="transactionDescription"
+                            data-testid="transaction-detail-form-transaction-name"
+                            value={formTranDescription}
+                            title={formTranDescription}
+                            onChange={handleTextAreaChange}
+                            style={{ fontSize: ".90em" }} />
+                          <Form.Control.Feedback data-testid="transaction-detail-form-transaction-name-is-valid" >Looks good!</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid" data-testid="transaction-detail-form-transaction-name-is-invalid">
+                            Please provide a valid  description.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                      <Col xs={3}>
+                        <Form.Group as={Col} controlId="formGridCategory">
+                          <Form.Label>Category</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="categoryName"
+                            data-testid="transaction-detail-form-transaction-category"
+                            defaultValue={item.category}
+                            aria-label="Disabled input example"
+                            disabled
+                            readOnly
+                            title={item.category}
+                            style={{ fontSize: ".75em" }} />
+                        </Form.Group>
+                      </Col>
+                      <Col xs={2}>
                         <Form.Group as={Col} controlId="formGridAmount">
                           <Form.Label>Amount</Form.Label>
-                          <Form.Control 
-                            type="text" 
-                            name="categoryName" 
-                            data-testid="transaction-detail-form-transaction-amount" 
-                            defaultValue={item.amount} 
+                          <Form.Control
+                            type="text"
+                            name="categoryName"
+                            data-testid="transaction-detail-form-transaction-amount"
+                            defaultValue={item.amount}
                             aria-label="Disabled input example"
                             disabled
                             readOnly
                             className="text-lowercase"
-                            style={{fontSize: ".75em"}} />
+                            style={{ fontSize: ".75em" }} />
                         </Form.Group>
-                </Col>
-              </Row>
-              <Row className="mb-3">
+                      </Col>
+                    </Row>
+                    <Row className="mb-3">
                       <Col xs={6}>
                         <FormGroup controlId="formGridTransactionId">
                           <FormControl type="hidden" name="transactionId" value={item.transactionId} />
@@ -256,33 +250,31 @@ export const TransactionListItem = (item) =>{
                             style={{ fontSize: ".75em" }} />
                         </Form.Group>
                       </Col>
-                <Col xs={6}>
+                      <Col xs={6}>
                         <Form.Group as={Col} controlId="formGridTags">
                           <Form.Label>Labels (comma separated)</Form.Label>
-                          <Form.Control as="textarea"  
-                            aria-label="With textarea" 
-                            name="tagName" 
+                          <Form.Control as="textarea"
+                            aria-label="With textarea"
+                            name="tagName"
                             data-testid="transaction-detail-form-transaction-tags"
-                            value={formTranTags} 
+                            value={formTranTags}
                             onChange={handleTextAreaChange}
-                            style={{fontSize: ".75em"}} />
+                            style={{ fontSize: ".75em" }} />
                         </Form.Group>
-                </Col>
-              </Row>
-              </span> : null}
-          </CardBody>
-          </Card>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalClose}>
-            Close
-          </Button>
-          {!isEditMode ? null : 
-          <Button variant="primary" type="submit" data-testid="transaction-detail-form-submit-btn">
-            Save Changes
-          </Button>
-          }
-        </Modal.Footer>
+                      </Col>
+                    </Row>
+                  </span>}
+              </CardBody>
+            </Card>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>Close</Button>
+            {isEditMode &&
+              <Button variant="primary" type="submit" data-testid="transaction-detail-form-submit-btn">
+                Save Changes
+              </Button>
+            }
+          </Modal.Footer>
         </Form>
       </Modal>
     </> 
