@@ -10,10 +10,12 @@ import TransactionPagination from "@components/transactions/TransactionPaginatio
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
 import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
 import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
+import { LoadingMessage } from '@/components/transactions/LoadingMessage';
 
 
 export const Transactions = () => {
   useAcquireAccessToken();
+  const isLoading = useAppSelector(state => state.transactionSlice.isLoading);
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   const transactionItems = useAppSelector(state => 
     state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
@@ -35,6 +37,7 @@ export const Transactions = () => {
 
   return (
     <>
+      <LoadingMessage isLoading={isLoading}></LoadingMessage>
       <Row>
         <Col xs={12}>
           <Table hover responsive id="transactions-table" className="transactionTableContainer">

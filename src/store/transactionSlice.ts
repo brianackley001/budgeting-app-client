@@ -118,13 +118,20 @@ export function getPagedTransactions(
       !isEqual(targetPage.transactionPagination, transactionPagination)
     ) {
       console.log("No cached page found - Call the API");
+      dispatch(setIsLoading(true));
       //API Call:
-      const response = await axiosStoreProvider.post(
-        "transactions",
-        transactionPagination
-      );
+      try {
+        const response = await axiosStoreProvider.post(
+          "transactions",
+          transactionPagination
+        );
 
-      dispatch(setPagedTransactions(response.data));
+        dispatch(setPagedTransactions(response.data));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(setIsLoading(false));
+      }
     } else {
       console.log("Cached page found");
     }
@@ -138,6 +145,9 @@ export const transactionSlice = createSlice({
   reducers: {
     setActivePageItems: (state, action) => {
       state.activePageItems = action.payload
+    },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload
     },
     setPagedTransactions: (state, action) => {
       state.transactionPagination.total = action.payload.total;
@@ -190,6 +200,7 @@ export const transactionSlice = createSlice({
 
 export const { 
   setActivePageItems,
+  setIsLoading,
   setPagedTransactions,
   setPaginationAccountIds,
   setPaginationEndDate,
