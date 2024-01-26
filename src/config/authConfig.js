@@ -26,6 +26,7 @@ export const msalConfig = {
                 if (containsPii) {		
                     return;		
                 }		
+                // TO-DO: Push warnings & errors to logging mechanism, remove console.log
                 switch (level) {
                     case LogLevel.Error:
                         console.error(message);
