@@ -7,15 +7,16 @@ import SortableHeaderItem from "./SortableHeaderItem";
  * @param props
  */
 
-export default function SortableHeaderRow() {
+export default function SortableHeaderRow(props) {
+  const { currentSortBy, currentSortDirection } = props;
   return (
     <>
       <thead>
         <tr>
-          <th><SortableHeaderItem sortBy={"date"} sortLabel={"Date"}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"merchant"} sortLabel={"Merchant"}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"amount"} sortLabel={"Amount"}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"category"} sortLabel={"Category"}></SortableHeaderItem></th>
+          <th><SortableHeaderItem sortBy={"date"} sortLabel={"Date"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+          <th><SortableHeaderItem sortBy={"merchant"} sortLabel={"Merchant"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+          <th><SortableHeaderItem sortBy={"amount"} sortLabel={"Amount"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+          <th><SortableHeaderItem sortBy={"category"} sortLabel={"Category"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
         </tr>
       </thead>
     </>

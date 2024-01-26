@@ -41,7 +41,7 @@ export const Transactions = () => {
       {!isLoading && <Row>
         <Col xs={12}>
           <Table hover responsive id="transactions-table" className="transactionTableContainer">
-            <SortableHeaderRow></SortableHeaderRow>
+            <SortableHeaderRow currentSortBy={paginationConfig.sortBy} currentSortDirection={paginationConfig.sortDirection}></SortableHeaderRow>
 
             {transactionItems !== undefined && transactionItems.items && transactionItems.items.length > 0 &&
               <tbody>
