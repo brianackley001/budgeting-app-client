@@ -7,7 +7,7 @@ import { selectTransactionPagination } from "../store/transactionSlice";
 // import plaidSlice, { selectInstitutions } from "../store/plaidSlice";
 import { setName, setUserId, setUserName } from "../store/userSlice";
 // import { selectName, selectUserName, selectUserId } from "../store/userSlice";
-import { axiosInstance } from "../utils/axiosInstance";
+import axiosInstance  from "../utils/axiosInstance";
 //import {saveUser} from '../types/saveUser.ts'
 import { loginSync } from '../utils/loginStateUtils';
 
@@ -36,15 +36,9 @@ const useMsalEvents = () => {
 
         const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
-          const config = {
-            headers: {
-              Authorization: "Bearer " + event.payload.accessToken,
-            },
-          };
-
           // Get User from DB:
           axiosInstance
-            .get(`/user/${event.payload.uniqueId}`, config)
+            .get(`/user/${event.payload.uniqueId}`)
             .then(async (response) => {
               //User Exists:
               if(response.data && response.data.id.length > 0){
@@ -64,7 +58,7 @@ const useMsalEvents = () => {
                 };
     
                 axiosInstance
-                  .post(`user`, saveUserPayload, config)
+                  .post(`user`, saveUserPayload)
                   .then((response) => {
                     //console.log("New User Saved:/n" + JSON.stringify(response.data));
                     sessionStorage.removeItem("msal_LOGIN_SUCCESS");

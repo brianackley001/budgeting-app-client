@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import isEqual from "lodash.isequal";
 import type { RootState } from "./store";
-import { axiosStoreProvider } from "@utils/axiosThunkMsalProvider";
+import axiosInstance  from "@utils/axiosInstance";
 
 interface transactionItem {
   id: string,
@@ -121,7 +121,7 @@ export function getPagedTransactions(
       dispatch(setIsLoading(true));
       //API Call:
       try {
-        const response = await axiosStoreProvider.post(
+        const response = await axiosInstance.post(
           "transactions",
           transactionPagination
         );

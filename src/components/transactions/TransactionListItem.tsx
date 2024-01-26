@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/storeHooks";
 import{ Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
-import { axiosInstance} from "../../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 import {setHeaderText,setMessageText,setShowAlert,setVariantStyle} from "../../store/alertSlice";
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly"
 import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
@@ -78,7 +78,7 @@ export const TransactionListItem = (item) =>{
           tags: tags,
         },
         config);
-      //console.log(`Transaction ${item.transactionId} updated: result = ${result}`);
+      //Update the specific transaction in pagedItems cache
       handleToggleEditMode();
       setValidated(false);
       if (result.status < 400) {

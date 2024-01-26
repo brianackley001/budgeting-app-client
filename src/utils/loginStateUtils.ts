@@ -5,7 +5,7 @@ import { setAccounts } from "../store/accountSlice";
 import { setLinkedItems } from "../store/plaidSlice";
 import { setPagedTransactions, setPaginationAccountIds, setPaginationUserId } from "../store/transactionSlice"; 
 import { setName, setUserId, setUserName } from "../store/userSlice";
-import { axiosInstance } from "../utils/axiosInstance";
+import  axiosInstance from "../utils/axiosInstance";
 import {
   setHeaderText,
   setMessageText,

@@ -7,7 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from "../hooks/storeHooks";
 import { selectAccessToken, selectUid } from "../store/msalSlice";
 import { setAccounts } from "../store/accountSlice";
-import { axiosInstance } from '../utils/axiosInstance';
+import  axiosInstance  from '../utils/axiosInstance';
 // import { useAxiosInterceptor } from '@/hooks/useAxiosInterceptor';
 
 
