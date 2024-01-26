@@ -7,13 +7,27 @@ export const SignInButton = () => {
 
   const handleLogin = (loginType) => {
     if (loginType === "popup") {
-      instance.loginPopup(loginRequest).catch((e) => {
-        console.log(e);
-      });
+      instance
+        .loginPopup(loginRequest)
+        .then((loginResponse) => {
+          instance.setActiveAccount(loginResponse.account);
+          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
+          // console.log(loginResponse);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     } else if (loginType === "redirect") {
-      instance.loginRedirect(loginRequest).catch((e) => {
-        console.log(e);
-      });
+      instance
+        .loginRedirect(loginRequest)
+        .then((loginResponse) => {
+          instance.setActiveAccount(loginResponse.account);
+          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
+          // console.log(loginResponse);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   };
   return (

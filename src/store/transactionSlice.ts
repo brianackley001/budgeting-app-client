@@ -1,6 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
-import isEqual from "lodash.isequal"
-import type { RootState } from './store'
+import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
+import isEqual from "lodash.isequal";
+import type { RootState } from "./store";
+//import { useAxiosInterceptor } from "@/hooks/axiosInterceptor";
+import {axiosInstance} from "@utils/axiosInstance";
+
 interface transactionItem {
   id: string,
   transactionId: string,
@@ -57,12 +60,14 @@ interface TransactionPagination {
 // Define a type for the slice state
 interface TransactionState {
   activePageItems: number[],
+  isLoading: boolean,
   pagedTransactions: PagedTransactions,
   transactionPagination: TransactionPagination
 }
 // Define the initial state using that type
 const initialState: TransactionState = {
   activePageItems: [],
+  isLoading: false,
   pagedTransactions: {
     pages: [
       {
@@ -99,12 +104,39 @@ const initialState: TransactionState = {
   },
 };
 
+// Thunk function
+export function getPagedTransactions(
+  transactionPagination: TransactionPagination
+) {
+  return async function (dispatch, getState) {
+    let targetPage = getState().transactionSlice.pagedTransactions.pages.find(
+      (page) => page.pageNumber === transactionPagination.pageNumber
+    );
+    if (
+      !targetPage || targetPage == undefined ||
+      !targetPage.transactionPagination || targetPage.transactionPagination == undefined ||
+      !targetPage.items || targetPage.items == undefined || targetPage.items.length === 0 ||
+      !isEqual(targetPage.transactionPagination, transactionPagination)
+    ) {
+      console.log("No cached page found - Call the API");
+      //API Call:
+      const response = await axiosInstance.post(
+        "transactions",
+        transactionPagination
+      );
+
+      dispatch(setPagedTransactions(response.data));
+    } else {
+      console.log("Cached page found");
+    }
+  };
+}
+
 export const transactionSlice = createSlice({
-  name: 'transactions',
+  name: "transactions",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     setActivePageItems: (state, action) => {
       state.activePageItems = action.payload
     },

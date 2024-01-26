@@ -1,15 +1,12 @@
 import React from 'react';
-import { Pagination} from "react-bootstrap";
-import { paginationLinkSet } from "@utils/transactionUtils"
-import { useAxiosInterceptor } from "@/hooks/axiosInterceptor";
-import { setActivePageItems, setPagedTransactions, setPaginationPageNumber } from "../../store/transactionSlice";
+import { Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { getPagedTransactions, setActivePageItems, setPaginationPageNumber } from "@store/transactionSlice";
+import { paginationLinkSet } from "@utils/transactionUtils"
 
 
 export default function TrasactionPagination(props) {
   const { collectionTotal, itemsPerPage, currentPage } = props;
-
-  const { axBe } = useAxiosInterceptor();
   const dispatch = useAppDispatch();
 
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
@@ -25,7 +22,7 @@ export default function TrasactionPagination(props) {
   const showRightEllipsis = interactivePages[interactivePages.length - 1] <= pages - 1;
   const showLast = !interactivePages.includes(pages) && paginationConfig.pageNumber != pages;
 
-  // Methods:
+  // Pagination Button Methods:
   const handleLastClick = () => {
     const activePageSet = paginationLinkSet(currentPage, pages, maxInteractivePages, pages, false, false);
     handleStateChange(pages, activePageSet);
@@ -46,7 +43,6 @@ export default function TrasactionPagination(props) {
     handleStateChange(paginationConfig.pageNumber - 1, activePageSet);
   };
 
-  //TO-DO: Refactor to pass paginationConfig as payload once Thunk is in place for axios API call (as needed), axios post will not be called here
   const handleStateChange = (pageNumber, activePageSet) => {
     dispatch(setPaginationPageNumber(pageNumber));
     dispatch(setActivePageItems(activePageSet));
@@ -55,15 +51,7 @@ export default function TrasactionPagination(props) {
       ...paginationConfig,
       pageNumber: pageNumber
     };
-
-    axBe.post("/transactions", updatedPaginationConfig)
-      .then((response) => {
-        dispatch(setPagedTransactions(response.data));
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.log(error);
-      });
+    dispatch(getPagedTransactions(updatedPaginationConfig));
   };
 
   return (
