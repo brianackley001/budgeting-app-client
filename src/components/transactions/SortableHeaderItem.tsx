@@ -2,10 +2,8 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
-import { selectAccessToken } from "../../store/msalSlice";
-import { selectTransactionPagination, setPagedTransactions, setPaginationSortBy, setPaginationSortDirection } from "../../store/transactionSlice";
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
-import { useAxiosInterceptor } from "@/hooks/axiosInterceptor";
+import { getPagedTransactions, selectTransactionPagination, setPaginationSortBy, setPaginationSortDirection } from "@store/transactionSlice";
 
 
 /**
@@ -15,10 +13,8 @@ import { useAxiosInterceptor } from "@/hooks/axiosInterceptor";
 
 export default function  SortableHeaderItem(props){
   const{ sortBy, sortLabel} = props;
-  const { axBe } = useAxiosInterceptor();
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
 
-  const accessToken = useAppSelector(selectAccessToken);
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(selectTransactionPagination);
 
@@ -53,15 +49,7 @@ export default function  SortableHeaderItem(props){
       sortBy: sortByValue,
       sortDirection: updatedSortDirection,
     };
-    
-    axBe.post("/transactions", updatedPaginationConfig).
-      then((response) => {
-        dispatch(setPagedTransactions(response.data));
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.log(error);
-      });
+    dispatch(getPagedTransactions(updatedPaginationConfig));
   }
 
   return (
