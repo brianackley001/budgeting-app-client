@@ -9,7 +9,6 @@ import { useAcquireAccessToken } from "./useAcquireAccessToken";
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
 
 export const useAxiosInterceptor = () => {
-  //let accessToken = ''; 
   const { instance, accounts } = useMsal();
   const account = useAccount(accounts[0] || {});
   const [accessToken, setAccessToken] = useState("");

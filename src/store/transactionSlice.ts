@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import isEqual from "lodash.isequal";
 import type { RootState } from "./store";
-//import { useAxiosInterceptor } from "@/hooks/axiosInterceptor";
-import {axiosInstance} from "@utils/axiosInstance";
+import { axiosStoreProvider } from "@utils/axiosThunkMsalProvider";
 
 interface transactionItem {
   id: string,
@@ -120,7 +119,7 @@ export function getPagedTransactions(
     ) {
       console.log("No cached page found - Call the API");
       //API Call:
-      const response = await axiosInstance.post(
+      const response = await axiosStoreProvider.post(
         "transactions",
         transactionPagination
       );

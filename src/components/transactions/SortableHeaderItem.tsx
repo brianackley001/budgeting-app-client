@@ -22,11 +22,11 @@ export default function  SortableHeaderItem(props){
     useState(pagination.sortDirection) :
     useState("");
 
-  // useEffect(() => {
-  //   dispatch(setPaginationSortDirection(sortDirection));
-  //   dispatch(setPaginationSortBy(sortBy));
+  useEffect(() => {
+    dispatch(setPaginationSortDirection(sortDirection));
+    dispatch(setPaginationSortBy(sortBy));
 
-  // }, [sortDirection]);
+  }, [sortDirection]);
 
   const handleSort = (direction, sortByValue) => {
     dispatch(setPaginationSortDirection(direction));
