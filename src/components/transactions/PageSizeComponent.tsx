@@ -26,7 +26,7 @@ export default function PageSizeComponent(props) {
   }
   const handleFormButtonClick = (action: string) => {
     if (action === "save") {
-      dispatch(setPaginationPageSize(editedSize));
+      dispatch(setPaginationPageSize(Number(editedSize)));
       const updatedPaginationConfig = {
         ...paginationConfig,
         pageSize: editedSize
@@ -43,15 +43,15 @@ export default function PageSizeComponent(props) {
   return (
     <>
       <div className="cardHeaderIconRight"  data-testid="page-size-component-parent-container">
-        {!showEdit ?
+        {!showEdit &&
           <div data-testid="page-size-component-read-only-container" onClick={() => handleToggleEditMode()}>
             <FontAwesomeIcon icon={faPencil} className="iconStyle" color="gray" />
             <Badge pill bg="secondary" >
               {pageSize}
             </Badge> items per page
-          </div> : null}
+          </div>}
 
-        {showEdit ?
+        {showEdit &&
           <div data-testid="page-size-component-editable-container">
             <Form>
               <Row className="align-items-center">
@@ -69,16 +69,16 @@ export default function PageSizeComponent(props) {
                   />
                 </Col>
                 <Col xs="auto">
-                { showCancel ? <Button onClick={() => handleFormButtonClick("cancel")} className="mb-2" size="sm">
+                { showCancel && <Button onClick={() => handleFormButtonClick("cancel")} className="mb-2" size="sm">
                     <span><FontAwesomeIcon icon={faXmark} className="iconStyle" />Cancel</span>
-                  </Button>: null}
-                  {!showCancel ? <Button onClick={() => handleFormButtonClick("save")} className="mb-2" size="sm">
+                  </Button>}
+                  {!showCancel && <Button onClick={() => handleFormButtonClick("save")} className="mb-2" size="sm">
                     <span><FontAwesomeIcon icon={faCircleCheck} className="iconStyle" />Save</span>
-                  </Button> : null}
+                  </Button>}
                 </Col>
               </Row>
             </Form>
-          </div> : null}
+          </div>}
       </div>
     </>
   );
