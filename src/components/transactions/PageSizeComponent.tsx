@@ -3,7 +3,8 @@ import { Badge, Button, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleCheck, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
-import { getPagedTransactions, setPaginationPageSize } from "@store/transactionSlice"; //getPagedTransactions, setActivePageItems, setPaginationPageNumber
+import { getPagedTransactions, setPaginationPageSize } from "@store/transactionSlice";
+import { setTransactionItemsPerPage}  from "@store/userSlice"
 
 export default function PageSizeComponent(props) {
   const { pageSize } = props;
@@ -12,6 +13,7 @@ export default function PageSizeComponent(props) {
   const [editedSize, setEditedSize] = useState(pageSize);
   const dispatch = useAppDispatch();
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
+  const userId = useAppSelector(state => state.userSlice.userId);
   
   useEffect(() => {
     if (editedSize === pageSize) {
@@ -31,6 +33,7 @@ export default function PageSizeComponent(props) {
         ...paginationConfig,
         pageSize: editedSize
       };
+      dispatch(setTransactionItemsPerPage({id: userId, transactionItemsPerPage: Number(editedSize)}))
       dispatch(getPagedTransactions(updatedPaginationConfig));
     }
     setShowEdit(false);

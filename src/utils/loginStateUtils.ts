@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
-import { setAccounts } from "../store/accountSlice";
-// import { selectAccessToken} from "../store/msalSlice";
-import { setLinkedItems } from "../store/plaidSlice";
-import { setPagedTransactions, setPaginationAccountIds, setPaginationUserId } from "../store/transactionSlice"; 
-import { setName, setUserId, setUserName } from "../store/userSlice";
-import  axiosInstance from "../utils/axiosInstance";
+//import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { setAccounts } from "@store/accountSlice";
+import { setLinkedItems } from "@store/plaidSlice";
+import { setPaginationPageSize, setPagedTransactions, setPaginationAccountIds, setPaginationUserId } from "@store/transactionSlice"; 
+import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
+import  axiosInstance from "@utils/axiosInstance";
 import {
   setHeaderText,
   setMessageText,
@@ -72,6 +71,8 @@ const setUserState = async (dispatch, user) => {
     dispatch(setUserId(user.id));
     dispatch(setUserName(user.userName));
     dispatch(setName(user.userShortName));
+    dispatch(setTransactionTags(user.transactionTags));
+    dispatch(setTransactionsPerPage(user.preferences.transactionItemsPerPage));
     return true;
   } catch (error) {
     console.log(error);
@@ -83,14 +84,15 @@ const setUserState = async (dispatch, user) => {
   }
 };
 
-const setTransactionState = async (accessTokenValue, dispatch, paginationSelector, user) => {
+const setTransactionState = async (dispatch, paginationSelector, user) => {
   if(user.accounts && user.accounts.length > 0) {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + accessTokenValue,
-        },
-      };
+      //const itemsPerPage = useAppSelector(selectTransactionItemsPerPage);
+      // const config = {
+      //   headers: {
+      //     Authorization: "Bearer " + accessTokenValue,
+      //   },
+      // };
 
       // GetTransactionsByDate fr all linked accounts - preserve if needed elsewhere...
       //PIVOT to SYNC methos ehre for getting all account data based on last cursor date...
@@ -124,12 +126,13 @@ const setTransactionState = async (accessTokenValue, dispatch, paginationSelecto
       const linkedItemAccountIds = user.accounts.map((item) => item.accountId).join(",");
       dispatch(setPaginationAccountIds(linkedItemAccountIds));
       dispatch(setPaginationUserId(user.id)); 
+      dispatch(setPaginationPageSize(user.preferences.transactionItemsPerPage));
 
       const postBody = {
         "accountIds": linkedItemAccountIds,
         "endDate": paginationSelector.endDate,
         "pageNumber": paginationSelector.pageNumber,
-        "pageSize": paginationSelector.pageSize,
+        "pageSize": user.preferences.transactionItemsPerPage, //paginationSelector.pageSize,
         "sortBy": paginationSelector.sortBy,
         "sortDirection": paginationSelector.sortDirection,
         "startDate": paginationSelector.startDate,
@@ -137,7 +140,7 @@ const setTransactionState = async (accessTokenValue, dispatch, paginationSelecto
         "userId": user.id,
         "userNotesSearchValue": paginationSelector.userNotesSearchValue
     }
-      const response = await axiosInstance.post("/transactions", postBody, config);
+      const response = await axiosInstance.post("/transactions", postBody);
       // Update the State with collection of transactions:
       dispatch(setPagedTransactions(response.data));
       return true;
@@ -153,7 +156,7 @@ const setTransactionState = async (accessTokenValue, dispatch, paginationSelecto
   return true;
 }
 
- const loginSync = async (user, dispatch, paginationSelector, accessTokenValue) => {
+ const loginSync = async (user, dispatch, paginationSelector) => {
 
   if (user) {
     await beginSyncOperation(dispatch);
@@ -167,7 +170,7 @@ const setTransactionState = async (accessTokenValue, dispatch, paginationSelecto
       }
 
       if(success) {
-        success &&= await setTransactionState(accessTokenValue, dispatch, paginationSelector, user);
+        success &&= await setTransactionState(dispatch, paginationSelector, user);
       }
     }
 

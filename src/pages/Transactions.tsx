@@ -19,6 +19,7 @@ export const Transactions = () => {
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   const transactionItems = useAppSelector(state => 
     state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
+  const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
 
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -69,16 +70,16 @@ export const Transactions = () => {
 
       {transactionItems && transactionItems.items.length > 0 && 
       <Row className='topMarginSpacer transactionTableContainer'>
-        <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={paginationConfig.pageSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
+        <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={transactionPaginationSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
       </Row>}
 
       {!isLoading && (!transactionItems || transactionItems.items.length < 1) && <EmptyTransactionResult></EmptyTransactionResult>}
 
       {!isLoading && <Row className='topMarginSpacer transactionTableContainer'>
         <Col xs={6}>
-          <PageSizeComponent pageSize={paginationConfig.pageSize}></PageSizeComponent>
+          <PageSizeComponent pageSize={transactionPaginationSize}></PageSizeComponent>
         </Col>
-        <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={paginationConfig.pageSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
+        <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={transactionPaginationSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
       </Row>}
     </>
   );
