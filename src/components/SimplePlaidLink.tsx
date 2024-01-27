@@ -1,17 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { Button } from "react-bootstrap";
-import { useAppDispatch } from "../hooks/storeHooks";
-import { setPublicToken } from "../store/plaidSlice";
+import { useAppDispatch } from "@hooks/storeHooks";
+import { setPublicToken } from "@store/plaidSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useAppSelector } from "../hooks/storeHooks";
-import { selectAccessToken, selectUid } from "../store/msalSlice";
-import { setAccounts } from "../store/accountSlice";
-import  axiosInstance  from '../utils/axiosInstance';
+import { useAppSelector } from "@hooks/storeHooks";
+import { selectAccessToken, selectUid } from "@store/msalSlice";
+import { setAccounts } from "@store/accountSlice";
+import  axiosInstance  from '@utils/axiosInstance';
 // import { useAxiosInterceptor } from '@/hooks/useAxiosInterceptor';
 
 
-import MsalUtils from '../utils/msalToken'
+import MsalUtils from '@utils/msalToken'
 import {
   usePlaidLink,
   PlaidLinkOnSuccessMetadata,

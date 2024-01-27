@@ -10,6 +10,7 @@ import TransactionPagination from "@components/transactions/TransactionPaginatio
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
 import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
 import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
+import FilterOptions from "@components/transactions/FilterOptions";
 import { LoadingMessage } from '@/components/transactions/LoadingMessage';
 
 
@@ -20,6 +21,8 @@ export const Transactions = () => {
   const transactionItems = useAppSelector(state => 
     state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
+  const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -39,7 +42,15 @@ export const Transactions = () => {
   return (
     <>
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
-      {!isLoading && <Row>
+      {!isLoading && 
+      <>
+      {transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0 &&
+      <Row>
+        <Col xs={12}>
+          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags}></FilterOptions>
+        </Col>
+      </Row>}
+      <Row>
         <Col xs={12}>
           <Table hover responsive id="transactions-table" className="transactionTableContainer">
             <SortableHeaderRow currentSortBy={paginationConfig.sortBy} currentSortDirection={paginationConfig.sortDirection}></SortableHeaderRow>
@@ -66,7 +77,8 @@ export const Transactions = () => {
               </tbody>}
           </Table>
         </Col>
-      </Row>}
+      </Row>
+      </>}
 
       {transactionItems && transactionItems.items.length > 0 && 
       <Row className='topMarginSpacer transactionTableContainer'>
