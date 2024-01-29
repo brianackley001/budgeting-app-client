@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl } from "react-bootstrap";
+import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl, Accordion } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
+import TagAccordianItem from './filterOptions/TagAccordianItem';
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import { useAppDispatch } from "@hooks/storeHooks";
 import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
@@ -25,25 +26,16 @@ export const TransactionListItem = (item) =>{
   const [validated, setValidated] = useState(false);
   const [formTranCategory, setFormTranCategory] = useState(item.category);
   const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
-  const [formTranTags, setFormTranTags] = useState(item.tags === null ||  item.tags === undefined ? 
-    "" : 
-    item.tags.join(", "));
   const [formTranDescription, setFormTranDescription] = useState(
-    item.userDescription === null ||  item.userDescription === undefined || item.userDescription === "" ? 
-    formatMerchantDisplayName(item.merchantName, item.name) : 
-    item.userDescription);
-  const [formTranNotes, setFormTranNotes] = useState(item.userNotes === null ||  item.userNotes === undefined ? 
-    "" :  
-    item.userNotes);
+          item.userDescription === null || item.userDescription === undefined || item.userDescription === "" ?
+          formatMerchantDisplayName(item.merchantName, item.name) :
+          item.userDescription);
+  const [formTranNotes, setFormTranNotes] = useState(item.userNotes === null || item.userNotes === undefined ?
+          "" :
+          item.userNotes);
+  const [trackedTags, setTrackedTags] = useState(item.tags === null || item.tags === undefined ? [] : item.tags);
 
 // Methods: 
-  const handleModalClose = () => {
-    setIsEditMode(false);
-    setShowDetail(false);
-  };
-
-  const handleShowDetail = () => setShowDetail(true);
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -56,19 +48,14 @@ export const TransactionListItem = (item) =>{
 
     // API Call to update transaction
     try {
-      let tags = [];
-      if (event.currentTarget.elements['formGridTags'].value && event.currentTarget.elements['formGridTags'].value.length > 0) {
-        tags = event.currentTarget.elements['formGridTags'].value.replace(/\s/g, '').split(',');
-      }
-
       const result = await axiosInstance.post(`/transaction/${item.transactionId}`,
         {
           id: event.currentTarget.elements['formGridTransactionId'].value,
           transactionId: event.currentTarget.elements['formGridTransactionId'].value,
           accountId: event.currentTarget.elements['formGridAccountId'].value,
           userDescription: event.currentTarget.elements['formGridTransactionDescription'].value,
-          notes: event.currentTarget.elements['formGridNotes'].value,
-          tags: tags,
+          userNotes: event.currentTarget.elements['formGridNotes'].value,
+          tags: trackedTags,
         });
       //Update the specific transaction in pagedItems cache
       dispatch(setUpdatedTransactionItem(result.data));
@@ -92,31 +79,18 @@ export const TransactionListItem = (item) =>{
       handleSaveMessageError(
         `${e}`)
     }
-
   };
   
-  
-  function handleTextAreaChange(e) {
-    switch(e.target.id) {
-      case "formGridTransactionDate":
-        setFormTranDateValue(e.target.value);
-        break;
-      case "formGridCategory":
-        setFormTranCategory(e.target.value);
-        break;
-      case "formGridNotes":
-        setFormTranNotes(e.target.value);
-        break;
-      case "formGridTags":
-        setFormTranTags(e.target.value);
-        break;
-      default:
-        setFormTranDescription(e.target.value);
-    }
-  }
+  const handleModalClose = () => {
+    setIsEditMode(false);
+    setShowDetail(false);
+  };
 
-  const handleToggleEditMode = () => {
-    setIsEditMode(!isEditMode);
+  const handleSaveMessageError= (messageLabel) => {
+    dispatch(setHeaderText("Transaction Update Error"));
+    dispatch(setMessageText(`Unable to update "${messageLabel}" transaction. Please try again later`));
+    dispatch(setShowAlert(true));
+    dispatch(setVariantStyle("danger"));
   }
 
   const handleSaveMessageSuccess = (messageLabel) => {
@@ -125,18 +99,43 @@ export const TransactionListItem = (item) =>{
     dispatch(setShowAlert(true));
     dispatch(setVariantStyle("success"));
   }
-  const handleSaveMessageError= (messageLabel) => {
-    dispatch(setHeaderText("Transaction Update Error"));
-    dispatch(setMessageText(`Unable to update "${messageLabel}" transaction. Please try again later`));
-    dispatch(setShowAlert(true));
-    dispatch(setVariantStyle("danger"));
+
+  const handleShowDetail = () => setShowDetail(true);
+
+  const handleTagCheckboxChange = (event) => {
+    const checkedName = event.target.name;
+    if (event.target.checked) {
+      setTrackedTags([...trackedTags, checkedName])
+    } else {
+      setTrackedTags(trackedTags.filter(id => id !== checkedName))
+    }
+  }
+  
+  const handleTextAreaChange = (event) =>{
+    switch(event.target.id) {
+      case "formGridTransactionDate":
+        setFormTranDateValue(event.target.value);
+        break;
+      case "formGridCategory":
+        setFormTranCategory(event.target.value);
+        break;
+      case "formGridNotes":
+        setFormTranNotes(event.target.value);
+        break;
+      default:
+        setFormTranDescription(event.target.value);
+    }
+  }
+
+  const handleToggleEditMode = () => {
+    setIsEditMode(!isEditMode);
   }
 
   return (
     <>
     <tr onClick={handleShowDetail}>
       <td className="transactionGridLineItem">{item.date}</td>
-      <td className="transactionGridLineItem">{formatMerchantDisplayName(item.merchant,item.name)}</td>
+      <td className="transactionGridLineItem">{formTranDescription}</td>
       <td className="transactionGridLineItem">{item.amount}</td>
       <td className="transactionGridLineItem">{item.category}</td>
     </tr>
@@ -251,15 +250,12 @@ export const TransactionListItem = (item) =>{
                         </Form.Group>
                       </Col>
                       <Col xs={6}>
-                        <Form.Group as={Col} controlId="formGridTags">
-                          <Form.Label>Labels (comma separated)</Form.Label>
-                          <Form.Control as="textarea"
-                            aria-label="With textarea"
-                            name="tagName"
-                            data-testid="transaction-detail-form-transaction-tags"
-                            value={formTranTags}
-                            onChange={handleTextAreaChange}
-                            style={{ fontSize: ".75em" }} />
+                      <Form.Group controlId="formGridTags">
+                      <Accordion flush defaultActiveKey="transaction-tags">
+                        <TagAccordianItem eventKey="transaction-tags" data-testid="transaction-detail-form-transaction-tags"
+                          onSelect={handleTagCheckboxChange}
+                          trackedTags={trackedTags} tags={item.userTags} />
+                          </Accordion>
                         </Form.Group>
                       </Col>
                     </Row>

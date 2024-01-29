@@ -195,7 +195,7 @@ export const transactionSlice = createSlice({
         if(targetItemIndex > -1){
           state.pagedTransactions.pages[pageIndex].items[targetItemIndex] = {
             ...page.items[targetItemIndex],
-            userNotes: action.payload.notes,
+            userNotes: action.payload.userNotes,
             tags: action.payload.tags,
             userDescription: action.payload.userDescription,
           } 

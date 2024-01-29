@@ -4,7 +4,8 @@ import { Col } from "react-bootstrap";
 export default function PaginationSummaryComponent(props) {
   const { currentPage, pageSize, totalItemCount } = props;
   const startRecord = currentPage === 1 ? 1 : (currentPage -1) * pageSize + 1;
-  const endRecord = currentPage === 1 ? pageSize : startRecord + pageSize - 1;
+  const endRecord = totalItemCount < pageSize ? totalItemCount : 
+    currentPage === 1 ? pageSize : startRecord + pageSize - 1;
 
   return (
     <>

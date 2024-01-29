@@ -75,19 +75,19 @@ export default function FilterOptions(props) {
     }
   }
 
-  const handleFormSubmit = (action: string) => {
-    if (action === "save") {
-      const updatedPaginationConfig = {
-        ...paginationConfig,
-        startDate: startDate.length > 0 ? startDate : paginationConfig.startDate,
-        endDate: endDate.length > 0 ? endDate : paginationConfig.endDate,
-        accountIds: trackedAccounts.length > 0 ? trackedAccounts.join(",") : paginationConfig.accountIds,
-        tagSearchValue: trackedTags.length > 0 ? trackedTags.join(",") : paginationConfig.tagSearchValue,
-        userNotesSearchValue: userNotes.length > 0 ? userNotes : paginationConfig.userNotesSearchValue
-      };
-      dispatch(setTransactionPagination(updatedPaginationConfig));
-      dispatch(getPagedTransactions(updatedPaginationConfig));//
-    }
+  const handleFormSubmit = () => {
+    const updatedPaginationConfig = {
+      ...paginationConfig,
+      accountIds: trackedAccounts.length > 0 ? trackedAccounts.join(",") : paginationConfig.accountIds,
+      amountFrom: trackedFromAmount > 0 ? trackedFromAmount : paginationConfig.amountFrom,
+      amountTo: trackedToAmount > 0 ? trackedToAmount : paginationConfig.amountTo,
+      startDate: startDate.length > 0 ? startDate : paginationConfig.startDate,
+      endDate: endDate.length > 0 ? endDate : paginationConfig.endDate,
+      tagSearchValue: trackedTags.length > 0 ? trackedTags.join(",") : "",
+      userNotesSearchValue: userNotes.length > 0 ? userNotes : paginationConfig.userNotesSearchValue
+    };
+    dispatch(setTransactionPagination(updatedPaginationConfig));
+    dispatch(getPagedTransactions(updatedPaginationConfig));
   }
 
   const handleNotesChange = (event) => {
@@ -166,7 +166,7 @@ export default function FilterOptions(props) {
               </Col>
               <Col xs={5}>
                 <Button variant="secondary" onClick={handleReset} className="me-2">Reset</Button>
-                <Button variant="primary" onClick={handleShow} className="me-2">Apply Filters
+                <Button variant="primary" onClick={() =>{handleFormSubmit()}} className="me-2">Apply Filters
                 </Button>
               </Col>
             </Row>

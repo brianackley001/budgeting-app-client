@@ -1,6 +1,6 @@
 import React from "react";
 import{ Badge , Row, Col} from "react-bootstrap";
-import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
+import {formatMerchantDisplayName} from "@utils/transactionUtils.ts"
 
 /**
  * Renders information about the transaction list item
@@ -9,6 +9,9 @@ import {formatMerchantDisplayName} from "../../utils/transactionUtils.ts"
 
 export default function  TransactionDetailReadOnly(props){
   const { item } = props;
+  const descriptionDisplayValue = item.userDescription === null || item.userDescription === undefined || item.userDescription === "" ?
+    formatMerchantDisplayName(item.merchantName, item.name) :
+    item.userDescription;
   return (
     <>
         <span className="card-text" id="readOnlyTransaction" data-testid="transaction-detail=read-only-container">
@@ -18,7 +21,7 @@ export default function  TransactionDetailReadOnly(props){
                 </Row>
                 <Row>
                   <Col xs={6}>Description:</Col>
-                  <Col xs={6}>{formatMerchantDisplayName(item.merchantName,item.name)}</Col>
+                  <Col xs={6}>{descriptionDisplayValue}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Amount:</Col>
@@ -29,8 +32,11 @@ export default function  TransactionDetailReadOnly(props){
                   <Col xs={6} >{item.category}</Col>
                 </Row>
                 <Row>
+                  <Col xs={12} className="mt-4 mb-4"><hr style={{width: "86%", margin: "auto"}}/></Col>
+                </Row>
+                <Row>
                   <Col xs={6}>Notes:</Col>
-                  <Col xs={6}>{item.notes}</Col>
+                  <Col xs={6}>{item.userNotes}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Tags:</Col>

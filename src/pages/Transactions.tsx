@@ -71,6 +71,7 @@ export const Transactions = () => {
                     userNotes={item.userNotes === null ? "" : item.userNotes}
                     tags={item.tags === null ? [] : item.tags}
                     userDescription={item.userDescription === null ? "" : item.userDescription}
+                    userTags={transactionTags}
                     className="list-group-transaction-hover"
                   />
                 ))}
