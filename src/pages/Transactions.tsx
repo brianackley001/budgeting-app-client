@@ -16,17 +16,24 @@ import { LoadingMessage } from '@/components/transactions/LoadingMessage';
 
 export const Transactions = () => {
   useAcquireAccessToken();
+  
+  const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const isLoading = useAppSelector(state => state.transactionSlice.isLoading);
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   const transactionItems = useAppSelector(state => 
-    state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
+        state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
-  const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
+  // Methods:
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
+  };
+
   const formatCategory = (category) => {
     var words = category.split("_");
     for (let i = 0; i < words.length; i++) {
@@ -34,11 +41,6 @@ export const Transactions = () => {
     }
     return words.join(" ");
   };
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
-  };
-
-
   return (
     <>
       <LoadingMessage isLoading={isLoading}></LoadingMessage>

@@ -20,7 +20,9 @@ export default function FilterOptions(props) {
   const initPaginationConfigState = (stateItem) => {
     switch (stateItem) {
       case "accountIds":
-        return paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length ? [] : paginationConfig.accountIds;
+        return paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length 
+            ? [] 
+            : paginationConfig.accountIds.split(",");
       case "endDate":
         return paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "";
       case "startDate":
@@ -76,9 +78,13 @@ export default function FilterOptions(props) {
   }
 
   const handleFormSubmit = () => {
+    const accountIdCollectionSubmitValue = trackedAccounts.length > 0 
+        ? trackedAccounts.join(",") 
+        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",") ;
+
     const updatedPaginationConfig = {
       ...paginationConfig,
-      accountIds: trackedAccounts.length > 0 ? trackedAccounts.join(",") : paginationConfig.accountIds,
+      accountIds: accountIdCollectionSubmitValue,
       amountFrom: trackedFromAmount > 0 ? trackedFromAmount : paginationConfig.amountFrom,
       amountTo: trackedToAmount > 0 ? trackedToAmount : paginationConfig.amountTo,
       startDate: startDate.length > 0 ? startDate : paginationConfig.startDate,
