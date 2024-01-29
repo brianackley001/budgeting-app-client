@@ -126,7 +126,7 @@ export function getPagedTransactions(
       !targetPage.items || targetPage.items == undefined || targetPage.items.length === 0 ||
       !isEqual(targetPage.transactionPagination, transactionPagination)
     ) {
-      console.log("No cached page found - Call the API");
+      //console.log("No cached page found - Call the API");
       dispatch(setIsLoading(true));
       //API Call:
       try {
@@ -142,7 +142,7 @@ export function getPagedTransactions(
         dispatch(setIsLoading(false));
       }
     } else {
-      console.log("Cached page found");
+      //console.log("Cached page found");
     }
   };
 }

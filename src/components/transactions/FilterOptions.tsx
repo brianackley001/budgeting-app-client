@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordian from "./filterOptions/AccountTypeAccordian";
 import AmountAccordianItem from "./filterOptions/AmountAccordianItem";
+import CategoryAccordianItem from "./filterOptions/CategoryAccordianItem";
 import DateRangeAccordianItem from "./filterOptions/DateRangeAccordianItem";
 import NotesAccordianItem from "./filterOptions/NotesAccordianItem";
 import TagAccordianItem from "./filterOptions/TagAccordianItem";
@@ -23,6 +24,12 @@ export default function FilterOptions(props) {
         return paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length 
             ? [] 
             : paginationConfig.accountIds.split(",");
+      case "amountFrom":
+        return paginationConfig.amountFrom > 0 ? paginationConfig.amountFrom : 0;
+      case "amountTo": 
+        return paginationConfig.amountTo > 0 ? paginationConfig.amountTo : 0;
+      case "category":
+        return paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "";
       case "endDate":
         return paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "";
       case "startDate":
@@ -37,13 +44,14 @@ export default function FilterOptions(props) {
   };
 
   // Track form field values for submission:
-  const [endDate, setEndDate] = useState(initPaginationConfigState("endDate"));
-  const [startDate, setStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedAccounts, setTrackedAccounts] = useState(initPaginationConfigState("accountIds"));
+  const [trackedCategory, setTrackedCategory] = useState(initPaginationConfigState("category"));
+  const [trackedEndDate, setTrackedEndDate] = useState(initPaginationConfigState("endDate"));
   const [trackedFromAmount, setTrackedFromAmount] = useState(0);
+  const [trackedStartDate, setTrackedStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
   const [trackedToAmount, setTrackedToAmount] = useState(0);
-  const [userNotes, setUserNotes] = useState(initPaginationConfigState("notes"));
+  const [trackedUserNotes, setTrackedUserNotes] = useState(initPaginationConfigState("notes"));
 
   //Event Handler Methods:
   const handleAccountCheckboxChange = (event) => {
@@ -67,47 +75,53 @@ export default function FilterOptions(props) {
   const handleClose = () => {
     setShow(false);
   };
+  
+  const handleCategoryChange = (event) => {
+    setTrackedCategory(event.target.value);
+  }
 
   const handleDateRangeChange = (event, dateType) => {
     if (dateType === "startDate") {
-      setStartDate(event.target.value);
+      setTrackedStartDate(event.target.value);
     }
     else {
-      setEndDate(event.target.value);
+      setTrackedEndDate(event.target.value);
     }
   }
 
   const handleFormSubmit = () => {
     const accountIdCollectionSubmitValue = trackedAccounts.length > 0 
         ? trackedAccounts.join(",") 
-        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",") ;
+        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",");
 
     const updatedPaginationConfig = {
       ...paginationConfig,
       accountIds: accountIdCollectionSubmitValue,
-      amountFrom: trackedFromAmount > 0 ? trackedFromAmount : paginationConfig.amountFrom,
-      amountTo: trackedToAmount > 0 ? trackedToAmount : paginationConfig.amountTo,
-      startDate: startDate.length > 0 ? startDate : paginationConfig.startDate,
-      endDate: endDate.length > 0 ? endDate : paginationConfig.endDate,
+      amountFrom: trackedFromAmount > 0 ? trackedFromAmount : 0,
+      amountTo: trackedToAmount > 0 ? trackedToAmount : 0,
+      categorySearchValue: trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category fomat = "CATEGORY_SUBCATEGORY"
+      endDate: trackedEndDate.length > 0 ? trackedEndDate : "",
+      startDate: trackedStartDate.length > 0 ? trackedStartDate : "",
       tagSearchValue: trackedTags.length > 0 ? trackedTags.join(",") : "",
-      userNotesSearchValue: userNotes.length > 0 ? userNotes : paginationConfig.userNotesSearchValue
+      userNotesSearchValue: trackedUserNotes.length > 0 ? trackedUserNotes : ""
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
   }
 
   const handleNotesChange = (event) => {
-    setUserNotes(event.target.value);
+    setTrackedUserNotes(event.target.value);
   }
 
   const handleReset = () => {
     setTrackedAccounts([]);
-    setEndDate("");
-    setStartDate("");
+    setTrackedCategory("");
+    setTrackedEndDate("");
+    setTrackedStartDate("");
     setTrackedFromAmount(0);
     setTrackedToAmount(0);
     setTrackedTags([]);
-    setUserNotes("");
+    setTrackedUserNotes("");
   }
 
   const handleShow = () => setShow(true);
@@ -150,16 +164,18 @@ export default function FilterOptions(props) {
               </Col>
               <Col xs={6}>
                 <Accordion flush>
-                  <DateRangeAccordianItem eventKey={0}
+                  <DateRangeAccordianItem eventKey={"DateRangeAccordianItemFilter"}
                     onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
-                    trackedStartDate={startDate} trackedEndDate={endDate} />
-                  <TagAccordianItem eventKey={1}
+                    trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
+                  <CategoryAccordianItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
+                    trackedValue={trackedCategory} />
+                  <TagAccordianItem eventKey={"TagAccordianItemFilter"}
                     onSelect={(eventItem: any) => { handleTagCheckboxChange(eventItem) }}
                     trackedTags={trackedTags} tags={tags} />
-                  <NotesAccordianItem eventKey={2} 
+                  <NotesAccordianItem eventKey={"NotesAccordianItemFilter"} 
                     onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
-                    trackedValue={userNotes} />
-                  <AmountAccordianItem eventKey={3}
+                    trackedValue={trackedUserNotes} />
+                  <AmountAccordianItem eventKey={"AmountAccordianItemFilter"}
                     onSelect={(eventItem: any, boundaryValue: string) => handleAmountChange(eventItem, boundaryValue)}
                     trackedFromAmount={trackedFromAmount} 
                     trackedToAmount={trackedToAmount} />
