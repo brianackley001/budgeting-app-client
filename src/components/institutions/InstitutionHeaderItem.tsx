@@ -1,9 +1,6 @@
-import { useState, useRef } from 'react';
-import{ Card, Row, Col } from "react-bootstrap";
-import Dropdown from 'react-bootstrap/Dropdown';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react';
+import{ Card} from "react-bootstrap";
+import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
 
@@ -18,11 +15,16 @@ export default function InstitutionHeaderItem({institution}) {
   const [showDelete, setShowDelete] = useState(false);
   const [formInstitutionName, setFormInstitutionName] = useState(institution.accounts[0].institutionName);
 
-  const handleEditClose = () => setShowEdit(false);
   const handleDeleteClose = () => setShowDelete(false);
-  const handleEditShow = () => {
-    setShowEdit(true)};
   const handleDeleteShow = () => setShowDelete(true);
+  const handleEditClose = () => setShowEdit(false);
+  const handleEditShow = () => {
+    setShowEdit(true)
+  };
+const handleSave = () =>{
+  console.log('save');
+  handleEditClose();
+}
 
   function handleTextareaChange(e) {
     setFormInstitutionName(e.target.value);
@@ -56,7 +58,7 @@ export default function InstitutionHeaderItem({institution}) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="formGridAccountType">
-                <Form.Label>System Name</Form.Label>
+                <Form.Label>Original Imported Name (system)</Form.Label>
                 <Form.Control
                   placeholder="Type"
                   aria-label="Disabled input example"
