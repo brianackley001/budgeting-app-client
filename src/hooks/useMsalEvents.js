@@ -64,7 +64,7 @@ const useMsalEvents = () => {
                   })
                   .catch((error) => {
                     console.error(error);
-                  });;
+                  });
               }
             })
             .catch((error) => {

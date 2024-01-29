@@ -47,7 +47,7 @@ export const Transactions = () => {
       {transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0 &&
       <Row>
         <Col xs={12}>
-          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags}></FilterOptions>
+          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig}></FilterOptions>
         </Col>
       </Row>}
       <Row>

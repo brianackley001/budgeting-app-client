@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 //import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import { setPaginationPageSize, setPagedTransactions, setPaginationAccountIds, setPaginationUserId } from "@store/transactionSlice"; 
+import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice"; 
 import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
 import  axiosInstance from "@utils/axiosInstance";
 import {
@@ -84,8 +84,8 @@ const setUserState = async (dispatch, user) => {
   }
 };
 
-const setTransactionState = async (dispatch, paginationSelector, user) => {
-  if(user.accounts && user.accounts.length > 0) {
+const setTransactionState = async (dispatch, paginationConfig, user) => {
+  if (user.accounts && user.accounts.length > 0) {
     try {
       //const itemsPerPage = useAppSelector(selectTransactionItemsPerPage);
       // const config = {
@@ -123,26 +123,19 @@ const setTransactionState = async (dispatch, paginationSelector, user) => {
       //   }
       // }
       // GET page one of PagedTransactions from DB...
-      const linkedItemAccountIds = user.accounts.map((item) => item.accountId).join(",");
-      dispatch(setPaginationAccountIds(linkedItemAccountIds));
-      dispatch(setPaginationUserId(user.id)); 
-      dispatch(setPaginationPageSize(user.preferences.transactionItemsPerPage));
 
-      const postBody = {
-        "accountIds": linkedItemAccountIds,
-        "endDate": paginationSelector.endDate,
-        "pageNumber": paginationSelector.pageNumber,
-        "pageSize": user.preferences.transactionItemsPerPage, //paginationSelector.pageSize,
-        "sortBy": paginationSelector.sortBy,
-        "sortDirection": paginationSelector.sortDirection,
-        "startDate": paginationSelector.startDate,
-        "tagSearchValue": paginationSelector.tagSearchValue,
-        "userId": user.id,
-        "userNotesSearchValue": paginationSelector.userNotesSearchValue
-    }
-      const response = await axiosInstance.post("/transactions", postBody);
-      // Update the State with collection of transactions:
-      dispatch(setPagedTransactions(response.data));
+      const updatedPaginationConfig = {
+        ...paginationConfig,
+        accountIds: user.accounts
+          .filter((item) => item.includeAccountTransactions)
+          .map((item) => item.accountId).join(","),
+        pageSize: user.preferences.transactionItemsPerPage,
+        userId: user.id,
+      };
+
+      dispatch(setTransactionPagination(updatedPaginationConfig));
+      dispatch(getPagedTransactions(updatedPaginationConfig));
+
       return true;
     } catch (error) {
       console.log(error);
@@ -154,9 +147,9 @@ const setTransactionState = async (dispatch, paginationSelector, user) => {
     }
   }
   return true;
-}
+};
 
- const loginSync = async (user, dispatch, paginationSelector) => {
+ const loginSync = async (user, dispatch, paginationConfig) => {
 
   if (user) {
     await beginSyncOperation(dispatch);
@@ -170,7 +163,7 @@ const setTransactionState = async (dispatch, paginationSelector, user) => {
       }
 
       if(success) {
-        success &&= await setTransactionState(dispatch, paginationSelector, user);
+        success &&= await setTransactionState(dispatch, paginationConfig, user);
       }
     }
 

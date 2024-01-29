@@ -44,6 +44,8 @@ interface PagedTransactions{
 
 interface TransactionPagination {
   accountIds: string,
+  amountFrom: number,
+  amountTo: number,
   total: number,
   pageSize: number,
   pageNumber: number,
@@ -74,6 +76,8 @@ const initialState: TransactionState = {
         items: [],
         transactionPagination: {
           accountIds: "",
+          amountFrom: 0,
+          amountTo: 0,
           total: 0,
           pageSize: 10,
           pageNumber: 1,
@@ -90,6 +94,8 @@ const initialState: TransactionState = {
   },
   transactionPagination: {
     accountIds: "",
+    amountFrom: 0,
+    amountTo: 0,
     total: 0,
     pageSize: 10,
     pageNumber: 1,
@@ -165,12 +171,6 @@ export const transactionSlice = createSlice({
     setPaginationAccountIds: (state, action) => {
       state.transactionPagination.accountIds = action.payload
     },
-    setPaginationEndDate: (state, action) => {
-      state.transactionPagination.endDate = action.payload
-    },
-    setPaginationPageNumber: (state, action) => {
-      state.transactionPagination.pageNumber = action.payload
-    },
     setPaginationPageSize: (state, action) => {
       state.transactionPagination.pageSize = action.payload
     },
@@ -180,20 +180,14 @@ export const transactionSlice = createSlice({
     setPaginationSortDirection: (state, action) => {
       state.transactionPagination.sortDirection = action.payload
     },
-    setPaginationStartDate: (state, action) => {
-      state.transactionPagination.startDate = action.payload
-    },
-    setPaginationTagSearchValue: (state, action) => {
-      state.transactionPagination.tagSearchValue = action.payload
-    },
     setPaginationTotal: (state, action) => {
       state.transactionPagination.total = action.payload
     },
     setPaginationUserId: (state, action) => {
       state.transactionPagination.userId = action.payload
     },
-    setPaginationUserNotesSearchValue: (state, action) => {
-      state.transactionPagination.userNotesSearchValue = action.payload
+    setTransactionPagination: (state, action) => {
+      state.transactionPagination = action.payload
     },
     setUpdatedTransactionItem: (state, action) => {
       state.pagedTransactions.pages.forEach((page, pageIndex) => {
@@ -216,16 +210,12 @@ export const {
   setIsLoading,
   setPagedTransactions,
   setPaginationAccountIds,
-  setPaginationEndDate,
-  setPaginationPageNumber, 
   setPaginationPageSize,
   setPaginationSortBy, 
   setPaginationSortDirection,
-  setPaginationStartDate,
-  setPaginationTagSearchValue,
   setPaginationTotal,
   setPaginationUserId,
-  setPaginationUserNotesSearchValue,
+  setTransactionPagination,
   setUpdatedTransactionItem } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type

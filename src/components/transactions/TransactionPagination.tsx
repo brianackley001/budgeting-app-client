@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
-import { getPagedTransactions, setActivePageItems, setPaginationPageNumber } from "@store/transactionSlice";
+import { getPagedTransactions, setActivePageItems, setTransactionPagination } from "@store/transactionSlice";
 import { paginationLinkSet } from "@utils/transactionUtils"
 
 
@@ -44,13 +44,13 @@ export default function TrasactionPagination(props) {
   };
 
   const handleStateChange = (pageNumber, activePageSet) => {
-    dispatch(setPaginationPageNumber(pageNumber));
-    dispatch(setActivePageItems(activePageSet));
-
     const updatedPaginationConfig = {
       ...paginationConfig,
       pageNumber: pageNumber
     };
+    
+    dispatch(setTransactionPagination(updatedPaginationConfig));
+    dispatch(setActivePageItems(activePageSet));
     dispatch(getPagedTransactions(updatedPaginationConfig));
   };
 

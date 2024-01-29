@@ -8,7 +8,6 @@ import { useAppSelector } from "@hooks/storeHooks";
 import { selectAccessToken, selectUid } from "@store/msalSlice";
 import { setAccounts } from "@store/accountSlice";
 import  axiosInstance  from '@utils/axiosInstance';
-// import { useAxiosInterceptor } from '@/hooks/useAxiosInterceptor';
 
 
 import MsalUtils from '@utils/msalToken'
@@ -28,7 +27,6 @@ const SimplePlaidLink = () => {
   const userId = useAppSelector(selectUid);
   const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
   const dispatch = useAppDispatch();
-  // const { axBe } = useAxiosInterceptor();
 
   // get link_token from your server when component mounts
   React.useEffect(() => {//

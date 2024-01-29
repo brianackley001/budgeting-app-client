@@ -3,7 +3,7 @@ import { Badge, Button, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleCheck, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
-import { getPagedTransactions, setPaginationPageSize } from "@store/transactionSlice";
+import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
 import { setTransactionItemsPerPage}  from "@store/userSlice"
 
 export default function PageSizeComponent(props) {
@@ -28,11 +28,11 @@ export default function PageSizeComponent(props) {
   }
   const handleFormButtonClick = (action: string) => {
     if (action === "save") {
-      dispatch(setPaginationPageSize(Number(editedSize)));
       const updatedPaginationConfig = {
         ...paginationConfig,
-        pageSize: editedSize
+        pageSize: Number(editedSize)
       };
+      dispatch(setTransactionPagination(updatedPaginationConfig));
       dispatch(setTransactionItemsPerPage({id: userId, transactionItemsPerPage: Number(editedSize)}))
       dispatch(getPagedTransactions(updatedPaginationConfig));
     }
