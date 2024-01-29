@@ -5,7 +5,7 @@ import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, Overla
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordian from "./filterOptions/AccountTypeAccordian";
-//import AmountAccordianItem from "./filterOptions/AmountAccordianItem";
+import AmountAccordianItem from "./filterOptions/AmountAccordianItem";
 import DateRangeAccordianItem from "./filterOptions/DateRangeAccordianItem";
 import NotesAccordianItem from "./filterOptions/NotesAccordianItem";
 import TagAccordianItem from "./filterOptions/TagAccordianItem";
@@ -38,9 +38,9 @@ export default function FilterOptions(props) {
   const [endDate, setEndDate] = useState(initPaginationConfigState("endDate"));
   const [startDate, setStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedAccounts, setTrackedAccounts] = useState(initPaginationConfigState("accountIds"));
-  //const [trackedFromAmount, setTrackedFromAmount] = useState(0);
+  const [trackedFromAmount, setTrackedFromAmount] = useState(0);
   const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
-  //const [trackedToAmount, setTrackedToAmount] = useState(1500);
+  const [trackedToAmount, setTrackedToAmount] = useState(0);
   const [userNotes, setUserNotes] = useState(initPaginationConfigState("notes"));
 
   //Event Handler Methods:
@@ -53,14 +53,14 @@ export default function FilterOptions(props) {
     }
   }
 
-  // const handleAmountChange = (event, boundaryValue) => {
-  //   if (boundaryValue === "fromAmount") {
-  //     setTrackedFromAmount(event.target.value);
-  //   }
-  //   else {
-  //     setTrackedToAmount(event.target.value);
-  //   }
-  // }
+  const handleAmountChange = (event, boundaryValue) => {
+    if (boundaryValue === "fromAmount") {
+      setTrackedFromAmount(event.target.value);
+    }
+    else {
+      setTrackedToAmount(event.target.value);
+    }
+  }
 
   const handleClose = () => {
     setShow(false);
@@ -98,8 +98,8 @@ export default function FilterOptions(props) {
     setTrackedAccounts([]);
     setEndDate("");
     setStartDate("");
-    // setTrackedFromAmount(0);
-    // setTrackedToAmount(0);
+    setTrackedFromAmount(0);
+    setTrackedToAmount(0);
     setTrackedTags([]);
     setUserNotes("");
   }
@@ -153,10 +153,10 @@ export default function FilterOptions(props) {
                   <NotesAccordianItem eventKey={2} 
                     onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
                     trackedValue={userNotes} />
-                  {/* <AmountAccordianItem eventKey={3}
+                  <AmountAccordianItem eventKey={3}
                     onSelect={(eventItem: any, boundaryValue: string) => handleAmountChange(eventItem, boundaryValue)}
                     trackedFromAmount={trackedFromAmount} 
-                    trackedToAmount={trackedToAmount} /> */}
+                    trackedToAmount={trackedToAmount} />
                 </Accordion>
               </Col>
             </Row>
