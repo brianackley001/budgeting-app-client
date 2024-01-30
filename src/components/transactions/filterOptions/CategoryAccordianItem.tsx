@@ -11,7 +11,8 @@ export default function CategoryAccordianItem (props){
             {/* <Form.Label>Category Name</Form.Label> */}
             <Form.Control as="textarea" rows={1} placeholder="Search for..." 
             onChange={(event) => { onSelect(event) }}
-            value={trackedValue} />
+            value={trackedValue}
+            data-testid="category-accordian-item-search-text-value" />
           </Form.Group>
         </Accordion.Body>
       </Accordion.Item>
