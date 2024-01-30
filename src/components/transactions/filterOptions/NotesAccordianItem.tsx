@@ -11,7 +11,8 @@ export default function NotesAccordianItem(props) {
             {/* <Form.Label>Notes</Form.Label> */}
             <Form.Control as="textarea" rows={1} placeholder="Search for..." 
             onChange={(event) => { onSelect(event) }}
-            value={trackedValue} />
+            value={trackedValue}
+            data-testid="notes-accordian-item-text-search-text-value" />
           </Form.Group>
         </Accordion.Body>
       </Accordion.Item>
