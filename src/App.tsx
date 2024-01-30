@@ -10,7 +10,6 @@ import {
 } from "@azure/msal-react";
 
 import { loginRequest } from "./config/authConfig";
-import { callMsGraph } from "./graph";
 import Image from 'react-bootstrap/Image';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
