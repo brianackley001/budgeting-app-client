@@ -1,7 +1,6 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { describe, expect } from "vitest";
 import AccountAccordianItem from './AccountAccordianItem';
-import { Accordion } from "react-bootstrap";
 
 
 describe("Account Accordian Item", async() => {
