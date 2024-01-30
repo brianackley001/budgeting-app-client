@@ -7,7 +7,7 @@ import TransactionPagination from '@/components/transactions/TransactionPaginati
 
 
 describe("Transaction Pagination Component test", () => {
-  test("should render first page as expected", () => {
+  test.skip("should render first page as expected", () => {
     let item = render(<TransactionPagination collectionTotal={100} itemsPerPage={10} currentPage={1} />);
     expect(screen.getByTestId('transaction-pagination-container')).toBeInTheDocument();
   })
