@@ -9,20 +9,23 @@ export default function AccountAccordianItem(props) {
   return (
     <>
       {accounts.length > 0 &&
-        <Accordion.Item eventKey={eventKey}>
-          <Accordion.Header>{accountTypeLabel}</Accordion.Header>
-          <Accordion.Body>
+        <Accordion.Item eventKey={eventKey} data-testid="account-accordian-item-container">
+          <Accordion.Header data-testid="account-accordian-item-header">{accountTypeLabel}</Accordion.Header>
+          <Accordion.Body data-testid="account-accordian-item-body">
             {
               accounts.map((accountItem) => (
                 <Fragment key={`account-accordian-item-fragment-container-${accountItem.accountId}`}>
                 {!accountItem.includeAccountTransactions &&
-                  <>
+                  <div data-testid={`account-accordian-item-account-excluded-warning-container-${accountItem.accountId}`}>
                   <span key={`warning-text-message-${accountItem.accountId}`} className='text-info'><i>Account excluded from transactions</i></span>
-                  <FontAwesomeIcon key={`fa-warning-icon-${accountItem.accountId}`}  icon={faTriangleExclamation} className='text-info' size="xl" title='This account is excluded from transactions' style={{float: "right"}} />
-                  </>
+                  <FontAwesomeIcon key={`fa-warning-icon-${accountItem.accountId}`}  icon={faTriangleExclamation} className='text-info' 
+                    size="xl" title='This account is excluded from transactions' 
+                    style={{float: "right"}} />
+                  </div>
                 }
                 <OverlayTrigger key={`overlay-trigger-${accountItem.accountId}`} placement='right' overlay={
-                  <Tooltip id={`tooltip-${accountItem.accountId}`}  key={`tooltip-key-${accountItem.accountId}`} >
+                  <Tooltip id={`tooltip-${accountItem.accountId}`}  key={`tooltip-key-${accountItem.accountId}`} 
+                    data-testid={`account-accordian-item-tooltip-${accountItem.accountId}`} >
                     <strong>{accountItem.institutionName}</strong>
                   </Tooltip>
                 }>
@@ -37,6 +40,7 @@ export default function AccountAccordianItem(props) {
                     title={accountItem.institutionName}
                     disabled={!accountItem.includeAccountTransactions}
                     onChange={(event) => { onSelect(event) }}
+                    data-testid={`account-accordian-item-account-form-checkbox-${accountItem.accountId}`}
                   />
                 </OverlayTrigger>
                 </Fragment>
