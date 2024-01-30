@@ -2,9 +2,6 @@
   "name": "ms-identity-javascript-react-spa",
   "version": "0.1.0",
   "private": true,
-  "overrides": {
-    "@types/react": "^18.0.0"
-  },
   "dependencies": {
     "@azure/msal-browser": "^3.5.0",
     "@azure/msal-common": "^14.5.0",
