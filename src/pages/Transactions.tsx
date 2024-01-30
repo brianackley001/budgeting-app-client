@@ -25,6 +25,18 @@ export const Transactions = () => {
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
+  
+  const filteringInEffect = !isLoading && 
+    (!transactionItems || transactionItems.items == undefined || transactionItems.items.length === 0) && 
+    ( paginationConfig.tagSearchValue.length > 0 || 
+    paginationConfig.userNotesSearchValue.length > 0 ||
+    paginationConfig.categorySearchValue.length > 0 ||
+    paginationConfig.amountFrom !== 0 ||
+    paginationConfig.amountTo !== 0 ||
+    paginationConfig.startDate.length > 0 ||
+    paginationConfig.endDate.length > 0 ||
+    paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length);
+
   // Methods:
   const formatAmount = (amount) => {
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -46,10 +58,10 @@ export const Transactions = () => {
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
       {!isLoading && 
       <>
-      {transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0 &&
+      {((transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0) || filteringInEffect) &&
       <Row>
         <Col xs={12}>
-          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig}></FilterOptions>
+          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig} filteringInEffect={filteringInEffect}></FilterOptions>
         </Col>
       </Row>}
       <Row>

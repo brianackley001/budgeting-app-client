@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Card, Row } from "react-bootstrap";
+import { Col, Card, Row, Alert } from "react-bootstrap";
 
 /**
  * Renders mesaging to user that no transaction data matches the current filter criteria
@@ -17,7 +17,9 @@ export default function EmptyTransactionResult() {
               <Card.Title className="text-danger">No matching transactions found...</Card.Title>
               <Card.Body>
                 <p>Based on your filtering and sorting criteria, we were not able to find any matching transactions. </p>
-                <p>Please check your filters and try again. </p>
+                <Alert variant="warning">
+                <b>Please check your filters and try again.</b> 
+                </Alert>
                 </Card.Body>
             </Card>
           </Col>

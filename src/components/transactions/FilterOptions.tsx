@@ -12,7 +12,7 @@ import NotesAccordianItem from "./filterOptions/NotesAccordianItem";
 import TagAccordianItem from "./filterOptions/TagAccordianItem";
 
 export default function FilterOptions(props) {
-  const { accounts, paginationConfig, placement, tags } = props;
+  const { accounts, filteringInEffect, paginationConfig, placement, tags } = props;
   const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
@@ -93,6 +93,9 @@ export default function FilterOptions(props) {
     const accountIdCollectionSubmitValue = trackedAccounts.length > 0 
         ? trackedAccounts.join(",") 
         : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",");
+    const pageNumber = (trackedFromAmount > 0 || trackedToAmount > 0 || trackedCategory.length > 0 || 
+          trackedEndDate.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || 
+          trackedUserNotes.length > 0) ? 1 : paginationConfig.pageNumber;
 
     const updatedPaginationConfig = {
       ...paginationConfig,
@@ -101,12 +104,14 @@ export default function FilterOptions(props) {
       amountTo: trackedToAmount > 0 ? trackedToAmount : 0,
       categorySearchValue: trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category fomat = "CATEGORY_SUBCATEGORY"
       endDate: trackedEndDate.length > 0 ? trackedEndDate : "",
+      pageNumber: pageNumber,
       startDate: trackedStartDate.length > 0 ? trackedStartDate : "",
       tagSearchValue: trackedTags.length > 0 ? trackedTags.join(",") : "",
       userNotesSearchValue: trackedUserNotes.length > 0 ? trackedUserNotes : ""
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
+    //dispatch(setTransactionPagination(updatedPaginationConfig));
   }
 
   const handleNotesChange = (event) => {
@@ -138,7 +143,7 @@ export default function FilterOptions(props) {
   return (
     <>
       <span className="cardHeaderIconRight">
-        <Button variant="primary" onClick={handleShow} className="me-2">
+        <Button variant={filteringInEffect ? "warning": "primary"} onClick={handleShow} className="me-2">
           <FontAwesomeIcon icon={faFilter} flip="horizontal" className="iconStyle" />Filters
         </Button>
       </span>

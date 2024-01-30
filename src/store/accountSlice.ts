@@ -3,6 +3,7 @@ import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
 
 interface accountItem {
+  [x: string]: unknown;
   id: string,
   balances: {available: number, current: number, limit: number, isoCurrencyCode: string, unofficialCurrencyCode: string},
   mask: string,

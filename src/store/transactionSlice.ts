@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import isEqual from "lodash.isequal";
 import type { RootState } from "./store";
 import axiosInstance  from "@utils/axiosInstance";
+import { paginationLinkSet } from "@utils/transactionUtils"
 
 interface transactionItem {
   id: string,
@@ -112,6 +113,19 @@ const initialState: TransactionState = {
   },
 };
 
+export const isNewSearchRequest = (requestedTransactionPagination: TransactionPagination, prevTransactionPagination: TransactionPagination) => {
+  return !isEqual(requestedTransactionPagination, prevTransactionPagination) && requestedTransactionPagination.pageNumber === 1; //&& (
+  //   requestedTransactionPagination.accountIds !== prevTransactionPagination.accountIds ||
+  //   requestedTransactionPagination.amountFrom !== prevTransactionPagination.amountFrom ||
+  //   requestedTransactionPagination.amountTo !== prevTransactionPagination.amountTo ||
+  //   requestedTransactionPagination.categorySearchValue !== prevTransactionPagination.categorySearchValue ||
+  //   requestedTransactionPagination.startDate !== prevTransactionPagination.startDate ||
+  //   requestedTransactionPagination.endDate !== prevTransactionPagination.endDate ||
+  //   requestedTransactionPagination.tagSearchValue !== prevTransactionPagination.tagSearchValue ||
+  //   requestedTransactionPagination.userNotesSearchValue !== prevTransactionPagination.userNotesSearchValue
+  // );
+};
+
 // Thunk function
 export function getPagedTransactions(
   transactionPagination: TransactionPagination
@@ -136,6 +150,12 @@ export function getPagedTransactions(
         );
 
         dispatch(setPagedTransactions(response.data));
+        if(isNewSearchRequest(transactionPagination, getState().transactionSlice.transactionPagination)){
+          const pages = Math.ceil(response.data.total / getState().userSlice.preferences.transactionItemsPerPage);
+          const paginationLinks = paginationLinkSet(1,-1,Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE), pages, false, false);
+          dispatch(setActivePageItems(paginationLinks));
+        }
+        
       } catch (error) {
         console.log(error);
       } finally {
