@@ -2,7 +2,7 @@
 import { Accordion } from 'react-bootstrap';
 import AccountAccordianItem from './AccountAccordianItem';
 
-export default function AccountTypeAccordian(props) {
+export default function AccountTypeAccordian (props) {
   const { accounts, onSelect, trackedAccounts } = props;
 
   const depositoryAccounts = accounts.filter((account) => account.type.toLowerCase() === "depository").sort((a, b) => {

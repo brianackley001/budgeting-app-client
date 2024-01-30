@@ -5,8 +5,8 @@ export default function AmountAccordianItem(props) {
   return(
     <>
     <Accordion.Item eventKey={eventKey}>
-        <Accordion.Header>Amount</Accordion.Header>
-        <Accordion.Body>
+        <Accordion.Header data-testid="amount-accordian-item-header">Amount</Accordion.Header>
+        <Accordion.Body data-testid="amount-accordian-item-body">
           <Row>
             <Col xs={6}>
               <Form.Group className="mb-3" controlId="formFromAmount">
@@ -17,7 +17,8 @@ export default function AmountAccordianItem(props) {
                   onChange={(event) => { onSelect(event, "fromAmount") }} 
                   type="number" 
                   value={trackedFromAmount}
-                  placeholder="From amount" />
+                  placeholder="From amount"
+                  data-testid="amount-accordian-item-from-value" />
                 </InputGroup>
               </Form.Group>
             </Col>
@@ -30,7 +31,8 @@ export default function AmountAccordianItem(props) {
                   onChange={(event) => { onSelect(event, "toAmount") }}  
                   type="number" 
                   value={trackedToAmount}
-                  placeholder="To amount" />
+                  placeholder="To amount"
+                  data-testid="amount-accordian-item-to-value" />
                 </InputGroup>
               </Form.Group>
             </Col>

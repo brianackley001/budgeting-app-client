@@ -11,7 +11,7 @@ import DateRangeAccordianItem from "./filterOptions/DateRangeAccordianItem";
 import NotesAccordianItem from "./filterOptions/NotesAccordianItem";
 import TagAccordianItem from "./filterOptions/TagAccordianItem";
 
-export default function FilterOptions(props) {
+export default function FilterOptions(props: any){
   const { accounts, filteringInEffect, paginationConfig, placement, tags } = props;
   const dispatch = useAppDispatch();
 

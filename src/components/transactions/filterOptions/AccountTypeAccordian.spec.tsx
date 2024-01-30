@@ -1,3 +1,4 @@
+import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
 import AccountTypeAccordian from './AccountTypeAccordian';
@@ -31,6 +32,7 @@ test.each([
   { accounts, accountTypeIdLabel, accountTypeLabel, eventKey, onSelect, trackedAccounts, expectedLabelText }) => {
   // Arrange
     render(
+
         <AccountTypeAccordian
           accounts={accounts}
           onSelect={onSelect}
@@ -38,7 +40,7 @@ test.each([
           accountTypeIdLabel={accountTypeIdLabel}
           accountTypeLabel={accountTypeLabel}
           eventKey={eventKey}
-        />
+        /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> // Specify the type of the component
       );  
 
     // Assert

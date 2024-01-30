@@ -1,5 +1,4 @@
-
-import { Fragment } from 'react';
+import React, { Fragment } from 'react'; 
 import { Accordion, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"

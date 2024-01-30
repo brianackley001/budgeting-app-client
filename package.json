@@ -1,83 +1,86 @@
 {
-    "name": "ms-identity-javascript-react-spa",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@azure/msal-browser": "^3.5.0",
-        "@azure/msal-common": "^14.5.0",
-        "@azure/msal-react": "^2.0.7",
-        "@fortawesome/fontawesome-svg-core": "^6.5.1",
-        "@fortawesome/free-brands-svg-icons": "^6.5.1",
-        "@fortawesome/free-regular-svg-icons": "^6.5.1",
-        "@fortawesome/free-solid-svg-icons": "^6.5.1",
-        "@fortawesome/react-fontawesome": "^0.2.0",
-        "@popperjs/core": "^2.11.8",
-        "@reduxjs/toolkit": "^1.9.7",
-        "@testing-library/user-event": "^14.5.2",
-        "@types/react-redux": "^7.1.33",
-        "axios": "^1.6.2",
-        "bootstrap": "^5.3.2",
-        "buffer": "^6.0.3",
-        "localforage": "^1.10.0",
-        "lodash.isequal": "^4.5.0",
-        "match-sorter": "^6.3.1",
-        "react": "^18.2.0",
-        "react-bootstrap": "^2.9.1",
-        "react-dom": "^18.2.0",
-        "react-icons": "^4.12.0",
-        "react-plaid-link": "^3.5.1",
-        "react-redux": "^8.1.3",
-        "react-router-bootstrap": "^0.26.2",
-        "react-router-dom": "^6.20.1",
-        "redux-devtools-extension": "^2.13.9",
-        "redux-thunk": "^2.4.2",
-        "sort-by": "^0.0.2",
-        "vite": "^5.0.4",
-        "vite-tsconfig-paths": "^4.2.1",
-        "web-vitals": "^3.5.0"
-    },
-    "devDependencies": {
-        "@testing-library/jest-dom": "^6.1.5",
-        "@testing-library/react": "^14.1.2",
-        "@types/jest": "^29.5.11",
-        "@types/node": "^20.10.4",
-        "@types/react": "^18.2.48",
-        "@types/react-dom": "^18.2.18",
-        "@vitejs/plugin-react": "^4.2.0",
-        "@vitest/coverage-v8": "^0.34.6",
-        "jest": "^29.7.0",
-        "jest-environment-jsdom": "^29.7.0",
-        "jsdom": "^23.0.1",
-        "sass": "^1.70.0",
-        "ts-jest": "^29.1.1",
-        "typescript": "^5.3.3",
-        "vite-plugin-top-level-await": "^1.4.1",
-        "vitest": "^0.34.6"
-    },
-    "scripts": {
-        "start": "vite",
-        "build": "tsc -p tsconfig.build.json && vite build",
-        "debug": "node vite",
-        "preview": "vite preview",
-        "test": "vitest",
-        "test:coverage": "vitest run --coverage --watch=false"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "ms-identity-javascript-react-spa",
+  "version": "0.1.0",
+  "private": true,
+  "overrides": {
+    "@types/react": "^18.0.0"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^3.5.0",
+    "@azure/msal-common": "^14.5.0",
+    "@azure/msal-react": "^2.0.7",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@popperjs/core": "^2.11.8",
+    "@reduxjs/toolkit": "^1.9.7",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react-redux": "^7.1.33",
+    "axios": "^1.6.2",
+    "bootstrap": "^5.3.2",
+    "buffer": "^6.0.3",
+    "localforage": "^1.10.0",
+    "lodash.isequal": "^4.5.0",
+    "match-sorter": "^6.3.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-plaid-link": "^3.5.1",
+    "react-redux": "^8.1.3",
+    "react-router-bootstrap": "^0.26.2",
+    "react-router-dom": "^6.20.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.2",
+    "sort-by": "^0.0.2",
+    "vite": "^5.0.4",
+    "vite-tsconfig-paths": "^4.2.1",
+    "web-vitals": "^3.5.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitest/coverage-v8": "^0.34.6",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^23.0.1",
+    "sass": "^1.70.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3",
+    "vite-plugin-top-level-await": "^1.4.1",
+    "vitest": "^0.34.6"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "debug": "node vite",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage --watch=false"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

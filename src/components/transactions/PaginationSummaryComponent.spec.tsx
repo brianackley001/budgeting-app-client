@@ -14,7 +14,12 @@ describe("Transaction Pagination Summary test", () => {
   ])('Pagination Summary($currentPage, $pageSize, $totalItemCount) -> $expected', (
     { currentPage, pageSize, totalItemCount, expected }) => {
     // Act
-    let item = render(<PaginationSummaryComponent currentPage={currentPage} pageSize={pageSize} totalItemCount={totalItemCount} />);
+    let item = render(
+      <PaginationSummaryComponent 
+        currentPage={currentPage} 
+        pageSize={pageSize} 
+        totalItemCount={totalItemCount} /> as React.ReactElement<any, string | React.JSXElementConstructor<any>>
+      );
     
     // Assert
     expect(screen.getByTestId('pagination-summary-container')).toBeInTheDocument();
