@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EventType } from "@azure/msal-browser";
-import "./scss/App.scss";
+import "./scss/app.scss";
 
 import {
   AuthenticatedTemplate,
