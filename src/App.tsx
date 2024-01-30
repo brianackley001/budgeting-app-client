@@ -18,8 +18,8 @@ import { Settings } from '@pages/Settings';
 import { Dashboard } from '@pages/Dashboard';
 import AlertDismissible from '@components/notifications/progressAlert';
 
-import {UnAuthenticatedNavBar} from '@components/navBar/UnAuthenticatedNavBar';
-import {AuthenticatedNavBar} from '@components/navBar/AuthenticatedNavBar';
+import { UnAuthenticatedNavBar } from '@components/navBar/UnAuthenticatedNavBar';
+import { AuthenticatedNavBar } from '@components/navBar/AuthenticatedNavBar';
 
 import { useMsalEvents } from "@hooks/useMsalEvents";
 
@@ -27,45 +27,40 @@ export default function App() {
   useMsalEvents();  // ensure that AccessToken is directed towards the App Redux Store
   return (
     <>
-      {/* <> */}
-        <AuthenticatedTemplate>
-          <Router>
-            <AuthenticatedNavBar />
-            <Routes>
-              <Route
-                path="/"
-                element={<Dashboard />}
-                errorElement={ErrorPage}
-              />
-              <Route
-                path="/accounts"
-                element={<Accounts />}
-                errorElement={ErrorPage}
-              />
-              <Route
-                path="/transactions"
-                element={<Transactions />}
-                errorElement={ErrorPage}
-              />
-              <Route
-                path="/settings"
-                element={<Settings />}
-                errorElement={ErrorPage}
-              />
-            </Routes>
-          </Router>
-          
-        <AlertDismissible />
-        </AuthenticatedTemplate>
+      <AuthenticatedTemplate>
+        <Router>
+          <AuthenticatedNavBar />
+          <Routes>
+            <Route
+              path="/"
+              element={<Dashboard />}
+              errorElement={ErrorPage}
+            />
+            <Route
+              path="/accounts"
+              element={<Accounts />}
+              errorElement={ErrorPage}
+            />
+            <Route
+              path="/transactions"
+              element={<Transactions />}
+              errorElement={ErrorPage}
+            />
+            <Route
+              path="/settings"
+              element={<Settings />}
+              errorElement={ErrorPage}
+            />
+          </Routes>
+        </Router>
 
-        <UnauthenticatedTemplate>
-          <UnAuthenticatedNavBar />
-          <>
-            <Image id="homePageLogo" src="/icon-3.png" alt="Mint Lite Logo" fluid />
-          </>
-          
-        </UnauthenticatedTemplate>
-      {/* </> */}
+        <AlertDismissible />
+      </AuthenticatedTemplate>
+
+      <UnauthenticatedTemplate>
+        <UnAuthenticatedNavBar />
+        <Image id="homePageLogo" src="/icon-3.png" alt="Mint Lite Logo" fluid />
+      </UnauthenticatedTemplate>
     </>
   );
 }
