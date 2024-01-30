@@ -21,9 +21,7 @@ export const UnAuthenticatedNavBar = () => {
       >
         <Container>
           <Navbar.Brand>Mint Lite</Navbar.Brand>
-          <div className="justify-content-end">
-            <SignInButton />
-          </div>
+            <SignInButton className="justify-content-end" />
         </Container>
       </Navbar>
     </>

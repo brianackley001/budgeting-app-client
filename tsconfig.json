@@ -14,7 +14,8 @@
       "@pages/*": ["src/pages/*"],
       "@store/*": ["src/store/*"],
       "@services/*": ["src/services/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "react": [ "./node_modules/@types/react" ]
     },
 
     "skipLibCheck": true,
