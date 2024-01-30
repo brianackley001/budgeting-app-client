@@ -15,7 +15,8 @@ export default function DateRangeAccordianItem(props) {
                   onChange={(event) => { onSelect(event, "startDate") }} 
                   type="date" 
                   value={trackedStartDate}
-                  placeholder="Start Date" />
+                  placeholder="Start Date"
+                  data-testid="date-range-accordian-item-start-date" />
               </Form.Group>
             </Col>
             <Col xs={6}>
@@ -25,7 +26,8 @@ export default function DateRangeAccordianItem(props) {
                   onChange={(event) => { onSelect(event, "endDate") }}  
                   type="date" 
                   value={trackedEndDate}
-                  placeholder="End Date" />
+                  placeholder="End Date"
+                  data-testid="date-range-accordian-item-end-date"  />
               </Form.Group>
             </Col>
           </Row>
