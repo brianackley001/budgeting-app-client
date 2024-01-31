@@ -14,10 +14,10 @@ export default function EmptyTransactionResult() {
         <Row>
           <Col xs={12}>
             <Card className="transactionPaginationContainer">
-              <Card.Title className="text-danger">No matching transactions found...</Card.Title>
-              <Card.Body>
+              <Card.Title className="text-danger" data-testid="transaction-empty-container-card-title">No matching transactions found...</Card.Title>
+              <Card.Body data-testid="transaction-empty-container-card-body">
                 <p>Based on your filtering and sorting criteria, we were not able to find any matching transactions. </p>
-                <Alert variant="warning">
+                <Alert variant="warning" data-testid="transaction-empty-container-alert">
                 <b>Please check your filters and try again.</b> 
                 </Alert>
                 </Card.Body>
