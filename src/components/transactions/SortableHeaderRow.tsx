@@ -1,6 +1,5 @@
+import React from 'react'; 
 import SortableHeaderItem from "./SortableHeaderItem";
-
-
 
 /**
  * Renders sort icon for transaction table headers and updates Redux state with new sort order

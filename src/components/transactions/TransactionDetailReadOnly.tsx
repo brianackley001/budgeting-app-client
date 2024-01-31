@@ -14,14 +14,14 @@ export default function  TransactionDetailReadOnly(props){
     item.userDescription;
   return (
     <>
-        <span className="card-text" id="readOnlyTransaction" data-testid="transaction-detail=read-only-container">
+        <span className="card-text" id="readOnlyTransaction" data-testid="transaction-detail-read-only-container">
                 <Row>
                   <Col xs={6}>Date:</Col>
                   <Col xs={6}>{item.date}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Description:</Col>
-                  <Col xs={6}>{descriptionDisplayValue}</Col>
+                  <Col xs={6} data-testid="transaction-detail-read-only-description-display-value">{descriptionDisplayValue}</Col>
                 </Row>
                 <Row>
                   <Col xs={6}>Amount:</Col>
