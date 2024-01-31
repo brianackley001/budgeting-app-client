@@ -9,11 +9,12 @@ import { Col, Row } from 'react-bootstrap';
 
 
 function AccountSummaryListItem({item, balanceIsDebt}) {
+  const accountDisplayValue = item.customName && item.customName.length > 0 ? item.customName : item.name;
   return (
     <ListGroupItem data-testid="list-group-item-container" variant="flush" eventKey={item.accountId}>
       <Row >
         <Col xs="9" data-testid="list-item-name" className='accountSummaryListItemText'>
-          {item.name}
+          {accountDisplayValue}
         </Col>
         <Col xs="3" data-testid="list-item-balance" className='accountSummaryListItemBalance'>
           {balanceIsDebt ? "-" : ""}{item.balances.current.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }

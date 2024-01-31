@@ -116,16 +116,19 @@ body {
 .iconStyle {
   margin-right: 5px;
 }
-#topNav a.active{
+
+#topNav a.active {
   color: #ffffffe7 !important;
   background-color: #2baf3d !important;
 }
+
 .alertFooter {
   align-self: flex-end;
   padding: 5px;
   width: 94vw;
   margin: 15vh auto;
 }
+
 .dashboardAccountContainer {
 
   align-items: center;
@@ -134,39 +137,80 @@ body {
   width: 92%;
   height: 100%;
 }
-.accountSummaryListItemBalance{
+
+.accountSummaryListItemBalance {
   font-size: 14px;
   font-weight: 700;
 }
-.accountSummaryListItemText{
+
+.accountSummaryListItemText {
   font-size: 14px;
   font-weight: 400;
 }
+
 .accordion-button:not(.collapsed) {
   color: #000000;
   background-color: #ffffff;
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.13);
 }
+
 .cardHeaderIconRight {
   margin-right: 15px;
   float: right;
 }
+
 .addAccountButton {
   margin-right: 5px;
   float: right;
 }
+
 .headerBottmMargin {
   margin-bottom: 20px;
 }
+
 .transactionGridLineItem {
   padding: 5px;
   border-bottom: 1px solid #e5e5e5;
   font-size: small;
 }
+
 .transactionModalSummary {
   font-size: small;
 }
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+
+.transactionTableContainer {
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 97%;
+  height: 100%;
+}
+
+.transactionPaginationContainer {
+  margin-top: 75px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
   background-color: #9ae7a5;
   cursor: pointer;
+}
+
+.cursorNotAllowed {
+  cursor: not-allowed;
+}
+
+.topMarginSpacer {
+  margin-top: 20px;
+}
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
 }

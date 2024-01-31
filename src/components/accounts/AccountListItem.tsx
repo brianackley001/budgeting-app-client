@@ -1,27 +1,33 @@
 import React, { useState } from "react";
 import {Button, Col, Row, Accordion, Form } from "react-bootstrap";
-import { AccountListItemType } from "../../types/accountListItem.ts";
+import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { upsertAccount } from "@store/accountSlice.ts";
 
 /**
- * Renders information about the user obtained from MS Graph
+ * Renders information about the user account
  * @param props
  */
 
-
 function AccountListItem({item}) {
   //const { name, mask, type, balances, includeInTransactions } = props;
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector(state => state.userSlice.userId);
+
   const [activeAccordianKeys, setActiveAccordianKeys] = useState<string[]>([]);
-  const [formAccountName, setFormAccountName] = useState(item.name);
-  const [formUseInTrasactions, setFormUseInTransactions] = useState(item.includeInTransactions);
+  const [formAccountName, setFormAccountName] = useState((item.customName && item.customName.length > 0) ? item.customName : item.name);
+  const [formUseInTransactions, setFormUseInTransactions] = useState(item.includeAccountTransactions);
   const [validated, setValidated] = useState(false);
-  const typeDisplayValue = `${item.type} (${item.subtype})`
+  const typeDisplayValue = `${item.type} (${item.subtype})`;
+  const accountDisplayValue = item.customName && item.customName.length > 0 ? item.customName : item.name;
 
 
 
   function handleTextareaChange(e) {
     setFormAccountName(e.target.value);
   }
+
   function handleCheckboxChange(e) {
+    setFormUseInTransactions(e.target.checked);
   }
 
   const handleSelect = (eventKey: any) => setActiveAccordianKeys(eventKey as string[]);
@@ -39,27 +45,33 @@ function AccountListItem({item}) {
 
     setValidated(true);
     console.log('form submitted');
+    // Save User Object to DB (accounts are child nodes of User in the DB):
+    let account = {
+      ...item,
+      customName: formAccountName,
+      includeAccountTransactions: formUseInTransactions
+    }
+    dispatch(upsertAccount(userId,account ));
 
-    
     event.preventDefault();
     handleCollapseClick();
+    setValidated(false);
   };
 
   return (
     <Accordion data-testid="accordian-container"  activeKey={activeAccordianKeys} onSelect={handleSelect}>
       <Accordion.Item eventKey="0" >
-        <Accordion.Header data-testid="accordian-header">{item.name} (<i>...{item.mask}</i>)</Accordion.Header>
+        <Accordion.Header data-testid="accordian-header">{accountDisplayValue} (<i>...{item.mask}</i>)</Accordion.Header>
         <Accordion.Body data-testid="accordian-body">
           <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordian-form">
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridSystemName">
-                <Form.Label>System Account Name</Form.Label>
+                <Form.Label>Original Imported Name (system)</Form.Label>
                 <Form.Control 
                   type="text" 
                   name="accountName" 
                   data-testid="accordian-form-account-name" 
-                  defaultValue={formAccountName} 
-                  onChange={handleTextareaChange}
+                  defaultValue={item.name} 
                   aria-label="Disabled input example"
                   disabled
                   readOnly
@@ -102,7 +114,7 @@ function AccountListItem({item}) {
                   type="switch"
                   id="includeInTransactions"
                   label="Include in transactions"
-                  defaultChecked={formUseInTrasactions}
+                  defaultChecked={formUseInTransactions}
                   onChange={handleCheckboxChange}
                   data-testid="accordian-form-include-in-transactions" 
                 />

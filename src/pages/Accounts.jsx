@@ -1,14 +1,11 @@
-import React, { useCallback, useState } from "react";
-import { Card, Row, Col, Button } from "react-bootstrap";
-import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
+//import React, { useCallback, useState } from "react";
+import { Card } from "react-bootstrap";
+import { useAppSelector } from "../hooks/storeHooks";
 import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken.js";
-import { selectUid, selectAccessToken } from "../store/msalSlice";
 import SimplePlaidLink from "../components/SimplePlaidLink";
 import AccountList from "../components/accounts/AccountList.tsx";
-// import axios from "axios";
 
 export const Accounts = () => {
-  const accessToken = useAppSelector(selectAccessToken);
   useAcquireAccessToken();
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const institutions = Array.from(new Set(accountItems.map((item) => item.institutionId)))

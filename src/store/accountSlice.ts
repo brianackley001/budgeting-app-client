@@ -1,15 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
+import axiosInstance  from "@utils/axiosInstance";
+
 interface accountItem {
+  [x: string]: unknown;
   id: string,
-  userId: string,
-  name: string,
+  balances: {available: number, current: number, limit: number, isoCurrencyCode: string, unofficialCurrencyCode: string},
   mask: string,
+  name: string,
+  customName: string,
   type: string,
   subtype: string,
   institutionId: string,
   institutionName: string,
-  balances: {available: number, current: number, limit: number, isoCurrencyCode: string, unofficialCurrencyCode: string}
+  userId: string
 }
 interface institutionItem {
   id: string,
@@ -27,6 +31,23 @@ const initialState: AccountState = {
   institutions: []
 }
 
+
+// Thunk function
+export function upsertAccount(userId, account) {
+  return async function (dispatch) {
+      //API Call:
+      try {
+        const response = await axiosInstance.post("account", {
+          userId: userId,
+          account: account,
+        });
+
+        dispatch(setAccounts(response.data.accounts));
+      } catch (error) {
+        console.log(error);
+      }
+  };
+}
 
 export const accountSlice = createSlice({
   name: 'accounts',

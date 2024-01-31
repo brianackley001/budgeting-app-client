@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
-import { setAccounts } from "../store/accountSlice";
-// import { selectAccessToken} from "../store/msalSlice";
-import { setInstitutions, setLinkedItems, selectInstitutions } from "../store/plaidSlice";
-import { setTransactions } from "../store/transactionSlice"; 
-import { setName, setUserId, setUserName } from "../store/userSlice";
-import { axiosInstance } from "../utils/axiosInstance";
+//import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { setAccounts } from "@store/accountSlice";
+import { setLinkedItems } from "@store/plaidSlice";
+import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice"; 
+import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
+import  axiosInstance from "@utils/axiosInstance";
 import {
   setHeaderText,
   setMessageText,
@@ -72,6 +71,8 @@ const setUserState = async (dispatch, user) => {
     dispatch(setUserId(user.id));
     dispatch(setUserName(user.userName));
     dispatch(setName(user.userShortName));
+    dispatch(setTransactionTags(user.transactionTags));
+    dispatch(setTransactionsPerPage(user.preferences.transactionItemsPerPage));
     return true;
   } catch (error) {
     console.log(error);
@@ -83,43 +84,58 @@ const setUserState = async (dispatch, user) => {
   }
 };
 
-const setTransactionState = async (accessTokenValue, dispatch, linkedItems) => {
-  if(linkedItems && linkedItems.length > 0) {
+const setTransactionState = async (dispatch, paginationConfig, user) => {
+  if (user.accounts && user.accounts.length > 0) {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + accessTokenValue,
-        },
+      //const itemsPerPage = useAppSelector(selectTransactionItemsPerPage);
+      // const config = {
+      //   headers: {
+      //     Authorization: "Bearer " + accessTokenValue,
+      //   },
+      // };
+
+      // GetTransactionsByDate fr all linked accounts - preserve if needed elsewhere...
+      //PIVOT to SYNC methos ehre for getting all account data based on last cursor date...
+
+      // let postBodies = new Array<Object>();
+      // linkedItems.forEach((item) => {
+      //   const body = {
+      //     itemId: item.item_id,
+      //     userId: item.user_id,
+      //     startDate: '2023-01-01',
+      //     endDate: '2024-01-31',
+      //     institution: {id: item.institution_id, name: item.institution_name}
+      //   };
+      //   postBodies.push(body);
+      // });
+
+      // const postRequests = postBodies.map(postBody =>{
+      //   return axiosInstance.post("/transactionsByDate", postBody, config)
+      // });
+
+      // let outputCollection = new Array<Object>();
+      // const responses = await Promise.all(postRequests);
+      // for(const response of responses) {
+      //   if(outputCollection.length === 0) {
+      //     outputCollection = response.data.transactions.transactions;
+      //   }else {
+      //     outputCollection = outputCollection.concat(response.data.transactions.transactions); // = [outputCollection, ...response];
+      //   }
+      // }
+      // GET page one of PagedTransactions from DB...
+
+      const updatedPaginationConfig = {
+        ...paginationConfig,
+        accountIds: user.accounts
+          .filter((item) => item.includeAccountTransactions)
+          .map((item) => item.accountId).join(","),
+        pageSize: user.preferences.transactionItemsPerPage,
+        userId: user.id,
       };
 
-      let postBodies = new Array<Object>();
-      linkedItems.forEach((item) => {
-        const body = {
-          itemId: item.item_id,
-          userId: item.user_id,
-          startDate: '2023-01-01',
-          endDate: '2024-01-31',
-          institution: {id: item.institution_id, name: item.institution_name}
-        };
-        postBodies.push(body);
-      });
+      dispatch(setTransactionPagination(updatedPaginationConfig));
+      dispatch(getPagedTransactions(updatedPaginationConfig));
 
-      const postRequests = postBodies.map(postBody =>{
-        return axiosInstance.post("/transactionsByDate", postBody, config)
-      });
-
-      let outputCollection = new Array<Object>();
-      const responses = await Promise.all(postRequests);
-      for(const response of responses) {
-        if(outputCollection.length === 0) {
-          outputCollection = response.data.transactions.transactions;
-        }else {
-          outputCollection = outputCollection.concat(response.data.transactions.transactions); // = [outputCollection, ...response];
-        }
-      }
-
-      // Update the State with collection of transactions:
-      dispatch(setTransactions(outputCollection));
       return true;
     } catch (error) {
       console.log(error);
@@ -131,9 +147,9 @@ const setTransactionState = async (accessTokenValue, dispatch, linkedItems) => {
     }
   }
   return true;
-}
+};
 
- const loginSync = async (user, dispatch, accessTokenValue) => {
+ const loginSync = async (user, dispatch, paginationConfig) => {
 
   if (user) {
     await beginSyncOperation(dispatch);
@@ -147,7 +163,7 @@ const setTransactionState = async (accessTokenValue, dispatch, linkedItems) => {
       }
 
       if(success) {
-        success &&= await setTransactionState(accessTokenValue, dispatch, user.linkedItems);
+        success &&= await setTransactionState(dispatch, paginationConfig, user);
       }
     }
 

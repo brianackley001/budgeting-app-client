@@ -6,22 +6,22 @@ import { AccountListItemType } from "../types/accountListItem.ts";
 import { AccountSummaryListItemType} from "../types/accountSummaryListItem.ts";
 
 export const Settings = () => {
-  const accountListItem: AccountListItemType = { 
-    accountId: "lv5KvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
-    balances: {
-        available: 100,
-        current: 110,
-        iso_currency_code: "USD",
-        limit: null,
-        unofficial_currency_code: null
-    },
-    mask: "0000",
-    name: "Plaid Checking",
-    official_name: "Plaid Gold Standard 0% Interest Checking",
-    subtype: "checking",
-    type: "depository",
-    includeInTransactions: true,
-  };
+  // const accountListItem: AccountListItemType = { 
+  //   accountId: "lv5KvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
+  //   balances: {
+  //       available: 100,
+  //       current: 110,
+  //       iso_currency_code: "USD",
+  //       limit: null,
+  //       unofficial_currency_code: null
+  //   },
+  //   mask: "0000",
+  //   name: "Plaid Checking",
+  //   official_name: "Plaid Gold Standard 0% Interest Checking",
+  //   subtype: "checking",
+  //   type: "depository",
+  //   includeInTransactions: true,
+  // };
   let a: AccountSummaryListItemType = {
     institutionId: "ins_1234",
     itemId: "item_1234",
@@ -91,7 +91,7 @@ export const Settings = () => {
             <Card style={{ width: "23rem" }}>
               <Card.Body>
                 <Card.Header>Settings</Card.Header>
-                  <AccountListItem {...accountListItem} />
+                  {/* <AccountListItem {...accountListItem} /> */}
               </Card.Body>
             </Card>
           </Col>
