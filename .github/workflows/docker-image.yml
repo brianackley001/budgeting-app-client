@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ 'develop',  'brianackley001**', 'bug**', 'issue**', 'hotfix**', 'feature**', 'release**', 'support**', 'version**' ]
+    branches: [ 'main', 'develop',  'brianackley001**', 'bug**', 'issue**', 'hotfix**', 'feature**', 'release**', 'support**', 'version**' ]
   pull_request:
-    branches: [ 'develop',  'brianackley001**', 'bug**', 'issue**', 'hotfix**', 'feature**', 'release**', 'support**', 'version**'  ]
+    branches: [ 'main', 'develop']
 
 permissions:
   contents: 'read'
