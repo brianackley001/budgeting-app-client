@@ -8,7 +8,7 @@ export const LoadingMessage = (props) => {
     {isLoading && 
     <span className="loadingSpinner" id="loadingMessage" data-testid="transaction-loading-message">
       <Row>
-        <Col xs={12}>
+        <Col xs={12} data-testid="transaction-loading-message-spinner-container">
           <Spinner animation="grow" variant="primary" className="iconStyle" />
           <Spinner animation="grow" variant="primary" className="iconStyle" />
           <Spinner animation="grow" variant="primary" className="iconStyle" />
@@ -16,7 +16,7 @@ export const LoadingMessage = (props) => {
           <Spinner animation="grow" variant="primary" className="iconStyle" />
           <br/>
           <br/>
-          <h6><i>...Retrieving transactions...</i></h6>
+          <h6 data-testid="transaction-loading-message-text"><i>...Retrieving transactions...</i></h6>
         </Col>
       </Row>
     </span>}
