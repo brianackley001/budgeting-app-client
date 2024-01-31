@@ -5,8 +5,8 @@ export default function TagAccordianItem(props) {
   return (
     <>
       <Accordion.Item eventKey={eventKey}>
-        <Accordion.Header>Tags</Accordion.Header>
-        <Accordion.Body>
+        <Accordion.Header data-testid="tag-accordian-item-header">Tags</Accordion.Header>
+        <Accordion.Body data-testid="tag-accordian-item-body">
           {
             tags.map((tag, index) => (
               <Form.Check
@@ -16,6 +16,7 @@ export default function TagAccordianItem(props) {
                 type="checkbox"
                 id={index}
                 value={tag}
+                data-testid={`tag-accordian-item-checkbox-${tag}-${index}`}
                 checked={trackedTags.includes(tag)}
                 onChange={(event) => { onSelect(event) }}
               />

@@ -15,7 +15,13 @@ describe("Account Accordian Item", async() => {
   const trackedAccounts = [1];
 
   beforeEach(() => {
-    render(<AccountAccordianItem accounts={accounts} accountTypeIdLabel={accountTypeIdLabel} accountTypeLabel={accountTypeLabel} eventKey={eventKey} onSelect={onSelect} trackedAccounts={trackedAccounts} />);
+    render(
+    <AccountAccordianItem accounts={accounts} 
+      accountTypeIdLabel={accountTypeIdLabel} 
+      accountTypeLabel={accountTypeLabel} 
+      eventKey={eventKey} onSelect={onSelect} 
+      trackedAccounts={trackedAccounts} /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+    );
   });
 
   test("should render component elements as expected", () => {
