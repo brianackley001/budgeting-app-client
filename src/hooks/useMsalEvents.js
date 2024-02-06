@@ -78,7 +78,7 @@ const useMsalEvents = () => {
         event.eventType === EventType.LOGIN_SUCCESS &&
         event.payload.account
       ) {
-        console.log(event.payload.account);
+        //console.log(event.payload.account);
         //setUserInfoSaved(false);
         dispatch(setUserId(event.payload.account.localAccountId));
         dispatch(setUserName(event.payload.account.username));

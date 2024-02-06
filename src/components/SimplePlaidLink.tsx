@@ -5,11 +5,10 @@ import { setPublicToken } from "@store/plaidSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from "@hooks/storeHooks";
-import { selectAccessToken, selectUid } from "@store/msalSlice";
+import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
-import { syncTransactions} from "@store/transactionSlice";
+import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
-//import {handleLinkSuccessData} from "@utils/linkedItemUtils";
 
 
 import MsalUtils from '@utils/msalToken'
@@ -26,8 +25,8 @@ import {
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const accessToken = useAppSelector(selectAccessToken);
-  const userId = useAppSelector(selectUid);
-  const msalTokenValue =  MsalUtils();  //useAppSelector(selectAccessToken);
+  const userId = useAppSelector(state => state.userSlice.userId);
+  const transactionPagination = useAppSelector(state => state.transactionSlice.transactionPagination);
   const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
@@ -69,6 +68,7 @@ const SimplePlaidLink = () => {
     const tokenResponse = await axiosInstance.post('set_access_token', linkedItemObject);
     await dispatch(getItemAccounts(userId, tokenResponse.data.item_id));
     await dispatch(syncTransactions(userId, tokenResponse.data.item_id, {id:linkedItemObject.institution_id, name:linkedItemObject.institution_name}));
+    await dispatch(getPagedTransactions(transactionPagination));
   };
 
   const { open, ready } = usePlaidLink({

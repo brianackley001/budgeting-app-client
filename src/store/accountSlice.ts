@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
+import { setPaginationAccountIds } from "@store/transactionSlice";
 
 interface accountItem {
   [x: string]: unknown;
@@ -51,19 +52,34 @@ export function upsertAccount(userId, account) {
 
 // Thunk function
 export function getItemAccounts(userId, itemId) {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
       //API Call:
       try {
         const response = await axiosInstance.post('item/accounts', {
           userId: userId,
           itemId: itemId,
         });
-        dispatch(setAccounts(response.data));
+
+        // Given this represents a new item (institution)and a reset of the user.accounts, reflect the latest accounts
+        //  in the transactionPagination context
+        const itemAccountIds = response.data.map((account) => account.accountId);
+        const tranPagination = getState().transactionSlice.transactionPagination; 
+
+        if (tranPagination.accountIds && tranPagination.accountIds.length > 0) {
+          const newAccountIdSet = new Set([...tranPagination.accountIds.split(","), ...itemAccountIds]);
+          const accountIds = Array.from(newAccountIdSet).sort().join(",");
+          await dispatch(setPaginationAccountIds(accountIds));
+        } else {
+          const accountIds = itemAccountIds;
+          await dispatch(setPaginationAccountIds(accountIds.toString()));
+        }
+
+        // Reflect the latest accounts in the user.accounts context
+        await dispatch(setAccounts(response.data));
       } catch (error) {
         console.log(error);
       }
   };
-
 }
 
 export const accountSlice = createSlice({
