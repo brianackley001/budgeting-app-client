@@ -32,6 +32,18 @@ const initialState: AccountState = {
   institutions: []
 }
 
+// Thunk function
+export function getAccountBalances(userId) {
+  return async function (dispatch) {
+      //API Call:
+      try {
+        const response = await axiosInstance.post(`accountbalance`, {userId: userId});
+        await dispatch(setAccounts(response.data));
+      } catch (error) {
+        console.log(error);
+      }
+  };
+}
 
 // Thunk function
 export function upsertAccount(userId, account) {
@@ -73,6 +85,8 @@ export function getItemAccounts(userId, itemId) {
           const accountIds = itemAccountIds;
           await dispatch(setPaginationAccountIds(accountIds.toString()));
         }
+
+        // Check accountIds - if any map to type "Investment" then call API for investments for the specified itemId
 
         // Reflect the latest accounts in the user.accounts context
         await dispatch(setAccounts(response.data));
