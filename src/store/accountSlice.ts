@@ -49,6 +49,23 @@ export function upsertAccount(userId, account) {
   };
 }
 
+// Thunk function
+export function getItemAccounts(userId, itemId) {
+  return async function (dispatch) {
+      //API Call:
+      try {
+        const response = await axiosInstance.post('item/accounts', {
+          userId: userId,
+          itemId: itemId,
+        });
+        dispatch(setAccounts(response.data));
+      } catch (error) {
+        console.log(error);
+      }
+  };
+
+}
+
 export const accountSlice = createSlice({
   name: 'accounts',
   // `createSlice` will infer the state type from the `initialState` argument

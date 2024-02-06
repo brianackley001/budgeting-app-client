@@ -2,7 +2,14 @@ import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import isEqual from "lodash.isequal";
 import type { RootState } from "./store";
 import axiosInstance  from "@utils/axiosInstance";
-import { paginationLinkSet } from "@utils/transactionUtils"
+import { paginationLinkSet } from "@utils/transactionUtils";
+import {
+  setHeaderText,
+  setMessageText,
+  setInProgress,
+  setShowAlert,
+  setVariantStyle,
+} from "@store/alertSlice";
 
 interface transactionItem {
   id: string,
@@ -167,6 +174,37 @@ export function getPagedTransactions(
   };
 }
 
+export function syncTransactions(userId: string, itemId: string, institution: any) {
+  return async function (dispatch) {
+    dispatch(setIsLoading(true));
+    dispatch(setInProgress(true));
+    dispatch(setHeaderText("Syncing"));
+    dispatch(setMessageText("Please wait while we sync your accounts..."));
+    dispatch(setShowAlert(true));
+    //API Call:
+    try {
+      await axiosInstance.post("transactionsSync", {
+        userId: userId,
+        itemId: itemId,
+        institution: institution,
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch(setInProgress(false));
+      dispatch(setHeaderText("Sync Error"));
+      dispatch(setMessageText("Error retrieving transaction data."));
+      dispatch(setVariantStyle("danger"));
+      dispatch(setShowAlert(true));
+    } finally {
+      dispatch(setIsLoading(false));
+      dispatch(setInProgress(false));
+      dispatch(setHeaderText("Sync Completed"));
+      dispatch(setMessageText("Your account sync is complete."));
+      dispatch(setVariantStyle("success"));
+      dispatch(setShowAlert(true));
+    }
+  };
+}
 export const transactionSlice = createSlice({
   name: "transactions",
   // `createSlice` will infer the state type from the `initialState` argument

@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from "@hooks/storeHooks";
 import { selectAccessToken, selectUid } from "@store/msalSlice";
-import { setAccounts } from "@store/accountSlice";
+import { getItemAccounts } from "@store/accountSlice";
+import { syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
+//import {handleLinkSuccessData} from "@utils/linkedItemUtils";
 
 
 import MsalUtils from '@utils/msalToken'
@@ -54,39 +56,20 @@ const SimplePlaidLink = () => {
       institution_id: metadata.institution!.institution_id,
       institution_name:metadata.institution!.name
     };
-    const institutionAccounts = {
-      user_id: userId,
-      institution: metadata.institution,
-      accounts: metadata.accounts,
-    }
 
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      method: 'POST'
-    };
     // send public_token to your server
     // https://plaid.com/docs/api/tokens/#token-exchange-flow 
     dispatch(setPublicToken(publicToken));
-    console.log(`publicToken: ${publicToken}`);
-    axiosInstance.post('set_access_token', linkedItemObject, config)
-      .then((response) => {
-        console.log(response.data);
-        axiosInstance.get(`item/${response.data.item_id}/${userId}`, config)
-          .then((response) => {
-            console.log(response.data);
-            //dispatch(setAccounts(response.data.accounts));
-          }
-          ).catch((error) => {
-            console.log(error);
-          });
-      }
-      ).catch((error) => {
-        console.log(error);
-      });
+
+    // handle DB/API updates & calls..
+    handleLinkSuccessData(linkedItemObject);
   }, []);
+
+  const handleLinkSuccessData = async(linkedItemObject) => {
+    const tokenResponse = await axiosInstance.post('set_access_token', linkedItemObject);
+    await dispatch(getItemAccounts(userId, tokenResponse.data.item_id));
+    await dispatch(syncTransactions(userId, tokenResponse.data.item_id, {id:linkedItemObject.institution_id, name:linkedItemObject.institution_name}));
+  };
 
   const { open, ready } = usePlaidLink({
     token: plaidLinkToken,

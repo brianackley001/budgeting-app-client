@@ -6,6 +6,7 @@ import { NavLink  } from 'react-router-dom';
 
 import { SignOutButton } from "../buttons/SignOutButton";
 import { StoreRefreshButton } from "../buttons/StoreRefreshButton";
+import { TestingButton} from "../buttons/TestingButton.jsx";
 
 /**
  * Renders the navbar component with a sign-in or sign-out button depending on whether or not a user is authenticated
@@ -37,6 +38,9 @@ export const AuthenticatedNavBar = () => {
               </Nav.Link>
               <Nav.Link eventKey={4}>
                 <StoreRefreshButton /> 
+              </Nav.Link>
+              <Nav.Link eventKey={5}>
+                <TestingButton /> 
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

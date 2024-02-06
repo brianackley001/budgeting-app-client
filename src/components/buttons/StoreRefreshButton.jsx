@@ -1,8 +1,8 @@
 import { loginSync } from '../../utils/loginStateUtils.ts';
-import { useAppSelector, useAppDispatch } from "../../hooks/storeHooks";
+import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { selectTransactionPagination } from "@store/transactionSlice"; 
-import axiosInstance from "../../utils/axiosInstance";
+import axiosInstance from "@utils/axiosInstance";
 import Button from "react-bootstrap/Button";
 
 export const StoreRefreshButton = () => {
