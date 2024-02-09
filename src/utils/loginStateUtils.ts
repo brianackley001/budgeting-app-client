@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 //import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice"; 
+import { getPagedTransactions, setTransactionPagination, syncTransactions } from "@store/transactionSlice"; 
 import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
 import  axiosInstance from "@utils/axiosInstance";
 import {
@@ -87,34 +87,57 @@ const setUserState = async (dispatch, user) => {
 const setTransactionState = async (dispatch, paginationConfig, user) => {
   if (user.accounts && user.accounts.length > 0) {
     try {
-      //const itemsPerPage = useAppSelector(selectTransactionItemsPerPage);
-      // const config = {
-      //   headers: {
-      //     Authorization: "Bearer " + accessTokenValue,
-      //   },
-      // };
+      //  syncTransactions(userId: string, itemId: string, institution: any, showAlert: boolean = true)
+      let itemRequests = new Array();
+      let investmentItemRequests = new Array();     
+      user.linkedItems.forEach((item) => {
+        if (
+          user.accounts.find((account) => account.itemId === item.item_id)
+            .type !== "investment"
+        ) {
+          const body = {
+            itemId: item.item_id,
+            userId: item.user_id,
+            institution: {
+              id: item.institution_id,
+              name: item.institution_name,
+            },
+          };
+          itemRequests.push(body);
+        }
 
-      // GetTransactionsByDate fr all linked accounts - preserve if needed elsewhere...
-      //PIVOT to SYNC methos ehre for getting all account data based on last cursor date...
+        // Account for Investment Account Transaction requests...
+        if (
+          user.accounts.find((account) => account.itemId === item.item_id)
+            .type === "investment"
+        ) {
+          const body = {
+            itemId: item.item_id,
+            userId: item.user_id,
+            institution: {
+              id: item.institution_id,
+              name: item.institution_name,
+            },
+          };
+          investmentItemRequests.push(body);
+        }
+      });
 
-      // let postBodies = new Array<Object>();
-      // linkedItems.forEach((item) => {
-      //   const body = {
-      //     itemId: item.item_id,
-      //     userId: item.user_id,
-      //     startDate: '2023-01-01',
-      //     endDate: '2024-01-31',
-      //     institution: {id: item.institution_id, name: item.institution_name}
-      //   };
-      //   postBodies.push(body);
-      // });
+      const storeRequests = itemRequests.map((request) =>{
+        dispatch(syncTransactions(request.userId, request.itemId, request.institution, false))
+      });
 
-      // const postRequests = postBodies.map(postBody =>{
-      //   return axiosInstance.post("/transactionsByDate", postBody, config)
-      // });
+      // let investmentStoreRequests = new Array();
+      // if(investmentItemRequests.length > 0) {
+      //   investmentStoreRequests = investmentItemRequests.map((request) =>{
+      //     return dispatch(syncTransactions(request.userId, request.itemId, request.institution, false))
+      //   });
+      // }
 
-      // let outputCollection = new Array<Object>();
-      // const responses = await Promise.all(postRequests);
+      //let outputCollection = new Array<Object>();
+      const responses = await Promise.all(storeRequests)
+        .then((values) => {console.log(values); return values;})
+        .catch((error) => {console.log(error); return null;})
       // for(const response of responses) {
       //   if(outputCollection.length === 0) {
       //     outputCollection = response.data.transactions.transactions;
@@ -122,8 +145,8 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
       //     outputCollection = outputCollection.concat(response.data.transactions.transactions); // = [outputCollection, ...response];
       //   }
       // }
-      // GET page one of PagedTransactions from DB...
 
+      // GET page one of PagedTransactions from DB...
       const updatedPaginationConfig = {
         ...paginationConfig,
         accountIds: user.accounts
@@ -149,7 +172,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
   return true;
 };
 
- const loginSync = async (user, dispatch, paginationConfig) => {
+ const loginSync = async (user, dispatch, paginationConfig, linkedItems = null) => {
 
   if (user) {
     await beginSyncOperation(dispatch);

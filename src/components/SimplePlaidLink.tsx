@@ -58,7 +58,7 @@ const SimplePlaidLink = () => {
 
     // send public_token to your server
     // https://plaid.com/docs/api/tokens/#token-exchange-flow 
-    dispatch(setPublicToken(publicToken));
+    //dispatch(setPublicToken(publicToken));
 
     // handle DB/API updates & calls..
     handleLinkSuccessData(linkedItemObject);

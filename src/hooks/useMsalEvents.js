@@ -3,20 +3,19 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { setAccessToken, setUid } from "@store/msalSlice";
-import { selectTransactionPagination } from "@store/transactionSlice"; 
+//import { selectTransactionPagination } from "@store/transactionSlice"; 
 import { setName, setUserId, setUserName } from "@store/userSlice";
 import axiosInstance  from "@utils/axiosInstance";
 import { loginSync } from '@utils/loginStateUtils';
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
- // const [userInfoSaved, setUserInfoSaved] = useState(true);
 
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
-  const paginationSelector = useAppSelector(selectTransactionPagination);
-  // const institutions = useAppSelector(state => state.plaidSlice.institutions);
-  //const accessToken = useAppSelector(selectAccessToken);
+  const paginationSelector = useAppSelector(state => state.transactionSlice.transactionPagination);
+  const linkedItemSelector = useAppSelector(state => state.plaidSlice.linkedItems);
+ // const userId = useAppSelector(state => state.userSlice.userId);
   const useSyncUser = loginSync;
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const useMsalEvents = () => {
               if(response.data && response.data.id.length > 0){
                 sessionStorage.setItem("DB_USER_EXISTS", true);
                 sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-                await useSyncUser(response.data, dispatch, paginationSelector);
+                await useSyncUser(response.data, dispatch, paginationSelector, linkedItemSelector);
               }
               else{
                 // NEW User, save to DB:

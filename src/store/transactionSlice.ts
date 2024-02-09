@@ -174,13 +174,15 @@ export function getPagedTransactions(
   };
 }
 
-export function syncTransactions(userId: string, itemId: string, institution: any) {
+export function syncTransactions(userId: string, itemId: string, institution: any, showAlert: boolean = true) {
   return async function (dispatch) {
-    dispatch(setIsLoading(true));
-    dispatch(setInProgress(true));
-    dispatch(setHeaderText("Syncing"));
-    dispatch(setMessageText("Please wait while we sync your accounts..."));
-    dispatch(setShowAlert(true));
+    if (showAlert) {
+      dispatch(setIsLoading(true));
+      dispatch(setInProgress(true));
+      dispatch(setHeaderText("Syncing"));
+      dispatch(setMessageText("Please wait while we sync your accounts..."));
+      dispatch(setShowAlert(true));
+    }
     //API Call:
     try {
       await axiosInstance.post("transactionsSync", {
@@ -196,12 +198,14 @@ export function syncTransactions(userId: string, itemId: string, institution: an
       dispatch(setVariantStyle("danger"));
       dispatch(setShowAlert(true));
     } finally {
-      dispatch(setIsLoading(false));
-      dispatch(setInProgress(false));
-      dispatch(setHeaderText("Sync Completed"));
-      dispatch(setMessageText("Your account sync is complete."));
-      dispatch(setVariantStyle("success"));
-      dispatch(setShowAlert(true));
+      if (showAlert) dispatch(setIsLoading(false));
+      {
+        dispatch(setInProgress(false));
+        dispatch(setHeaderText("Sync Completed"));
+        dispatch(setMessageText("Your account sync is complete."));
+        dispatch(setVariantStyle("success"));
+        dispatch(setShowAlert(true));
+      }
     }
   };
 }
