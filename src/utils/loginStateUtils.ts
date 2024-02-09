@@ -172,7 +172,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
   return true;
 };
 
- const loginSync = async (user, dispatch, paginationConfig, linkedItems = null) => {
+ const loginSync = async (user, dispatch, paginationConfig) => {
 
   if (user) {
     await beginSyncOperation(dispatch);
