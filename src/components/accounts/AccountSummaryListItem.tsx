@@ -1,6 +1,7 @@
 import ListGroupItem from 'react-bootstrap/ListGroupItem'
-import { AccountSummaryListItemType } from "../../types/accountSummaryListItem.ts";
+// import { AccountSummaryListItemType } from "../../types/accountSummaryListItem.ts";
 import { Col, Row } from 'react-bootstrap';
+import {getElapsedTime} from "@utils/dateTimeUtils";
 
 /**
  * Renders information about the user obtained from MS Graph
@@ -23,6 +24,9 @@ function AccountSummaryListItem({item, balanceIsDebt}) {
       <Row>
         <Col xs="9" data-testid="list-item-institution-name" className='accountSummaryListItemText'>
           <i>{item.institutionName}</i>
+        </Col>
+        <Col xs="3" data-testid="list-item-last-updated-date" className='accountSummaryListItemText'>
+          <i>{getElapsedTime(item.dateUpdated)}</i>
         </Col>
       </Row>
     </ListGroupItem>
