@@ -25,6 +25,9 @@ import { useMsalEvents } from "@hooks/useMsalEvents";
 
 export default function App() {
   useMsalEvents();  // ensure that AccessToken is directed towards the App Redux Store
+  const msalClientId:string = import.meta.env.VITE_MSAL_CLIENT_ID;
+  const msalAuthority:string =  import.meta.env.VITE_MSAL_AUTHORITY;
+  console.table({msalClientId, msalAuthority});
   return (
     <>
       <AuthenticatedTemplate>
