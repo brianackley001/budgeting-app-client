@@ -14,7 +14,10 @@ export const msalConfig = {
     auth: {
         clientId: `${import.meta.env.VITE_MSAL_CLIENT_ID}`, 
         authority: `${import.meta.env.VITE_MSAL_AUTHORITY}`,
-        redirectUri:  import.meta.env.VITE_MSAL_REDIRECT_URL, // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href e.g. http://localhost:3000/,
+        //redirectUri:  import.meta.env.VITE_MSAL_REDIRECT_URL, 
+        redirectUri: "/",
+        postLogoutRedirectUri: "/",
+        // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href e.g. http://localhost:3000/,
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
