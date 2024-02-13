@@ -6,6 +6,13 @@ env:
 on:
   push:
     branches: [ "main","feature**" ]
+  env:
+    VITE_API_URL: $
+    VITE_MSAL_CLIENT_ID: $
+    VITE_MSAL_AUTHORITY: $
+    VITE_MSFT_APP_INSIGHTS_KEY: $
+    VITE_MSFT_APP_INSIGHTS_CONN_STRING: $
+    VITE_TRANSACTION_PAGINATION_SET_SIZE: 5
 
 permissions:
   contents: 'read'
@@ -32,7 +39,7 @@ jobs:
     - run: npm test
 
     - name: Archive npm failure logs
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: npm-logs
@@ -90,7 +97,7 @@ jobs:
 
         - name: Deploy to Azure Web App
           id: deploy-to-webapp
-          uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+          uses: azure/webapps-deploy@v3
           with:
             app-name: ${{ env.AZURE_WEBAPP_NAME }}
             publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
