@@ -12,11 +12,9 @@ import { LogLevel } from "@azure/msal-browser";
  */
 export const msalConfig = {
     auth: {
-        clientId: import.meta.env.VITE_MSAL_CLIENT_ID, 
-        authority: import.meta.env.VITE_MSAL_AUTHORITY,
-        //redirectUri:  import.meta.env.VITE_MSAL_REDIRECT_URL, 
-        // clientId: "8621db81-7a3c-4766-af44-9ed95c65b519", 
-        // authority: "https://login.microsoftonline.com/aa3b6b12-6e61-4e74-8212-dadcf48f7b96",
+        // unable to use process.env.VITE_APP_CLIENT_ID, docker image/container builds were not populating the env variable as expected at npm build time
+        clientId: "8621db81-7a3c-4766-af44-9ed95c65b519", 
+        authority: "https://login.microsoftonline.com/aa3b6b12-6e61-4e74-8212-dadcf48f7b96",
         redirectUri: "/",
         postLogoutRedirectUri: "/",
         // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href e.g. http://localhost:3000/,
