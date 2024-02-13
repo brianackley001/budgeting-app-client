@@ -11,7 +11,7 @@ import {
   setInProgress,
   setShowAlert,
   setVariantStyle,
-} from "../store/alertSlice";
+} from "@store/alertSlice";
 
 
 
