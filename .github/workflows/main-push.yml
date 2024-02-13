@@ -1,7 +1,6 @@
 name: Build, Test, Deploy Docker Image CI
 
 env:
-  NODE_VERSION: '20.x'  
   AZURE_WEBAPP_NAME: budgeting-app-client
   VITE_API_URL: ${{ vars.VITE_API_URL }}
   VITE_MSAL_CLIENT_ID: ${{ vars.VITE_MSAL_CLIENT_ID }}
@@ -76,12 +75,12 @@ jobs:
             tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
             file: ./Dockerfile
             build-args: |
-              VITE_API_URL: ${{ env.VITE_API_URL }}
-              VITE_MSAL_CLIENT_ID: ${{ env.VITE_MSAL_CLIENT_ID }}
-              VITE_MSAL_AUTHORITY: ${{ env.VITE_MSAL_AUTHORITY }}
-              VITE_MSFT_APP_INSIGHTS_KEY: ${{ env.VITE_MSFT_APP_INSIGHTS_KEY }}
-              VITE_MSFT_APP_INSIGHTS_CONN_STRING: ${{ env.VITE_MSFT_APP_INSIGHTS_CONN_STRING }}
-              VITE_TRANSACTION_PAGINATION_SET_SIZE: ${{ env.VITE_TRANSACTION_PAGINATION_SET_SIZE }}
+              VITE_API_URL: '${{ env.VITE_API_URL }}'
+              VITE_MSAL_CLIENT_ID: '${{ env.VITE_MSAL_CLIENT_ID }}'
+              VITE_MSAL_AUTHORITY: '${{ env.VITE_MSAL_AUTHORITY }}'
+              VITE_MSFT_APP_INSIGHTS_KEY: '${{ env.VITE_MSFT_APP_INSIGHTS_KEY }}'
+              VITE_MSFT_APP_INSIGHTS_CONN_STRING: '${{ env.VITE_MSFT_APP_INSIGHTS_CONN_STRING }}'
+              VITE_TRANSACTION_PAGINATION_SET_SIZE: '${{ env.VITE_TRANSACTION_PAGINATION_SET_SIZE }}'
 
 
   deploy:
