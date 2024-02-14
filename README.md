@@ -1,11 +1,11 @@
-﻿# budgeting-app-client
+ # budgeting-app-client
 
 [![Build, Test, Deploy Docker Image CI](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml/badge.svg)](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml)
 
 
-[![Build, Test, Deploy Docker Image CI](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml/badge.svg)](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml)
 
-
+ # budgeting-app-client
+ 
 ### Premise
 Utilize the Plaid API to replicate behavior of the Mint application (EOL March 2024) for monitoring bank account /invetment balances and transactions.
 
