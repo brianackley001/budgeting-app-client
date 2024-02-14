@@ -76,6 +76,13 @@ const useMsalEvents = () => {
                   })
                   .catch((error) => {
                     console.error(error);
+                  })
+                  .finally(() => {
+                    dispatch(setInProgress(false));
+                    dispatch(setHeaderText("Sync Complete"));
+                    dispatch(setMessageText("Your accounts have been synced successfully."));
+                    dispatch(setVariantStyle("success"));
+                    dispatch(setShowAlert(true));
                   });
               }
             })
@@ -86,8 +93,8 @@ const useMsalEvents = () => {
               dispatch(setMessageText(error.message));
               dispatch(setVariantStyle("danger"));
               dispatch(setShowAlert(true));
-            });
-        }
+            })
+          }
       }
 
       // persist user to data store
