@@ -59,7 +59,7 @@ export default function App() {
 
       <UnauthenticatedTemplate>
         <UnAuthenticatedNavBar />
-        <Image id="homePageLogo" src="/icon-3.png" alt="Mint Lite Logo" fluid />
+        <Image id="homePageLogo" src="/landing_icon_bg.png" alt="Mint Lite Logo" className='landingPageImage' fluid/>
       </UnauthenticatedTemplate>
     </>
   );

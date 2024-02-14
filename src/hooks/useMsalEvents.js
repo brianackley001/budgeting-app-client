@@ -7,6 +7,13 @@ import { setAccessToken, setUid } from "@store/msalSlice";
 import { setName, setUserId, setUserName } from "@store/userSlice";
 import axiosInstance  from "@utils/axiosInstance";
 import { loginSync } from '@utils/loginStateUtils';
+import {
+  setHeaderText,
+  setMessageText,
+  setInProgress,
+  setShowAlert,
+  setVariantStyle,
+} from "@store/alertSlice";
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
@@ -32,6 +39,12 @@ const useMsalEvents = () => {
 
         const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
+          // immediately display alert:
+          dispatch(setInProgress(true));
+          dispatch(setHeaderText("Syncing"));
+          dispatch(setMessageText("Please wait while we sync your accounts..."));
+          dispatch(setShowAlert(true));
+
           // Get User from DB:
           axiosInstance
             .get(`/user/${event.payload.uniqueId}`)
@@ -68,6 +81,11 @@ const useMsalEvents = () => {
             })
             .catch((error) => {
               console.error(error);
+              dispatch(setInProgress(false));
+              dispatch(setHeaderText(error.header));
+              dispatch(setMessageText(error.message));
+              dispatch(setVariantStyle("danger"));
+              dispatch(setShowAlert(true));
             });
         }
       }

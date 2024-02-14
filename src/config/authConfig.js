@@ -12,9 +12,12 @@ import { LogLevel } from "@azure/msal-browser";
  */
 export const msalConfig = {
     auth: {
-        clientId: '8621db81-7a3c-4766-af44-9ed95c65b519', 
-        authority: 'https://login.microsoftonline.com/aa3b6b12-6e61-4e74-8212-dadcf48f7b96',
-        redirectUri: 'http://localhost:3000', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href e.g. http://localhost:3000/,
+        // unable to use process.env.VITE_APP_CLIENT_ID, docker image/container builds were not populating the env variable as expected at npm build time
+        clientId: "8621db81-7a3c-4766-af44-9ed95c65b519", 
+        authority: "https://login.microsoftonline.com/aa3b6b12-6e61-4e74-8212-dadcf48f7b96",
+        redirectUri: "/",
+        postLogoutRedirectUri: "/",
+        // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href e.g. http://localhost:3000/,
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
@@ -69,13 +72,4 @@ const protectedResources = {
  */
 export const loginRequest = {
     scopes: [...protectedResources.budgetingApi.scopes.read, ...protectedResources.budgetingApi.scopes.write],
-};
-
-/**
- * Add here the scopes to request when obtaining an access token for MS Graph API. For more information, see:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
-
- */
-export const graphConfig = {
-    graphMeEndpoint: "https://graph.microsoft.com/v1.0/me" //e.g. https://graph.microsoft.com/v1.0/me
 };

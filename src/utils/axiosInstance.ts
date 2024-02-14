@@ -3,12 +3,10 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { loginRequest, msalConfig } from "@config/authConfig";
 import { InteractionRequiredAuthError } from "@azure/msal-common";
 
-
-// export const axiosInstance = axios.create({ 
-//   baseURL: `${import.meta.env.VITE_API_URL}/api/`
-// });
 const axiosInstance = axios.create();
-const baseUrl = `${import.meta.env.VITE_API_URL}/api/`
+//const baseUrl = `${import.meta.env.VITE_API_URL}/api/`
+const configValue = import.meta.env.VITE_API_URL || "https://budgeting-app-express-api.azurewebsites.net"; // default to PROD due to docker image / npm build disconnect
+const baseUrl = `${configValue}/api/`
 
 axiosInstance.defaults.baseURL = baseUrl;
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';

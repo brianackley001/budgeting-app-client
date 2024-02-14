@@ -1,6 +1,6 @@
 {
-  "name": "ms-identity-javascript-react-spa",
-  "version": "0.1.0",
+  "name": "budgeting-app-client-react-spa",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^3.5.0",

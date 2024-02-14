@@ -1,4 +1,8 @@
-[![Docker Image CI](https://github.com/brianackley001/budgeting-app-client/actions/workflows/docker-image.yml/badge.svg)](https://github.com/brianackley001/budgeting-app-client/actions/workflows/docker-image.yml)
+ # budgeting-app-client
+
+[![Build, Test, Deploy Docker Image CI](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml/badge.svg)](https://github.com/brianackley001/budgeting-app-client/actions/workflows/main-push.yml)
+
+
 
  # budgeting-app-client
  

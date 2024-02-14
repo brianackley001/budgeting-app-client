@@ -158,8 +158,9 @@ export function getPagedTransactions(
 
         dispatch(setPagedTransactions(response.data));
         if(isNewSearchRequest(transactionPagination, getState().transactionSlice.transactionPagination)){
+          const pageRequestSize = Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE) || 5;
           const pages = Math.ceil(response.data.total / getState().userSlice.preferences.transactionItemsPerPage);
-          const paginationLinks = paginationLinkSet(1,-1,Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE), pages, false, false);
+          const paginationLinks = paginationLinkSet(1,-1,pageRequestSize, pages, false, false);
           dispatch(setActivePageItems(paginationLinks));
         }
         

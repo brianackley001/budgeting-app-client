@@ -13,7 +13,7 @@ export default function TrasactionPagination(props) {
   const activePageItems = useAppSelector(state => state.transactionSlice.activePageItems);
 
   const pages = Math.ceil(collectionTotal / itemsPerPage);
-  const maxInteractivePages = Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE);
+  const maxInteractivePages = Number(import.meta.env.VITE_TRANSACTION_PAGINATION_SET_SIZE) || 5;
   const interactivePages = activePageItems.length > 0 ?
     activePageItems :
     paginationLinkSet(currentPage, -1, maxInteractivePages, pages, false, false);
