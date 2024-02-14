@@ -39,8 +39,12 @@ export const Dashboard = () => {
         <Card>
           <Card.Body>
             <Card.Title>Accounts <span className='cardHeaderIconRight'><Button variant="outline-secondary"><FontAwesomeIcon icon={faRotate} onClick={() => refreshAccountBalances()}  title="Refresh Account Balances"/></Button></span></Card.Title>
-            <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>
-            <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>
+            {accountItems.length > 0 &&
+             <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>}
+            {accountItems.length > 0 &&
+              <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>}
+            {accountItems.length < 1 &&
+              <Card.Subtitle className="mb-2 mt-2 text-bold">Please Navigate to the "Accounts" page and use the "Add Account" button to link a financial account</Card.Subtitle>}
             <span className='card-text'>
               <AccountSummaryList items={accountItems} />
             </span>

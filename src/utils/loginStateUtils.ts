@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 //import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
+import {getAccountBalances} from '@store/accountSlice';
 import { getPagedTransactions, setTransactionPagination, syncTransactions } from "@store/transactionSlice"; 
 import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
 import  axiosInstance from "@utils/axiosInstance";
@@ -37,10 +38,11 @@ const endSyncOperation = async (dispatch) => {
   dispatch(setShowAlert(true));
 };
 
-const setAccountState = async (dispatch, accounts) => {
+const setAccountState = async (dispatch, user) => {
   try {
     
-    dispatch(setAccounts(accounts));
+    dispatch(setAccounts(user.accounts));
+    dispatch(getAccountBalances(user.id))
     return true;
   } catch (error) {
     console.log(error);
@@ -182,7 +184,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
       success &&= await setPlaidState(dispatch, user.linkedItems);
 
       if (user.accounts && success) {
-        success &&= await setAccountState(dispatch, user.accounts);
+        success &&= await setAccountState(dispatch, user);
       }
 
       if(success) {
