@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
-import { setPaginationAccountIds } from "@store/transactionSlice";
+import { getPagedTransactions, setPaginationAccountIds, syncTransactions } from "@store/transactionSlice";
 
 interface accountItem {
   [x: string]: unknown;
@@ -90,6 +90,14 @@ export function getItemAccounts(userId, itemId) {
 
         // Reflect the latest accounts in the user.accounts context
         await dispatch(setAccounts(response.data));
+        // Refresh the transactions as well...
+        const institution = {
+          institutionId: response.data[0].institutionId, 
+          institutionName: response.data[0].institutionName
+        }
+        await syncTransactions(userId, itemId, institution, true);
+        
+        await dispatch(getPagedTransactions(tranPagination));
       } catch (error) {
         console.log(error);
       }
