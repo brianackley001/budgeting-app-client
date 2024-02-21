@@ -2,10 +2,11 @@
 import{ Card, Row, Col } from "react-bootstrap";
 
 import { SignInButton } from "../buttons/SignInButton";
+import {logTrace} from "@utils/logger";
 
 
 export const SessionExpired = () => {
-
+  logTrace('SessionExpired.tsx');
   return (
     <>
       <div className="d-flex justify-content-around">

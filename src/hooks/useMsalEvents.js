@@ -14,6 +14,7 @@ import {
   setShowAlert,
   setVariantStyle,
 } from "@store/alertSlice";
+import { logError, logEvent } from "@utils/logger";
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
@@ -39,6 +40,7 @@ const useMsalEvents = () => {
 
         const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
+          logEvent("user-login", "success");
           // immediately display alert:
           dispatch(setInProgress(true));
           dispatch(setHeaderText("Syncing"));
@@ -56,6 +58,7 @@ const useMsalEvents = () => {
                 await useSyncUser(response.data, dispatch, paginationSelector, linkedItemSelector);
               }
               else{
+                logEvent("user-login", "new user saved to DB");
                 // NEW User, save to DB:
                 const saveUserPayload = {
                   id: sessionStorage.getItem("userId"),
@@ -76,6 +79,7 @@ const useMsalEvents = () => {
                   })
                   .catch((error) => {
                     console.error(error);
+                    logError(error);
                   })
                   .finally(() => {
                     dispatch(setInProgress(false));
@@ -88,6 +92,7 @@ const useMsalEvents = () => {
             })
             .catch((error) => {
               console.error(error);
+              logError(error);
               dispatch(setInProgress(false));
               dispatch(setHeaderText(error.header));
               dispatch(setMessageText(error.message));

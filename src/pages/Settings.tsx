@@ -4,8 +4,10 @@ import AccountListItem from "../components/accounts/AccountListItem.tsx";
 import AccountSummaryListItem from "../components/accounts/AccountSummaryListItem.tsx";
 import { AccountListItemType } from "../types/accountListItem.ts";
 import { AccountSummaryListItemType} from "../types/accountSummaryListItem.ts";
+import {logTrace} from "@utils/logger";
 
 export const Settings = () => {
+  logTrace('Settings.tsx');
   // const accountListItem: AccountListItemType = { 
   //   accountId: "lv5KvMeBlgTmRMMjPgz9Sbr5QmDxKXcpzo5Dp",
   //   balances: {

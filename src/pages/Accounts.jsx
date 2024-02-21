@@ -1,12 +1,14 @@
 //import React, { useCallback, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useAppSelector } from "../hooks/storeHooks";
-import { useAcquireAccessToken } from "../hooks/useAcquireAccessToken.js";
-import SimplePlaidLink from "../components/SimplePlaidLink";
-import AccountList from "../components/accounts/AccountList.tsx";
+import { useAppSelector } from "@hooks/storeHooks";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import SimplePlaidLink from "@components/SimplePlaidLink";
+import AccountList from "@components/accounts/AccountList.tsx";
+import {logTrace} from "@utils/logger";
 
 export const Accounts = () => {
   useAcquireAccessToken();
+  logTrace('Accounts.tsx');
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const institutions = Array.from(new Set(accountItems.map((item) => item.institutionId)))
     .map((institutionId) => {

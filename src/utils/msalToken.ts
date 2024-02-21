@@ -1,6 +1,7 @@
-import { useAppSelector, useAppDispatch } from "../hooks/storeHooks";
-import { selectAccessToken, setAccessToken } from "../store/msalSlice";
+import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { selectAccessToken, setAccessToken } from "@store/msalSlice";
 import { msalConfig } from "../config/authConfig";
+import { logError }  from "@utils/logger";
 
 
 const MsalUtils = () => {
@@ -19,6 +20,7 @@ const MsalUtils = () => {
         return msalToken;
       }
       catch(e) {
+        logError(e as Error);
         console.log(e);
         return '';
       }

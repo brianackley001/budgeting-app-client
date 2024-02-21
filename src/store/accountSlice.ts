@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
 import { getPagedTransactions, setPaginationAccountIds, setPaginationUserId, syncTransactions } from "@store/transactionSlice";
+import { logError, logEvent } from "@utils/logger";
 
 interface accountItem {
   [x: string]: unknown;
@@ -37,10 +38,12 @@ export function getAccountBalances(userId) {
   return async function (dispatch) {
       //API Call:
       try {
+        logEvent('getAccountBalances', {userId: userId});
         const response = await axiosInstance.post(`accountbalance`, {userId: userId});
         await dispatch(setAccounts(response.data));
       } catch (error) {
         console.log(error);
+        logError(error as Error);
       }
   };
 }
@@ -50,6 +53,7 @@ export function upsertAccount(userId, account) {
   return async function (dispatch) {
       //API Call:
       try {
+        logEvent('upsertAccount', {userId: userId});
         const response = await axiosInstance.post("account", {
           userId: userId,
           account: account,
@@ -58,6 +62,7 @@ export function upsertAccount(userId, account) {
         dispatch(setAccounts(response.data.accounts));
       } catch (error) {
         console.log(error);
+        logError(error as Error);
       }
   };
 }
@@ -67,6 +72,7 @@ export function getItemAccounts(userId, itemId) {
   return async function (dispatch, getState) {
       //API Call:
       try {
+        logEvent('getItemAccounts', {userId: userId, itemId: itemId});
         const response = await axiosInstance.post('item/accounts', {
           userId: userId,
           itemId: itemId,
@@ -101,6 +107,7 @@ export function getItemAccounts(userId, itemId) {
         await syncTransactions(userId, itemId, institution, true);
       } catch (error) {
         console.log(error);
+        logError(error as Error);
       }
   };
 }

@@ -12,10 +12,12 @@ import PaginationSummaryComponent from '@/components/transactions/PaginationSumm
 import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
 import FilterOptions from "@components/transactions/FilterOptions";
 import { LoadingMessage } from '@/components/transactions/LoadingMessage';
+import {logTrace} from "@utils/logger";
 
 
 export const Transactions = () => {
   useAcquireAccessToken();
+  logTrace('Transactions.tsx');
   
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const isLoading = useAppSelector(state => state.transactionSlice.isLoading);

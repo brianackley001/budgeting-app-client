@@ -10,6 +10,7 @@ import {
   setShowAlert,
   setVariantStyle,
 } from "@store/alertSlice";
+import { logError, logEvent } from "@utils/logger";
 
 interface transactionItem {
   id: string,
@@ -151,6 +152,22 @@ export function getPagedTransactions(
       dispatch(setIsLoading(true));
       //API Call:
       try {
+        logEvent("getPagedTransactions", 
+        {
+          pageNumber: transactionPagination.pageNumber.toString(), 
+          pageSize: transactionPagination.pageSize.toString(), 
+          sortBy: transactionPagination.sortBy, 
+          sortDirection: transactionPagination.sortDirection,
+          userNotesSearchValue: transactionPagination.userNotesSearchValue,
+          accountIds: transactionPagination.accountIds,
+          categorySearchValue: transactionPagination.categorySearchValue,
+          tagSearchValue: transactionPagination.tagSearchValue,
+          amountFrom: transactionPagination.amountFrom.toString(),
+          amountTo: transactionPagination.amountTo.toString(),
+          startDate: transactionPagination.startDate,
+          endDate: transactionPagination.endDate,
+          userId: transactionPagination.userId
+        });
         const response = await axiosInstance.post(
           "transactions",
           transactionPagination
@@ -166,6 +183,7 @@ export function getPagedTransactions(
         
       } catch (error) {
         console.log(error);
+        logError(error as Error);
       } finally {
         dispatch(setIsLoading(false));
       }
@@ -186,6 +204,7 @@ export function syncTransactions(userId: string, itemId: string, institution: an
     }
     //API Call:
     try {
+      logEvent("syncTransactions", { userId: userId, itemId: itemId, institution: institution });
       await axiosInstance.post("transactionsSync", {
         userId: userId,
         itemId: itemId,
@@ -193,6 +212,7 @@ export function syncTransactions(userId: string, itemId: string, institution: an
       });
     } catch (error) {
       console.log(error);
+      logError(error as Error);
       dispatch(setInProgress(false));
       dispatch(setHeaderText("Sync Error"));
       dispatch(setMessageText("Error retrieving transaction data."));

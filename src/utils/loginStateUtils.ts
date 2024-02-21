@@ -13,6 +13,7 @@ import {
   setShowAlert,
   setVariantStyle,
 } from "@store/alertSlice";
+import {logError} from "@utils/logger";
 
 
 
@@ -46,6 +47,7 @@ const setAccountState = async (dispatch, user) => {
     return true;
   } catch (error) {
     console.log(error);
+    logError(error as Error);
     broadcastSyncError(dispatch, {
       header: "Sync Error",
       message: "Error setting account information.",
@@ -60,6 +62,7 @@ const setPlaidState = async (dispatch, linkedItems) => {
     return true;
   } catch (error) {
     console.log(error);
+    logError(error as Error);
     broadcastSyncError(dispatch, {
       header: "Sync Error",
       message: "Error setting plaid account item information.",
@@ -78,6 +81,7 @@ const setUserState = async (dispatch, user) => {
     return true;
   } catch (error) {
     console.log(error);
+    logError(error as Error);
     broadcastSyncError(dispatch, {
       header: "Sync Error",
       message: "Error setting user information.",
@@ -139,14 +143,11 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
       //let outputCollection = new Array<Object>();
       const responses = await Promise.all(storeRequests)
         .then((values) => {console.log(values); return values;})
-        .catch((error) => {console.log(error); return null;})
-      // for(const response of responses) {
-      //   if(outputCollection.length === 0) {
-      //     outputCollection = response.data.transactions.transactions;
-      //   }else {
-      //     outputCollection = outputCollection.concat(response.data.transactions.transactions); // = [outputCollection, ...response];
-      //   }
-      // }
+        .catch((error) => {
+          console.log(error); 
+          logError(error as Error);
+          return null;
+        });
 
       // GET page one of PagedTransactions from DB...
       const updatedPaginationConfig = {
@@ -164,6 +165,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
       return true;
     } catch (error) {
       console.log(error);
+      logError(error as Error);
       broadcastSyncError(dispatch, {
         header: "Sync Error",
         message: "Error retrieving transaction data.",
