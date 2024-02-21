@@ -1,5 +1,6 @@
 import { useMsal } from "@azure/msal-react";
 import Button from "react-bootstrap/Button";
+import { logEvent } from "@utils/logger";
 
 /**
  * Renders a sign-out button
@@ -16,11 +17,13 @@ export const SignOutButton = () => {
     
 
     if (logoutType === "popup") {
+      logEvent("logout", "popup");
       instance.logoutPopup({
         postLogoutRedirectUri: "/",
         mainWindowRedirectUri: "/",
       });
     } else if (logoutType === "redirect") {
+      logEvent("logout", "redirect"); 
       instance.logoutRedirect({
         postLogoutRedirectUri: "/",
       });

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
+import { logError, logEvent } from "@utils/logger";
 
 // Define a type for the slice state
 interface UserState {
@@ -29,6 +30,7 @@ export function setTransactionItemsPerPage(user) {
   return async function (dispatch) {
     //API Call(s):
     try { 
+      logEvent('setTransactionItemsPerPage', {userId: user.id, transactionItemsPerPage: user.transactionItemsPerPage});
       //GET full User Object
       const userResponse = await axiosInstance.get(`user/${user.id}`);
 
@@ -47,6 +49,7 @@ export function setTransactionItemsPerPage(user) {
       dispatch(setTransactionsPerPage(user.transactionItemsPerPage));
     } catch (error) {
       console.log(error);
+      logError(error as Error);
     }
   };
 }

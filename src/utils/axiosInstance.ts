@@ -2,6 +2,7 @@ import axios from "axios";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { loginRequest, msalConfig } from "@config/authConfig";
 import { InteractionRequiredAuthError } from "@azure/msal-common";
+import { logError } from "@utils/logger";
 
 const axiosInstance = axios.create();
 //const baseUrl = `${import.meta.env.VITE_API_URL}/api/`
@@ -86,6 +87,7 @@ const resErrInterceptor = async (error) => {
                 .acquireTokenPopup(loginRequest)
                 .catch((error) => {
                   if (error instanceof InteractionRequiredAuthError) {
+                    logError(error as Error);
                     // fallback to interaction when silent call fails
                     return msalInstance.acquireTokenRedirect(loginRequest);
                   }

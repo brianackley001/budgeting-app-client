@@ -4,6 +4,7 @@ import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { selectTransactionPagination } from "@store/transactionSlice"; 
 import axiosInstance from "@utils/axiosInstance";
 import Button from "react-bootstrap/Button";
+import { logError, logEvent } from "@utils/logger";
 
 export const StoreRefreshButton = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const StoreRefreshButton = () => {
   
   
   const handleRefresh = () => {
+    logEvent("store-refresh", "click");
     // Get User from DB:
     axiosInstance
     .get(`/user/${userId}`, config)
@@ -31,6 +33,7 @@ export const StoreRefreshButton = () => {
     })
     .catch((error) => {
       console.error(error);
+      logError(error);
     });
     
   };

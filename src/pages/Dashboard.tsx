@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRotate } from '@fortawesome/free-solid-svg-icons'
 import {getAccountBalances} from '@store/accountSlice.ts';
 import { title } from 'process';
+import {logTrace} from "@utils/logger";
 
 
 export const Dashboard = () => {
   useAcquireAccessToken();
+  logTrace('Dashboard.tsx');
   // const accessToken = useAppSelector(state => state.msalSlice.accessToken); 
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const userId = useAppSelector(state => state.userSlice.userId);

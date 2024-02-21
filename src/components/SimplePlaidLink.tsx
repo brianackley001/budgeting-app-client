@@ -9,6 +9,7 @@ import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
 import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
+import {logError, logEvent } from "@utils/logger";
 
 
 import MsalUtils from '@utils/msalToken'
@@ -49,6 +50,7 @@ const SimplePlaidLink = () => {
   }, []);
 
   const onSuccess = useCallback((publicToken:string, metadata: PlaidLinkOnSuccessMetadata) => {
+    logEvent('PlaidLinkSuccess', {user_id: userId, institution_id: metadata.institution!.institution_id});
     const linkedItemObject = {
       public_token: publicToken,
       user_id: userId,
@@ -65,8 +67,13 @@ const SimplePlaidLink = () => {
   }, []);
 
   const handleLinkSuccessData = async(linkedItemObject) => {
-    const tokenResponse = await axiosInstance.post('set_access_token', linkedItemObject);
-    await dispatch(getItemAccounts(userId, tokenResponse.data.item_id));
+    try {
+      const tokenResponse = await axiosInstance.post('set_access_token', linkedItemObject);
+      await dispatch(getItemAccounts(userId, tokenResponse.data.item_id));
+    }
+    catch (error) {
+      logError(error as Error);
+    }
   };
 
   const { open, ready } = usePlaidLink({
