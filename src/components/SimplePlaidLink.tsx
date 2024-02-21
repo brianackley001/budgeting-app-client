@@ -67,8 +67,6 @@ const SimplePlaidLink = () => {
   const handleLinkSuccessData = async(linkedItemObject) => {
     const tokenResponse = await axiosInstance.post('set_access_token', linkedItemObject);
     await dispatch(getItemAccounts(userId, tokenResponse.data.item_id));
-    await dispatch(syncTransactions(userId, tokenResponse.data.item_id, {id:linkedItemObject.institution_id, name:linkedItemObject.institution_name}));
-    await dispatch(getPagedTransactions(transactionPagination));
   };
 
   const { open, ready } = usePlaidLink({
