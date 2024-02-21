@@ -7,7 +7,7 @@
  # budgeting-app-client
  
 ### Premise
-Utilize the Plaid API to replicate behavior of the Mint application (EOL March 2024) for monitoring bank account /invetment balances and transactions.
+Utilize the Plaid API to replicate behavior of the Mint application (EOL March 2024) for monitoring bank account /investment balances and transactions.
 
 ### Scaffolding / Architecture
 | Feature | Description |
@@ -23,8 +23,8 @@ Utilize the Plaid API to replicate behavior of the Mint application (EOL March 2
 ### Work In Progress...
 Items to still be addressed
 
-- [ ] Docker Image for GitHub Actions
-- [ ] Deployments to Azure app/image
+- [x] Docker Image for GitHub Actions
+- [x] Deployments to Azure app/image
 - [ ] Increase Unit Test Coverage
 - [ ] Code Cleanup
 - [ ] Revisit/Complete typescript for the entire project (started with jsx files, project is in transition to clean typescript implementation)
