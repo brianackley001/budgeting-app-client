@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
-import { getPagedTransactions, setPaginationAccountIds, syncTransactions } from "@store/transactionSlice";
+import { getPagedTransactions, setPaginationAccountIds, setPaginationUserId, syncTransactions } from "@store/transactionSlice";
 
 interface accountItem {
   [x: string]: unknown;
@@ -85,6 +85,9 @@ export function getItemAccounts(userId, itemId) {
           const accountIds = itemAccountIds;
           await dispatch(setPaginationAccountIds(accountIds.toString()));
         }
+        if(tranPagination.userId !== userId) {
+          dispatch(setPaginationUserId(userId));
+        }
 
         // Check accountIds - if any map to type "Investment" then call API for investments for the specified itemId
 
@@ -96,8 +99,6 @@ export function getItemAccounts(userId, itemId) {
           institutionName: response.data[0].institutionName
         }
         await syncTransactions(userId, itemId, institution, true);
-        
-        await dispatch(getPagedTransactions(tranPagination));
       } catch (error) {
         console.log(error);
       }
