@@ -1,10 +1,11 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-const APP_INSIGHTS_CONN_STRING = import.meta.env.APPLICATIONINSIGHTS_CONNECTION_STRING;
+const APPLICATIONINSIGHTS_CONNECTION_STRING  = import.meta.env.APPLICATIONINSIGHTS_CONNECTION_STRING || "app-insights-conn-string";
+const APPINSIGHTS_INSTRUMENTATIONKEY = import.meta.env.VITE_APPINSIGHTS_INSTRUMENTATIONKEY || "app-insights-instrumentation-key";
 
 const appInsights = new ApplicationInsights({ config: {
-  connectionString: APP_INSIGHTS_CONN_STRING,
-  instrumentationKey: import.meta.env.VITE_APPINSIGHTS_INSTRUMENTATIONKEY,
+  connectionString: APPLICATIONINSIGHTS_CONNECTION_STRING ,
+  instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY,
   /* ...Other Configuration Options... */
 } });
 appInsights.loadAppInsights();
