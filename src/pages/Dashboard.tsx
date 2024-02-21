@@ -1,6 +1,6 @@
 
 import React, { useCallback, useState, useEffect } from 'react';
-import{ Button, Card, Row, Col } from "react-bootstrap";
+import{ Button, Card, Spinner } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
 import { useAppSelector, useAppDispatch } from "@hooks/storeHooks.ts";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
@@ -16,6 +16,7 @@ export const Dashboard = () => {
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const userId = useAppSelector(state => state.userSlice.userId);
   const dispatch = useAppDispatch();
+  const [isAccountBalanceLoading, setAccountBalanceLoading] = useState(false);
   
   const netWorth = accountItems
     .filter((item) => (item.type === 'depository' || item.type === 'investment'))
@@ -26,7 +27,11 @@ export const Dashboard = () => {
     const netWorthDisplayValue =( netWorth - debtTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
 
   const refreshAccountBalances = async() => {
+    setAccountBalanceLoading(true);
     await dispatch(getAccountBalances(userId)); 
+    setTimeout(() => {
+      setAccountBalanceLoading(false);
+    }, 250);
   };
 
   // useEffect(() => {
@@ -38,7 +43,20 @@ export const Dashboard = () => {
       <div className="dashboardAccountContainer">
         <Card>
           <Card.Body>
-            <Card.Title>Accounts <span className='cardHeaderIconRight'><Button variant="outline-secondary"><FontAwesomeIcon icon={faRotate} onClick={() => refreshAccountBalances()}  title="Refresh Account Balances"/></Button></span></Card.Title>
+            <Card.Title>Accounts {accountItems.length > 0 && <span className='cardHeaderIconRight'>
+              <Button variant={isAccountBalanceLoading ? "secondary" : "outline-secondary"} disabled={isAccountBalanceLoading}>
+                {!isAccountBalanceLoading &&
+                  <FontAwesomeIcon icon={faRotate} onClick={() => refreshAccountBalances()} title="Refresh Account Balances" />}
+                {isAccountBalanceLoading &&
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />}
+              </Button></span>}
+            </Card.Title>
             {accountItems.length > 0 &&
              <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>}
             {accountItems.length > 0 &&
