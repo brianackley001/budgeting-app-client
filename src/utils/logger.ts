@@ -1,7 +1,7 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-const APPLICATIONINSIGHTS_CONNECTION_STRING  = import.meta.env.VITE_APPLICATIONINSIGHTS_CONNECTION_STRING || "app-insights-conn-string";
-const APPINSIGHTS_INSTRUMENTATIONKEY = import.meta.env.VITE_APPINSIGHTS_INSTRUMENTATIONKEY || "app-insights-instrumentation-key";
+const APPLICATIONINSIGHTS_CONNECTION_STRING  = import.meta.env.VITE_APPLICATIONINSIGHTS_CONNECTION_STRING || "InstrumentationKey=43faffa4-fce5-45b9-a015-26836d09e42c;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/";
+const APPINSIGHTS_INSTRUMENTATIONKEY = import.meta.env.VITE_APPINSIGHTS_INSTRUMENTATIONKEY || "43faffa4-fce5-45b9-a015-26836d09e42c";
 
 const appInsights = new ApplicationInsights({ config: {
   connectionString: APPLICATIONINSIGHTS_CONNECTION_STRING ,
