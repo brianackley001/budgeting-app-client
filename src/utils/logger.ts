@@ -1,6 +1,6 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-const APPLICATIONINSIGHTS_CONNECTION_STRING  = import.meta.env.APPLICATIONINSIGHTS_CONNECTION_STRING || "app-insights-conn-string";
+const APPLICATIONINSIGHTS_CONNECTION_STRING  = import.meta.env.VITE_APPLICATIONINSIGHTS_CONNECTION_STRING || "app-insights-conn-string";
 const APPINSIGHTS_INSTRUMENTATIONKEY = import.meta.env.VITE_APPINSIGHTS_INSTRUMENTATIONKEY || "app-insights-instrumentation-key";
 
 const appInsights = new ApplicationInsights({ config: {
