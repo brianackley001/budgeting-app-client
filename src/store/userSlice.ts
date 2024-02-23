@@ -31,20 +31,14 @@ export function setTransactionItemsPerPage(user) {
     //API Call(s):
     try { 
       logEvent('setTransactionItemsPerPage', {userId: user.id, transactionItemsPerPage: user.transactionItemsPerPage});
-      //GET full User Object
-      const userResponse = await axiosInstance.get(`user/${user.id}`);
-
-      const updatedUserObject ={ 
-        ...userResponse.data,
+      
+      //Update User Preferences
+      await axiosInstance.post(`user/preferences`, {
+        userId: user.id,
         preferences: {
-          transactionItemsPerPage: user.transactionItemsPerPage
-        }
-      };
-
-      const response = await axiosInstance.post(
-        `user`,
-        updatedUserObject
-      );
+          transactionItemsPerPage: user.transactionItemsPerPage,
+        },
+      });
 
       dispatch(setTransactionsPerPage(user.transactionItemsPerPage));
     } catch (error) {
