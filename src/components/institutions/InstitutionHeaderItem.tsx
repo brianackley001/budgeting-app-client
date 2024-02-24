@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import{ Card} from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
@@ -8,7 +8,6 @@ import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
  * Renders Institution Header item with display and edit capabilities
  * @param props
  */
-
 
 export default function InstitutionHeaderItem({institution}) {
   const [showEdit, setShowEdit] = useState(false);
@@ -21,10 +20,10 @@ export default function InstitutionHeaderItem({institution}) {
   const handleEditShow = () => {
     setShowEdit(true)
   };
-const handleSave = () =>{
-  console.log('save');
-  handleEditClose();
-}
+  const handleSave = () => {
+    console.log('save');
+    handleEditClose();
+  }
 
   function handleTextareaChange(e) {
     setFormInstitutionName(e.target.value);
