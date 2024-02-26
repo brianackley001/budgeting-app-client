@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Badge, Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl } from "react-bootstrap";
+import { Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "react-bootstrap";
 
 {/* <Badge pill bg="secondary" key={index}>{tag}</Badge> */ }
 
