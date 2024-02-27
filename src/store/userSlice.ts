@@ -45,7 +45,7 @@ export function createTransactionTag(userId, tag, tags) {
       dispatch(setShowAlert(true));
       dispatch(setVariantStyle("info"));
       
-      //Update User Trasaction Tags
+      //Update User Transaction Tags
       const result = await axiosInstance.post(`user/tags`, {
         userId: userId,
         action: "add",
@@ -86,7 +86,7 @@ export function deleteTransactionTag(userId, tag, tags) {
       dispatch(setShowAlert(true));
       dispatch(setVariantStyle("info"));
       
-      //Update User Trasaction Tags
+      //Update User Transaction Tags
       const result = await axiosInstance.post(`user/tags`, {
         userId: userId,
         action: "remove",
@@ -131,7 +131,7 @@ export function updateTransactionTag(userId, modifiedTag, tags) {
       dispatch(setShowAlert(true));
       dispatch(setVariantStyle("info"));
       
-      //Update User Trasaction Tags
+      //Update User Transaction Tags
       const result = await axiosInstance.post(`user/tags`, {
         userId: userId,
         action: "update",
