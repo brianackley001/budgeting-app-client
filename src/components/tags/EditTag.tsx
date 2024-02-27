@@ -1,7 +1,9 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Alert, Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "react-bootstrap";
+import { useAppDispatch } from "@hooks/storeHooks";
+import { deleteTransactionTag, updateTransactionTag } from '@/store/userSlice';
 
 {/* <Badge pill bg="secondary" key={index}>{tag}</Badge> */ }
 
@@ -10,11 +12,31 @@ import { Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "react-boot
  * @param props
  */
 
-export default function EditTag({ tag, tagCollection }) {
+export default function EditTag(props) {
+  const { tag, tags, userId } = props;
   const [validated, setValidated] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [formTagValue, setFormTagValue] = useState(tag);
+  const [showDupeTagMessage, setShowDupeTagMessage] = useState(false);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (tags && tags.length > 0) {
+      let dupeExists = false;
+      const formItemIndex = tags.indexOf(tag); 
+      tags.forEach((element, index) => {
+        if (element.toLowerCase() === formTagValue.toLowerCase() && index !== formItemIndex) {
+          dupeExists = true;
+        }
+      });
+      if (!dupeExists) {
+        setShowDupeTagMessage(false);
+      } else {
+        setShowDupeTagMessage(true);
+      };
+    }
+  }, [formTagValue]);
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -22,24 +44,34 @@ export default function EditTag({ tag, tagCollection }) {
   const toggleDeleteMode = () => {
     setIsDeleteMode(!isDeleteMode);
   }; 
-  const handleDelete = () => {
-    console.log('delete tag');
-
-    // dispatch(deleteTag(tag));
+  const handleDelete = async () => {
+    //dispatch form action to Redux
+    await dispatch(deleteTransactionTag(userId, tag, tags));
     toggleDeleteMode();
     toggleEditMode();
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (form.checkValidity() === true) {
       event.preventDefault();
       event.stopPropagation();
+      
+      //dispatch form action to Redux
+      await dispatch(updateTransactionTag(
+        userId,
+        {originalTagValue: tag, modifiedTagValue: formTagValue},
+        tags
+      ));
+      toggleEditMode();
+      setFormTagValue("");
+      setValidated(false);
     }
-    setValidated(true);
-    toggleEditMode();
   };
-  const handleTextareaChange = (event) => {
+  const handleTextAreaChange = (event) => {
     setFormTagValue(event.target.value);
   };
 
@@ -55,7 +87,7 @@ export default function EditTag({ tag, tagCollection }) {
         onHide={toggleEditMode}
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Form noValidate validated={validated} data-testid="accordian-form" onSubmit={handleFormSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleFormSubmit} data-testid="accordian-form" >
           <Modal.Header closeButton>
             <Modal.Title as="h6">Edit "{tag}" Tag</Modal.Title>
           </Modal.Header>
@@ -74,7 +106,7 @@ export default function EditTag({ tag, tagCollection }) {
                         autoFocus
                         defaultValue={formTagValue}
                         title={formTagValue}
-                        onChange={handleTextareaChange}
+                        onChange={handleTextAreaChange}
                         style={{ fontSize: ".90em" }} />
                       <Form.Control.Feedback data-testid="tag-detail-form-tag-name-is-valid" >Looks good!</Form.Control.Feedback>
                       <Form.Control.Feedback type="invalid" data-testid="tag-detail-form-tag-name-is-invalid">
@@ -83,6 +115,10 @@ export default function EditTag({ tag, tagCollection }) {
                     </Form.Group>
                   </Col>
                 </Row>
+                {showDupeTagMessage && 
+                <Row className="mb-3"><Col xs={12}>
+                <Alert variant="danger"><FontAwesomeIcon icon={faTriangleExclamation} />&nbsp;Tag <b>"{formTagValue}"</b> already exists. Please provide a unique tag name.</Alert>
+                </Col></Row>}
               </CardBody>
             </Card>
           </Modal.Body>

@@ -32,12 +32,12 @@ export const Settings = () => {
             <Card className="mb-5">
             <Card.Subtitle className="mb-2 mt-2 mx-2 text-bold">Manage Tags
               <span className='cardHeaderIconRight' aria-label="Add Tag" title="Add Tag">
-                <CreateTag userId={userId} tags={tags} />
+                <CreateTag userId={userId} tags={tags} tag="" />
                 </span>
               </Card.Subtitle>
               <Card.Body>
                 {tags.map((tag, i) => (
-                  <EditTag key={i} tag={tag} tagCollection={tags} />
+                  <EditTag key={i} tag={tag} tags={tags} userId={userId}  />
                 ))}
               </Card.Body>
             </Card>

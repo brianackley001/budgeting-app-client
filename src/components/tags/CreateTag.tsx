@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Alert, Button, Card, CardBody, Col, Form, Modal, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTriangleExclamation, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { useAppDispatch } from "@hooks/storeHooks";
+import { createTransactionTag } from '@/store/userSlice';
 
 /**
  * Renders mesaging to user that no transaction data matches the current filter criteria
@@ -14,6 +16,7 @@ export default function CreateTag(props) {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [showDupeTagMessage, setShowDupeTagMessage] = useState(false);
   const [formTagValue, setFormTagValue] = useState("");
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (tags && tags.length > 0) {
@@ -31,15 +34,22 @@ export default function CreateTag(props) {
     }
   }, [formTagValue]);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
 
     if (form.checkValidity() === true) {
-      //dispatch form action to Redux
       event.preventDefault();
       event.stopPropagation();
+
+      //dispatch form action to Redux
+      await dispatch(createTransactionTag(
+        userId,
+        formTagValue,
+        tags
+      ));
+      
       toggleModal();
       setFormTagValue("");
       setValidated(false);
