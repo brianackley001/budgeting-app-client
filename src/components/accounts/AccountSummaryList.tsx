@@ -1,5 +1,5 @@
 import AccountSectionAccordian  from "./AccountSectionAccordian.tsx";
-import {configuredSectionData} from "../../utils/accountSectionConfig.ts"
+import { configuredSectionData } from "@utils/accountSectionConfig.ts"
 
 /**
  * Renders List of Acouunt Summary Items
@@ -37,4 +37,3 @@ function AccountSummaryList({ items }) {
 }
 
 export default AccountSummaryList;
-

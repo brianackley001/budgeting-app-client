@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState, useEffect } from 'react';
+import { useState } from 'react';
 import{ Button, Card, Spinner } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
 import { useAppSelector, useAppDispatch } from "@hooks/storeHooks.ts";
@@ -7,14 +7,13 @@ import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRotate } from '@fortawesome/free-solid-svg-icons'
 import {getAccountBalances} from '@store/accountSlice.ts';
-import { title } from 'process';
+// import { title } from 'process';
 import {logTrace} from "@utils/logger";
 
 
 export const Dashboard = () => {
   useAcquireAccessToken();
   logTrace('Dashboard.tsx');
-  // const accessToken = useAppSelector(state => state.msalSlice.accessToken); 
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const userId = useAppSelector(state => state.userSlice.userId);
   const dispatch = useAppDispatch();
@@ -30,16 +29,12 @@ export const Dashboard = () => {
 
   const refreshAccountBalances = async() => {
     setAccountBalanceLoading(true);
-    await dispatch(getAccountBalances(userId)); 
+    await dispatch(getAccountBalances(userId));
+    // delay timer to allow for the loading spinner to be displayed for a minimum amount of time 
     setTimeout(() => {
       setAccountBalanceLoading(false);
-    }, 250);
+    }, 125);  
   };
-
-  // useEffect(() => {
-    
-  // }, [Dashboard]);
-
   return (
     <>
       <div className="dashboardAccountContainer">
