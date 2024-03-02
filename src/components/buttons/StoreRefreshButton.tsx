@@ -1,4 +1,4 @@
-import { loginSync } from '../../utils/loginStateUtils.ts';
+import { loginSync } from '@utils/loginStateUtils.ts';
 import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { selectTransactionPagination } from "@store/transactionSlice"; 
@@ -21,14 +21,14 @@ export const StoreRefreshButton = () => {
   
   
   const handleRefresh = () => {
-    logEvent("store-refresh", "click");
+    logEvent("store-refresh", {userId: userId});
     // Get User from DB:
     axiosInstance
     .get(`/user/${userId}`, config)
     .then(async (response) => {
       //User Exists:
       if(response.data && response.data.id.length > 0){
-        await useSyncUser(response.data, dispatch, paginationSelector, accessToken);
+        await useSyncUser(response.data, dispatch, paginationSelector);
       }
     })
     .catch((error) => {
