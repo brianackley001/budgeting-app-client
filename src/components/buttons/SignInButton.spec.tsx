@@ -52,6 +52,7 @@ describe('Sign In Button', () => {
     // Act (click the button, first attempt presumes Success)
     fireEvent.click(screen.getByTestId('button-sign-in'));
     // Assert
+    expect((msalReact as any).useMsal().instance.loginPopup).toHaveBeenCalledTimes(1); // currently favoring loginPopup over loginRedirect...
     expect(logEvent).toHaveBeenCalledTimes(1);
   })
 })
