@@ -31,7 +31,7 @@ export default function InstitutionHeaderItem({institution}) {
 
   return (
     <>
-      <Card.Subtitle className="headerBottmMargin">{institution.accounts[0].institutionName}
+      <Card.Subtitle className="headerBottomMargin">{institution.accounts[0].institutionName}
         <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
         <Dropdown>
           <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
