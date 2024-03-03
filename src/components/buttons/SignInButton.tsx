@@ -1,37 +1,33 @@
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../config/authConfig";
+import { loginRequest } from "@config/authConfig";
 import Button from "react-bootstrap/Button";
-import { logError, logEvent } from "../../utils/logger";
+import { logError, logEvent } from "@utils/logger";
 
 export const SignInButton = () => {
   const { instance } = useMsal();
 
   const handleLogin = (loginType) => {
     if (loginType === "popup") {
-      logEvent("login", "popup");
+      logEvent("login", { loginType: "popup" });
       instance
         .loginPopup(loginRequest)
         .then((loginResponse) => {
           instance.setActiveAccount(loginResponse.account);
-          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
-          // console.log(loginResponse);
         })
         .catch((e) => {
           console.log(e);
-          logError(error);
+          logError(e);
         });
     } else if (loginType === "redirect") {
-      logEvent("login", "redirect");
+      logEvent("login", { loginType: "redirect" });
       instance
         .loginRedirect(loginRequest)
-        .then((loginResponse) => {
-          instance.setActiveAccount(loginResponse.account);
-          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
-          // console.log(loginResponse);
-        })
+        // .then((loginResponse) => {
+        //   instance.setActiveAccount(loginResponse.account);
+        // })
         .catch((e) => {
           console.log(e);
-          logError(error);
+          logError(e);
         });
     }
   };

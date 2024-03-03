@@ -32,7 +32,8 @@ const mockAxiosPostImplementation = () =>
     },
   });
 
-
+vi.mock('@utils/logger');
+vi.mock("@config/authConfig");
 
 vi.mock("axios", async () => {
   const actual: any = await vi.importActual("axios");
@@ -52,21 +53,11 @@ vi.mock("axios", async () => {
     },
   };
 });
-
-
 vi.mock("@azure/msal-browser", () => ({
   PublicClientApplication: vi.fn(),
 }));
-vi.mock("@config/authConfig", () => ({
-  loginRequest: vi.fn(),
-  msalConfig: vi.fn(),
-}));
 vi.mock("@azure/msal-common", () => ({
   InteractionRequiredAuthError: vi.fn(),
-}));
-vi.mock("@utils/logger", () => ({
-  logError: vi.fn(),
-  logEvent: vi.fn(),
 }));
 
 const mockAxiosInstance = vi.mock("@utils/axiosInstance", async (importOriginal) => {

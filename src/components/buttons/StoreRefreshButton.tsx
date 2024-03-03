@@ -22,6 +22,7 @@ export const StoreRefreshButton = () => {
   
   const handleRefresh = () => {
     logEvent("store-refresh", {userId: userId});
+    // Consider refactor to Store Thunk call
     // Get User from DB:
     axiosInstance
     .get(`/user/${userId}`, config)

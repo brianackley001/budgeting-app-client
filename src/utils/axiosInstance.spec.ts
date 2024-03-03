@@ -1,7 +1,10 @@
 import { vi, describe, it, expect, afterAll, vitest, afterEach } from "vitest";
 import axiosInstance from "./axiosInstance";
 
-vi.mock("@utils/axiosInstance");
+//  leveraging the __mocks__ file.  
+//  TO-DO, file-specific mock that digs into interceptors testing, etc.
+vi.mock("@utils/axiosInstance"); 
+
 describe("axiosInstance", () => {
   it("should create expected mock object and accept HTTP requests", async () => {
     

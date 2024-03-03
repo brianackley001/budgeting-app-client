@@ -3,23 +3,16 @@ import { StoreRefreshButton } from "./StoreRefreshButton";
 import { vi, describe, it, expect, afterAll, vitest, afterEach } from 'vitest';
 
 import axiosInstance from "@utils/axiosInstance"; 
-
+import {logEvent} from '@utils/logger';
+//import { loginSync } from '@/utils/loginStateUtils';
 
 
 describe('Store Refresh Button', () => {
   beforeEach(() => {
     vi.mock('@utils/axiosInstance');
-    vi.mock("@utils/logger", () => ({
-      logError: vi.fn(),
-      logEvent: vi.fn()
-    }));
-    vi.mock('@utils/loginStateUtils.ts', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('@utils/loginStateUtils.ts')>()
-      return {
-        ...actual,
-        loginSync: vi.fn()
-      }
-    });
+    vi.mock('@utils/logger');
+    vi.mock('@utils/loginStateUtils.ts');
+
     vi.mock('@hooks/storeHooks', async (importOriginal) => {
       const actual = await importOriginal<typeof import('@hooks/storeHooks')>()
       return {
@@ -60,8 +53,12 @@ describe('Store Refresh Button', () => {
         }
       }
     });
-    let item = render(<StoreRefreshButton />);
+    render(<StoreRefreshButton />);
   });
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
   test('Renders the Store Refresh Button', () => {
     expect(screen.getByTestId('button-store-refresh')).toBeInTheDocument();
   })
@@ -69,6 +66,8 @@ describe('Store Refresh Button', () => {
     const fetchSpy = vi.spyOn(axiosInstance, 'get');
     fetchSpy.mockImplementation(() => Promise.resolve({data: {id: "1234"}}));
     fireEvent.click(screen.getByTestId('button-store-refresh'));
-    expect(axiosInstance.get).toHaveBeenCalledTimes(1)
+    expect(axiosInstance.get).toHaveBeenCalledTimes(1);
+    expect(logEvent).toHaveBeenCalledTimes(1);
+    //expect(loginSync).toHaveBeenCalledTimes(1); // This is called in  returned Axios Promise, need a mockImplementation that will surface the call to loginSync
   })
 })
