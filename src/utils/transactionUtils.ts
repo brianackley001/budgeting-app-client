@@ -4,7 +4,7 @@ export const formatMerchantDisplayName = (merchantName, itemName) => {
     displayValue = `(${merchantName}) ${itemName}`;
   }
   else if (merchantName && merchantName !== undefined && (!itemName || itemName === undefined)) {
-    displayValue = `(${merchantName})`;
+    displayValue = `${merchantName}`;
   }
   else{
     displayValue = itemName;

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { paginationLinkSet } from "./transactionUtils";
+import { paginationLinkSet, formatMerchantDisplayName } from "./transactionUtils";
 
 describe ("paginationLinkSet", () => {
 //paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, prev: boolean, next: boolean) 
@@ -85,6 +85,24 @@ describe ("paginationLinkSet", () => {
     
     // Act
     let result = sut (currentPage, clickedPage, setCount, totalPageCount, prev, next);
+
+    expect(result).toEqual(expected);
+  })
+
+  test.each([
+    { merchantName: "MerchantName", itemName: "ItemName", expected: "(MerchantName) ItemName" },
+    { merchantName: "MerchantName", itemName: "MerchantName", expected: "MerchantName" },
+    { merchantName: "MerchantName", itemName: undefined, expected: "MerchantName" },
+    { merchantName: "MerchantName", itemName: null, expected: "MerchantName" },
+    { merchantName: undefined, itemName: "ItemName", expected: "ItemName" },
+    { merchantName: null, itemName: "ItemName", expected: "ItemName" },
+  ])('Returns expected Merchant Name($merchantName, $itemName -> $expected', (
+    { merchantName, itemName, expected }) => {
+    // Arrange
+    let sut = formatMerchantDisplayName;
+    
+    // Act
+    let result = sut (merchantName, itemName);
 
     expect(result).toEqual(expected);
   })

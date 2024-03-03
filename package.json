@@ -19,7 +19,6 @@
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
     "buffer": "^6.0.3",
-    "date-fns": "^3.3.1",
     "localforage": "^1.10.0",
     "lodash.isequal": "^4.5.0",
     "match-sorter": "^6.3.1",
@@ -39,6 +38,7 @@
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
+    "date-fns": "^3.3.1",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",
@@ -62,7 +62,7 @@
     "debug": "node vite",
     "preview": "vite preview",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage --watch=false"
+    "test:coverage": "vitest run --coverage.enabled --coverage.exclude=src/__mocks__ --coverage.exclude=src/__tests__ --watch=false"
   },
   "eslintConfig": {
     "extends": [
