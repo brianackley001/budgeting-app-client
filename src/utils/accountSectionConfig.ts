@@ -6,8 +6,8 @@ const configuredSectionData = (bankAccounts: any, creditCards: any, investmentAc
       balanceIsDebt: false,
       testLabels: {
         container: "accordion-container-depository-accounts",
-        accordianHeader: "accordion-header-depository-accounts",
-        accordianBody: "accordion-body-depository-accounts",
+        accordionHeader: "accordion-header-depository-accounts",
+        accordionBody: "accordion-body-depository-accounts",
       },
       iconColorValue: iconColorValue,
       iconId: "depository",
@@ -19,8 +19,8 @@ const configuredSectionData = (bankAccounts: any, creditCards: any, investmentAc
       balanceIsDebt: true,
       testLabels: {
         container: "accordion-container-credit-accounts",
-        accordianHeader: "accordion-header-credit-accounts",
-        accordianBody: "accordion-body-credit-accounts",
+        accordionHeader: "accordion-header-credit-accounts",
+        accordionBody: "accordion-body-credit-accounts",
       },
       iconColorValue: iconColorValue,
       iconId: "credit",
@@ -32,8 +32,8 @@ const configuredSectionData = (bankAccounts: any, creditCards: any, investmentAc
       balanceIsDebt: false,
       testLabels: {
         container: "accordion-container-investment-accounts",
-        accordianHeader: "accordion-header-investment-accounts",
-        accordianBody: "accordion-body-investment-accounts",
+        accordionHeader: "accordion-header-investment-accounts",
+        accordionBody: "accordion-body-investment-accounts",
       },
       iconColorValue: iconColorValue,
       iconId: "investment",
@@ -45,8 +45,8 @@ const configuredSectionData = (bankAccounts: any, creditCards: any, investmentAc
       balanceIsDebt: true,
       testLabels: {
         container: "accordion-container-loan-accounts",
-        accordianHeader: "accordion-header-loan-accounts",
-        accordianBody: "accordion-body-loan-accounts",
+        accordionHeader: "accordion-header-loan-accounts",
+        accordionBody: "accordion-body-loan-accounts",
       },
       iconColorValue: iconColorValue,
       iconId: "loan",
