@@ -1,10 +1,24 @@
-
-
 import { render, screen } from '@testing-library/react';
+import { vi, describe, it, expect, afterAll, vitest, afterEach } from 'vitest';
 import {AuthenticatedNavBar} from "./AuthenticatedNavBar.jsx";
 import { BrowserRouter } from 'react-router-dom';
-import {SignOutButton} from "../buttons/SignOutButton.jsx"
+// import {SignOutButton} from "../buttons/SignOutButton.jsx"
 
+// vi.mock("@utils/logger");
+// vi.mock("@config/authConfig");
+// vi.mock("@config/authConfig");
+// vi.mock("@azure/msal-react");
+// vi.mock("@azure/msal-browser", () => ({
+//   PublicClientApplication: vi.fn(),
+// }));
+// vi.mock('@utils/axiosInstance');
+// vi.mock('@store/store');
+
+
+// beforeEach(() => {
+//   vi.spyOn('react-redux', 'useSelector');
+//   vi.spyOn('react-redux', 'useDispatch');
+// });
 
   describe.skip('Auth Navbar', () => {
     // beforeEach(() => {
@@ -46,14 +60,14 @@ import {SignOutButton} from "../buttons/SignOutButton.jsx"
         expect(settingsLink).toHaveTextContent(/Settings/);
         //screen.debug();
       });
-      test("should contain 'Sign Out' button", () => {
-        render(<BrowserRouter><AuthenticatedNavBar><SignOutButton /></AuthenticatedNavBar></BrowserRouter>)
-        // Sign-Out Button
-        let signOutButton = screen.queryByTestId('button-sign-out');
-        expect(signOutButton).toBeVisible();
-        expect(signOutButton).toHaveTextContent(/Log Out/);
-        //screen.debug();
-      });
+      // test("should contain 'Sign Out' button", () => {
+      //   render(<BrowserRouter><AuthenticatedNavBar><SignOutButton /></AuthenticatedNavBar></BrowserRouter>)
+      //   // Sign-Out Button
+      //   let signOutButton = screen.queryByTestId('button-sign-out');
+      //   expect(signOutButton).toBeVisible();
+      //   expect(signOutButton).toHaveTextContent(/Log Out/);
+      //   //screen.debug();
+      // });
       test("should not contain 'Sign In' button", () => {
         render(<BrowserRouter><AuthenticatedNavBar></AuthenticatedNavBar></BrowserRouter>)
         // Sign-In Button
