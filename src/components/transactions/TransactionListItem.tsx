@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
 import TagAccordianItem from './filterOptions/TagAccordianItem';
-import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken";
 import { useAppDispatch } from "@hooks/storeHooks";
 import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
 import { setUpdatedTransactionItem } from "@store/transactionSlice";

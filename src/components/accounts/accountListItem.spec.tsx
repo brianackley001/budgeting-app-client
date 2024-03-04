@@ -30,11 +30,11 @@ afterEach(() => {
 
 describe.skip("Accordion test", () => {
   test("should show title data points", () => {
-    let accordianHeader = screen.getByTestId('accordion-header');
-    expect(accordianHeader).toBeInTheDocument();
-    expect(accordianHeader).toHaveTextContent(accountListItem.name);
-    expect(accordianHeader).toHaveTextContent(accountListItem.mask);
-    expect(accordianHeader).toHaveTextContent(accountListItem.balances.available.toString());
+    let accordionHeader = screen.getByTestId('accordion-header');
+    expect(accordionHeader).toBeInTheDocument();
+    expect(accordionHeader).toHaveTextContent(accountListItem.name);
+    expect(accordionHeader).toHaveTextContent(accountListItem.mask);
+    expect(accordionHeader).toHaveTextContent(accountListItem.balances.available.toString());
   })
   test("should set Account Name form field value", () => {
     let formAccountName = screen.getByTestId('accordion-form-account-name');
@@ -42,12 +42,12 @@ describe.skip("Accordion test", () => {
     expect(formAccountName).toHaveValue(accountListItem.name);
   })
   test("should set Include In Transactions form field value", () => {
-    let formIncludeInTrasactions = screen.getByTestId('accordion-form-include-in-transactions');
-    expect(formIncludeInTrasactions).toBeInTheDocument();
+    let formIncludeInTransactions = screen.getByTestId('accordion-form-include-in-transactions');
+    expect(formIncludeInTransactions).toBeInTheDocument();
     if(accountListItem.includeInTransactions)
-     expect(formIncludeInTrasactions).toBeChecked();
+     expect(formIncludeInTransactions).toBeChecked();
     else
-      expect(formIncludeInTrasactions).not.toBeChecked();
+      expect(formIncludeInTransactions).not.toBeChecked();
   })
   // test("should call handleSubmit when 'Save' button is clicked", () => {
     

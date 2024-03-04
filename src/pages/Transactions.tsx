@@ -2,7 +2,7 @@
 import { Col, Row, Table } from "react-bootstrap";
 
 import { useAppSelector } from "@hooks/storeHooks";
-import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken";
 
 import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
 import { TransactionListItem } from "@components/transactions/TransactionListItem";

@@ -1,4 +1,4 @@
-import AccountSectionAccordian  from "./AccountSectionAccordian.tsx";
+import AccountSectionAccordion  from "./AccountSectionAccordion.tsx";
 import { configuredSectionData } from "@utils/accountSectionConfig.ts"
 
 /**
@@ -24,7 +24,7 @@ function AccountSummaryList({ items }) {
   return (
     <>
     {accountSections.map((section) => (
-      <AccountSectionAccordian items={section.items} 
+      <AccountSectionAccordion items={section.items} 
       balanceIsDebt={section.balanceIsDebt} 
       testLabels={section.testLabels} 
       iconColorValue={section.iconColorValue} 

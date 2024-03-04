@@ -6,12 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyCheckDollar, faCreditCard, faBuildingColumns,faMoneyBillTrendUp } from '@fortawesome/free-solid-svg-icons'
 
 /**
- * Renders Acouunt Summary Section of grouped account types (e.g. Checking & Savings, Credit Cards, etc.)
+ * Renders Account Summary Section of grouped account types (e.g. Checking & Savings, Credit Cards, etc.)
  * @param props
  */
 
 
-function AccountSectionAccordian({ items, balanceIsDebt, testLabels, iconColorValue, iconId, sectionLabel }) {
+function AccountSectionAccordion({ items, balanceIsDebt, testLabels, iconColorValue, iconId, sectionLabel }) {
   let iconSelection;
   if (iconId === 'depository') {
     iconSelection = faMoneyCheckDollar;
@@ -52,5 +52,5 @@ function AccountSectionAccordian({ items, balanceIsDebt, testLabels, iconColorVa
     </>
 )};
 
-export default AccountSectionAccordian;
+export default AccountSectionAccordion;
 

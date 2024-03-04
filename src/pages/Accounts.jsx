@@ -1,7 +1,7 @@
 //import React, { useCallback, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useAppSelector } from "@hooks/storeHooks";
-import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken";
 import SimplePlaidLink from "@components/SimplePlaidLink";
 import AccountList from "@components/accounts/AccountList.tsx";
 import {logTrace} from "@utils/logger";

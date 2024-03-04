@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
 import { upsertAccount } from "@store/accountSlice.ts";
 
 /**
- * Renders information about the user account
+ * Renders information about the account list
  * @param props
  */
 
