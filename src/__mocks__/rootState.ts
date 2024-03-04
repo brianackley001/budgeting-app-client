@@ -21,9 +21,9 @@ const rootState: RootState = {
     uid: "test uid",
   },
   plaidSlice: {
-    institutions: [],
-    linkedItems: [],
-    publicToken: ""
+    institutions: ["test institution 1","test institution 2"],
+    linkedItems: ["test linked item 1",  "test linked item 2"],
+    publicToken: "test public token"
   },
   transactionSlice: {
     activePageItems: [],
