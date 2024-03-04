@@ -4,9 +4,6 @@ import {
   selectInstitutions,
   selectLinkedItems,
   selectPublicToken,
-  setInstitutions,
-  setLinkedItems,
-  setPublicToken,
 } from "./plaidSlice";
 import { vi, describe, it, expect, afterAll, vitest, afterEach } from "vitest";
 import rootState from "@/__mocks__/rootState";
