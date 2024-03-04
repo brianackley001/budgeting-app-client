@@ -146,7 +146,7 @@ export const TransactionListItem = (item) =>{
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Form noValidate validated={validated} data-testid="accordian-form" onSubmit={handleFormSubmit}>
+        <Form noValidate validated={validated} data-testid="accordion-form" onSubmit={handleFormSubmit}>
           <Modal.Header closeButton>
             <Modal.Title as="h6">Transaction Details</Modal.Title>
           </Modal.Header>

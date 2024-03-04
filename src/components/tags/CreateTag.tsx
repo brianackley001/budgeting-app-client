@@ -6,7 +6,7 @@ import { useAppDispatch } from "@hooks/storeHooks";
 import { createTransactionTag } from '@/store/userSlice';
 
 /**
- * Renders mesaging to user that no transaction data matches the current filter criteria
+ * Renders messaging to user that no transaction data matches the current filter criteria
  * @param props
  */
 
