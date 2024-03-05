@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import {getElapsedTime} from "@utils/dateTimeUtils";
 
 /**
- * Renders information about the user obtained from MS Graph
+ * Renders information about the Account Summary List Item
  * @param props
  */
 
