@@ -1,7 +1,7 @@
 
 import{ Card, Row, Col } from "react-bootstrap";
 
-import { SignInButton } from "../buttons/SignInButton";
+import { SignInButton } from "@components/buttons/SignInButton";
 import {logTrace} from "@utils/logger";
 
 
