@@ -29,14 +29,14 @@ function AccountSectionAccordion({ items, balanceIsDebt, testLabels, iconColorVa
       <Accordion data-testid={testLabels.container} defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Card.Body>
-            <Accordion.Header data-testid={testLabels.accordianHeader}>
+            <Accordion.Header data-testid={testLabels.accordionHeader}>
               <Card.Subtitle className="mb-2 text-bold">
                 <span className='iconStyle'>
                   <FontAwesomeIcon icon={iconSelection} size='lg' style={{ color: iconColorValue, }} />
                 </span>
                 {sectionLabel}</Card.Subtitle>
             </Accordion.Header>
-            <Accordion.Body data-testid={testLabels.accordianBody}>
+            <Accordion.Body data-testid={testLabels.accordionBody}>
 
               <span className='card-text'>
                 <ListGroup variant="flush">

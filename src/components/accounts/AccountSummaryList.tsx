@@ -2,7 +2,7 @@ import AccountSectionAccordion  from "./AccountSectionAccordion.tsx";
 import { configuredSectionData } from "@utils/accountSectionConfig.ts"
 
 /**
- * Renders List of Acouunt Summary Items
+ * Renders List of Account Summary Items
  * @param props
  */
 

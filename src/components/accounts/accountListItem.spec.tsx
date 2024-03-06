@@ -1,4 +1,3 @@
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AccountListItemType } from "../../types/accountListItem";
 import AccountListItem from "./AccountListItem";
