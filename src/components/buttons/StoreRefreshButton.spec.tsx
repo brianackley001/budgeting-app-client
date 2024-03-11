@@ -13,15 +13,15 @@ describe('Store Refresh Button', () => {
       logError: vi.fn(),
       logEvent: vi.fn()
     }));
-    vi.mock('@utils/loginStateUtils.ts', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('@utils/loginStateUtils.ts')>()
+    vi.mock('@utils/userStateUtils.ts', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@/utils/userStateUtils')>()
       return {
         ...actual,
         loginSync: vi.fn()
       }
     });
-    vi.mock('@hooks/storeHooks', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('@hooks/storeHooks')>()
+    vi.mock('@hooks/useStoreHooks', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@/hooks/useStoreHooks')>()
       return {
         ...actual,
         useAppSelector: vi.fn(),

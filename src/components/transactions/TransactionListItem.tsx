@@ -5,7 +5,7 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
 import TagAccordianItem from './filterOptions/TagAccordianItem';
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import { useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
 import { setUpdatedTransactionItem } from "@store/transactionSlice";
 import { formatMerchantDisplayName } from "@utils/transactionUtils.ts";

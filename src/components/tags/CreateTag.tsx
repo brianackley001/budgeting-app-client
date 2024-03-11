@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Alert, Button, Card, CardBody, Col, Form, Modal, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTriangleExclamation, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { createTransactionTag } from '@/store/userSlice';
 
 /**

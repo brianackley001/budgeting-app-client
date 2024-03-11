@@ -1,6 +1,6 @@
 
 import Button from "react-bootstrap/Button";
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { useAppSelector, useAppDispatch } from "@hooks/useStoreHooks";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
 import { syncTransactions} from "@store/transactionSlice";

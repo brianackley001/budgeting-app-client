@@ -1,6 +1,6 @@
 import Store from "../store/store";
 import { msalConfig } from "../config/authConfig";
-import * as storeHooks from "../hooks/storeHooks";
+import * as useStoreHooks from "../hooks/useStoreHooks";
 import msalSlice, { selectAccessToken, setAccessToken } from "../store/msalSlice";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import MsalUtils from "./msalToken";
@@ -28,10 +28,10 @@ const msalTokenValue = "";
 let originalSessionStorage: Storage;
 
 const expectedSessionStorageTokenValue = "Test1234567.Tenant1234567-login.windows.net-accesstoken-RandomTokenValueXYZ-Tenant1234567-api://GUID_ID/appName.read api://GUID_ID/appName.readwrite--";
-// const storeUseDispatchSpy = vi.mock('src/hooks/storeHooks', () => ({ 
+// const storeUseDispatchSpy = vi.mock('src/hooks/useStoreHooks', () => ({ 
 //   useAppDispatch: vi.fn()}));
   
-// const storeUseSelectorSpy = vi.mock('src/hooks/storeHooks', () => ({ 
+// const storeUseSelectorSpy = vi.mock('src/hooks/useStoreHooks', () => ({ 
 //   useAppSelector: vi.fn()}));
 
 //vi.spyOn(useAppDispatch, ).mockImplementation(() => {});
@@ -87,10 +87,10 @@ describe("utils.msalToken", (): void => {
   // it("Successfully retrieves the MSAL Token Value from the Store", (): void => {
   //   // Arrange
   //   vi.mock("../store/msalSlice", () => ({ selectAccessToken: () => '' }))
-  //   vi.mock("../hooks/storeHooks", () => ({ useAppDispatch: async () => { type: 'increase-counter' } }))
-  //   vi.mock("../hooks/storeHooks", () => ({ useAppSelector: () => '' }))
-  //   // const useAppDispatchSpy = vi.spyOn(storeHooks, 'useAppDispatch')//selectAccessToken
-  //   // const useAppSelectorSpy = vi.spyOn(storeHooks, 'useAppSelector').mockReturnValue('');
+  //   vi.mock("../hooks/useStoreHooks", () => ({ useAppDispatch: async () => { type: 'increase-counter' } }))
+  //   vi.mock("../hooks/useStoreHooks", () => ({ useAppSelector: () => '' }))
+  //   // const useAppDispatchSpy = vi.spyOn(useStoreHooks, 'useAppDispatch')//selectAccessToken
+  //   // const useAppSelectorSpy = vi.spyOn(useStoreHooks, 'useAppSelector').mockReturnValue('');
 
   //   // Act
   //   const sut = MsalUtils();

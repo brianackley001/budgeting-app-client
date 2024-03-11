@@ -2,7 +2,7 @@ import { faGear, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Alert, Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "react-bootstrap";
-import { useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { deleteTransactionTag, updateTransactionTag } from '@/store/userSlice';
 
 {/* <Badge pill bg="secondary" key={index}>{tag}</Badge> */ }

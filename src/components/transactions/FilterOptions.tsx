@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
 import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

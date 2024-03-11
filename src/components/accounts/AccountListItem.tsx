@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {Button, Col, Row, Accordion, Form } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { upsertAccount } from "@store/accountSlice.ts";
 
 /**

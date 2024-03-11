@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Button } from "react-bootstrap";
-import { useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setPublicToken } from "@store/plaidSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useAppSelector } from "@hooks/storeHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
 import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";

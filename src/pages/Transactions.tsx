@@ -1,7 +1,7 @@
 // import React, { useState } from 'react';
 import { Col, Row, Table } from "react-bootstrap";
 
-import { useAppSelector } from "@hooks/storeHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 
 import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';

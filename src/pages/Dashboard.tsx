@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import{ Button, Card, Spinner } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks.ts";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRotate } from '@fortawesome/free-solid-svg-icons'
