@@ -37,7 +37,7 @@ export const Transactions = () => {
     paginationConfig.amountTo !== 0 ||
     paginationConfig.startDate.length > 0 ||
     paginationConfig.endDate.length > 0 ||
-    paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length);
+    (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
 
   // Methods:
   const formatAmount = (amount) => {
