@@ -5,7 +5,7 @@ import type { RootState } from './store'
 // Define a type for the slice state
 interface AlertState {
   headerText: string,
-  icon: {iconType: string, isVisible: boolean, iconSize: string, iconColor: string},
+  icon?: {iconType: string, isVisible: boolean, iconSize: string, iconColor: string},
   inProgress: boolean,
   messageText: string,
   showAlert: boolean,
@@ -34,6 +34,14 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
+    setAlertState: (state, action: PayloadAction<AlertState>) => {
+      state.headerText = action.payload.headerText
+      state.icon = action.payload.icon ? action.payload.icon : state.icon
+      state.inProgress = action.payload.inProgress
+      state.messageText = action.payload.messageText
+      state.showAlert = action.payload.showAlert
+      state.variantStyle = action.payload.variantStyle
+    },
     setIcon: (state, action: PayloadAction<IconItem>) => {
       state.icon = action.payload
     },
@@ -55,7 +63,7 @@ export const alertSlice = createSlice({
   },
 })
 
-export const { setHeaderText, setIcon, setInProgress, setMessageText, setShowAlert, setVariantStyle } = alertSlice.actions
+export const { setAlertState, setHeaderText, setIcon, setInProgress, setMessageText, setShowAlert, setVariantStyle } = alertSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectIcon = (state: RootState) => (state as RootState).alertSlice.icon
