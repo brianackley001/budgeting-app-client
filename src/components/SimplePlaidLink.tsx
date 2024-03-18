@@ -7,7 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from "@/hooks/useStoreHooks";
 import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
-import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
+// import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
 import {logError, logEvent } from "@utils/logger";
 

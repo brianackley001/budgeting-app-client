@@ -19,6 +19,11 @@ interface UserState {
   }
   userId: string,
   userName: string,
+  syncUserRequest: {
+    inProgress: boolean,
+    errors:string [],
+    standAloneRequest: boolean,
+  },
   transactionTags: string[]
 }
 
@@ -30,6 +35,11 @@ const initialState: UserState = {
   },
   userId: '',
   userName: '',
+  syncUserRequest:{
+    inProgress: false,
+    errors: [],
+    standAloneRequest: false,
+  },
   transactionTags: []
 }
 
@@ -191,6 +201,9 @@ export const userSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload
     },
+    setSyncUserRequest: (state, action) => {
+      state.syncUserRequest = action.payload;
+    },
     setTransactionsPerPage: (state, action: PayloadAction<number>) => {
       state.preferences.transactionItemsPerPage = action.payload
     },
@@ -206,10 +219,11 @@ export const userSlice = createSlice({
   },
 })
 
-export const { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } = userSlice.actions
+export const { setName, setSyncUserRequest, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectName = (state: RootState) => state.userSlice.name
+export const selectSyncUserRequest = (state: RootState) => state.userSlice.syncUserRequest
 export const selectTransactionItemsPerPage = (state: RootState) => state.userSlice.preferences.transactionItemsPerPage
 export const selectTransactionTags = (state: RootState) => state.userSlice.transactionTags
 export const selectUserId = (state: RootState) => state.userSlice.userId

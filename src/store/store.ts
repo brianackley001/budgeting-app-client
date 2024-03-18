@@ -5,6 +5,7 @@ import userSlice from './userSlice';
 import accountSlice from './accountSlice';
 import alertSlice from './alertSlice';
 import transactionSlice from './transactionSlice';
+import syncRequestSlice from './syncRequestSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     alertSlice: alertSlice,
     msalSlice: msalSlice,
     plaidSlice: plaidSlice,
+    syncRequestSlice: syncRequestSlice,
     transactionSlice: transactionSlice,
     userSlice: userSlice
   },

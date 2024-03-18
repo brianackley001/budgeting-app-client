@@ -1,15 +1,8 @@
-import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
+import { createSlice  } from "@reduxjs/toolkit";
 import isEqual from "lodash.isequal";
 import type { RootState } from "./store";
 import axiosInstance  from "@utils/axiosInstance";
 import { paginationLinkSet } from "@utils/transactionUtils";
-import {
-  setHeaderText,
-  setMessageText,
-  setInProgress,
-  setShowAlert,
-  setVariantStyle,
-} from "@store/alertSlice";
 import { logError, logEvent } from "@utils/logger";
 
 interface transactionItem {
@@ -73,6 +66,11 @@ interface TransactionState {
   activePageItems: number[],
   isLoading: boolean,
   pagedTransactions: PagedTransactions,
+  syncTransactionRequest: {
+    inProgress: false,
+    errors: [],
+    standAloneRequest: false,
+  },
   transactionPagination: TransactionPagination
 }
 // Define the initial state using that type
@@ -102,6 +100,11 @@ const initialState: TransactionState = {
         },
       },
     ],
+  },
+  syncTransactionRequest: {
+    inProgress: false,
+    errors: [],
+    standAloneRequest: false,
   },
   transactionPagination: {
     accountIds: "",
@@ -193,40 +196,26 @@ export function getPagedTransactions(
   };
 }
 
-export function syncTransactions(userId: string, itemId: string, institution: any, showAlert: boolean = true) {
-  return async function (dispatch) {
-    if (showAlert) {
-      dispatch(setIsLoading(true));
-      dispatch(setInProgress(true));
-      dispatch(setHeaderText("Syncing"));
-      dispatch(setMessageText("Please wait while we sync your accounts..."));
-      dispatch(setShowAlert(true));
-    }
+export function syncTransactions(userId: string) {
+  return async function (dispatch, getState) {
+    let requestErrors = [];
     //API Call:
     try {
-      logEvent("syncTransactions", { userId: userId, itemId: itemId, institution: institution });
-      await axiosInstance.post("transactionsSync", {
-        userId: userId,
-        itemId: itemId,
-        institution: institution,
-      });
+      logEvent("syncTransactions THUNK STARTED", { userId: userId});
+      const response = await axiosInstance.post("transactionsSync", { userId: userId });
+      if(response.data.errors && response.data.errors.length > 0){ //} && response.data.type && response.data.code && response.data.type=="ITEM_ERROR" && response.data.code=="ITEM_LOGIN_REQUIRED"){
+        //throw new Error("There was a problem logging into one of your accounts. Please navigate to the Accounts page to correct this issue.");
+        console.error(`transactionSlice - syncTransactions: loginFailed = true`);
+        requestErrors = response.data.errors;
+      }
+      const currentSyncRequest = getState().transactionSlice.syncTransactionRequest;
+      dispatch(setSyncTransactionRequest({inProgress: false, standAloneRequest: currentSyncRequest.standAloneRequest, errors: requestErrors}));
     } catch (error) {
       console.log(error);
       logError(error as Error);
-      dispatch(setInProgress(false));
-      dispatch(setHeaderText("Sync Error"));
-      dispatch(setMessageText("Error retrieving transaction data."));
-      dispatch(setVariantStyle("danger"));
-      dispatch(setShowAlert(true));
     } finally {
-      if (showAlert) dispatch(setIsLoading(false));
-      {
-        dispatch(setInProgress(false));
-        dispatch(setHeaderText("Sync Completed"));
-        dispatch(setMessageText("Your account sync is complete."));
-        dispatch(setVariantStyle("success"));
-        dispatch(setShowAlert(true));
-      }
+      logEvent("syncTransactions THUNK COMPLETED", { userId: userId });
+      return requestErrors;
     }
   };
 }
@@ -272,6 +261,9 @@ export const transactionSlice = createSlice({
     setPaginationUserId: (state, action) => {
       state.transactionPagination.userId = action.payload
     },
+    setSyncTransactionRequest: (state, action) => {
+      state.syncTransactionRequest = action.payload
+    },
     setTransactionPagination: (state, action) => {
       state.transactionPagination = action.payload
     },
@@ -301,12 +293,14 @@ export const {
   setPaginationSortDirection,
   setPaginationTotal,
   setPaginationUserId,
+  setSyncTransactionRequest,
   setTransactionPagination,
   setUpdatedTransactionItem } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActivePageItems = (state: RootState) => state.transactionSlice.activePageItems
 export const selectPagedTransactions = (state: RootState) => state.transactionSlice.pagedTransactions
+export const selectSyncTransactionRequest = (state: RootState) => state.transactionSlice.syncTransactionRequest
 export const selectTransactionPagination = (state: RootState) => state.transactionSlice.transactionPagination
 
 export default transactionSlice.reducer 

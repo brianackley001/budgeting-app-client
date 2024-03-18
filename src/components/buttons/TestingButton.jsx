@@ -27,7 +27,7 @@ export const TestingButton = () => {
         id: 'ins_127991',
         name: 'Wells Fargo'
       }
-      dispatch(syncTransactions(userId, 'b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz', institution));
+      dispatch(syncTransactions(userId, 'b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz'));
     }
     catch (error) {
       console.error(error);

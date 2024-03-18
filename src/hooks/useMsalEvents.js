@@ -3,18 +3,23 @@ import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
 import { useAppDispatch } from "@hooks/useStoreHooks";
 import { setAccessToken, setUid } from "@store/msalSlice";
-//import { selectTransactionPagination } from "@store/transactionSlice"; 
+import { setSyncRequestItems } from "@store/syncRequestSlice";
 import { setName, setUserId, setUserName } from "@store/userSlice";
-import {useSetSessionUser} from "@hooks/useSetSessionUser";
-import { setAlertState } from "@store/alertSlice";
-import { logError, logEvent } from "@utils/logger";
+import { setSyncUserRequest } from "@store/userSlice"; 
+import { useSetSyncAccount } from "@hooks/useSyncAccount";
+import { useSyncRequestManager } from "@hooks/useSyncRequestManager";
+import { useSetSessionUser } from "@hooks/useSetSessionUser";
+import { useSetSyncTransaction } from "@hooks/useSyncTransaction";
+import { logEvent } from "@utils/logger";
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
-
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
+  useSetSyncAccount();
   useSetSessionUser();
+  useSetSyncTransaction();
+  useSyncRequestManager();
 
   useEffect(() => {
     const callbackId = instance.addEventCallback((event) => {
@@ -26,16 +31,10 @@ const useMsalEvents = () => {
         dispatch(setAccessToken(event.payload.accessToken));
         dispatch(setUid(event.payload.uniqueId));
 
-        const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
+        const userLoginSuccess = sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
-          logEvent("user-login", {userId: event.payload.uniqueId});
-          dispatch(setAlertState({
-            headerText: "Syncing",
-            inProgress: true,
-            messageText: "Please wait while we sync your accounts...",
-            showAlert: true
-          }));
-          }
+          logEvent("user-login", { userId: event.payload.uniqueId });
+        }
       }
 
       if (
@@ -50,6 +49,10 @@ const useMsalEvents = () => {
         sessionStorage.setItem("userId", event.payload.account.localAccountId);
         sessionStorage.setItem("userName", event.payload.account.username);
         sessionStorage.setItem("userShortName", event.payload.account.name);
+
+        // Initiate user/account/transaction sync:
+        dispatch(setSyncRequestItems(["user", "account", "transaction"]));
+        dispatch(setSyncUserRequest({inProgress: true, standAloneRequest: false, errors: []}));
       }
     });
 
