@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import{ Button, Card, Spinner } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
+import {AccountRefreshButton} from "@components/buttons/AccountRefreshButton.tsx";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -41,18 +42,7 @@ export const Dashboard = () => {
         <Card>
           <Card.Body>
             <Card.Title>Accounts {accountItems && accountItems.length > 0 && <span className='cardHeaderIconRight'>
-              <Button variant={isAccountBalanceLoading ? "secondary" : "outline-secondary"} disabled={isAccountBalanceLoading}>
-                {!isAccountBalanceLoading &&
-                  <FontAwesomeIcon icon={faRotate} onClick={() => refreshAccountBalances()} title="Refresh Account Balances" />}
-                {isAccountBalanceLoading &&
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />}
-              </Button></span>}
+              <AccountRefreshButton /></span>}
             </Card.Title>
             {accountItems && accountItems.length > 0 &&
              <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>}

@@ -37,7 +37,7 @@ const useSyncRequestManager = () => {
 
   const isPlaidOtherError = (errors) => {
     return errors.some((error) => {
-      return error.error_type && error.error_type === "ITEM_ERROR" && error.error_code !== "ITEM_LOGIN_REQUIRED";
+      return error.error_type && error.error_code !== "ITEM_LOGIN_REQUIRED";
     });
   };
 

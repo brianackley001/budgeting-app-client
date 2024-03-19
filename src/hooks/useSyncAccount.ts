@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
-import { setAccounts } from "@store/accountSlice";
-import { setSyncAccountRequest } from "@store/accountSlice"; 
+import { getAccountBalances } from "@store/accountSlice";
 import { logError, logEvent } from "@utils/logger";
-import axiosInstance from "@utils/axiosInstance";
 
 const useSetSyncAccount = () => {
   const dispatch = useAppDispatch();
@@ -15,38 +13,28 @@ const useSetSyncAccount = () => {
 
   useEffect(() => {
     const fetchAccountData = async () => {
-      let requestErrors = [];
       setSyncInProgress(true);
       //API Call:
       try {
         logEvent("useSyncAccounts: getAccountBalances", { userId: userId });
-        const response = await axiosInstance.post(`accountbalance`, {
-          userId: userId,
-        });
-        requestErrors = response.data.errors ? response.data.errors : [];
-        dispatch(setAccounts(response.data.accounts));
+        await dispatch(getAccountBalances(userId));
       } catch (error) {
         console.log(error);
         logError(error as Error);
       } finally {
         logEvent("getAccountBalances END", { userId: userId });
-        dispatch(
-          setSyncAccountRequest({
-            inProgress: false,
-            standAloneRequest: syncAccountSyncRequest.standAloneRequest,
-            errors: requestErrors,
-          })
-        );
         setSyncInProgress(false);
       }
     };
 
-    if(syncAccountSyncRequest.inProgress && !syncInProgress) {
+    if (syncAccountSyncRequest.inProgress && !syncInProgress) {
       fetchAccountData();
     }
-
-
-  },  [syncAccountSyncRequest.errors, syncAccountSyncRequest.inProgress, syncInProgress]);
+  }, [
+    syncAccountSyncRequest.errors,
+    syncAccountSyncRequest.inProgress,
+    syncInProgress,
+  ]);
 
   return syncAccountSyncRequest;
 };
