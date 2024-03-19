@@ -9,9 +9,11 @@ import { Key } from "react";
  */
 
 export default function AccountList({ institution }) {
+  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED";
+  const cardClass = hasCredentialError ? "mb-5 red" : "mb-5";
   return (
     <>
-      <Card className="mb-5">
+      <Card className={cardClass}>
         <Card.Body>
           <InstitutionHeaderItem institution={institution} />
           <span className='card-text'>

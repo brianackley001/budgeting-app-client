@@ -90,6 +90,7 @@ $border-radius: .4rem;
 
 // @import "icon-list";
 @import "settings";
+@import "card";
 
 
 html {
@@ -172,7 +173,7 @@ body {
   float: right;
 }
 
-.headerBottmMargin {
+.headerBottomMargin {
   margin-bottom: 20px;
 }
 

@@ -10,15 +10,24 @@ export const Accounts = () => {
   useAcquireAccessToken();
   logTrace('Accounts.tsx');
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const linkedItems = useAppSelector(state => state.plaidSlice.linkedItems);
   const institutions = Array.from(new Set(accountItems.map((item) => item.institutionId)))
     .map((institutionId) => {
       return {
         institutionId: institutionId, 
         accounts: accountItems.filter((item) => item.institutionId === institutionId),
+        itemError: linkedItems.find((item) => item.institution_id === institutionId)?.itemError
       };
     })
     .sort((a, b) => a.institutionId.localeCompare(b.institutionId));
-    // console.log(institutions);
+    
+  // If an institution has an error, move it to position zero
+  institutions.forEach((institution, index) => {
+    if (institution.itemError) {
+      institutions.splice(index, 1);
+      institutions.unshift(institution);
+    }
+  });
   return (
     <>
     <div className="dashboardAccountContainer">
