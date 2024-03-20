@@ -5,7 +5,11 @@ import { setSyncAccountRequest } from "@store/accountSlice";
 import { setSyncRequestItems } from "@store/syncRequestSlice";
 import { setSyncTransactionRequest } from "@store/transactionSlice";
 import { setSyncUserRequest } from "@store/userSlice";
+import { getPlaidGeneralErrorMessage, isPlaidLoginError, isPlaidOtherError} from "@utils/syncRequestErrorMessageUtils";
 
+  /**
+   * Manages the sync request process for the application (e.g., sync user transactions, user account balances, etc.).
+   */
 const useSyncRequestManager = () => {
   const alertIsVisible = useAppSelector((state) => state.alertSlice.showAlert);
   const syncAccountRequest = useAppSelector((state) => state.accountSlice.syncAccountRequest);
@@ -16,38 +20,30 @@ const useSyncRequestManager = () => {
   const [syncOperationComplete, setSyncOperationComplete] = useState(false);
   const [syncOperationHasErrors, setSyncOperationHasErrors] = useState(false);
 
-  const getPlaidGeneralErrorMessage = (errors) => {
-    let message = "";
+  /**
+   * Determines if all array members have completed their sync operation.
+   */
+  const hasSyncOperationCompleted = () => {
+    // Presumption: only 3 types of sync requests are possible:  
+    //      1. User, 2. Account(Balance), 3. Transaction
+    // Therefore, foregoing dynamic evaluation of syncRequestItems array.
+    // User will be processed on Login, and Account will be processed on Login and on Account (Refresh) page.
+    if(transactionSyncItems.length === 3){
+      setSyncOperationComplete(!syncAccountRequest.inProgress && !syncTransactionRequest.inProgress && !syncUserRequest.inProgress); 
+    }
+    
+    if(transactionSyncItems.length === 1 && transactionSyncItems.includes("account")){
+      setSyncOperationComplete(!syncAccountRequest.inProgress);
+    } 
 
-    errors.forEach((error) => {
-      if (error.error_message) {
-        if (message.indexOf(error.error_message) === -1) {
-          message += error.error_message + " ";
-        }
-      }
-    });
-    return message;
+    if(transactionSyncItems.length === 1 && transactionSyncItems.includes("transaction")){
+      setSyncOperationComplete(!syncTransactionRequest.inProgress);
+    } 
+    syncRequestTransactionHasErrors();
   };
-
-  const isPlaidLoginError = (errors) => {
-    return errors.some((error) => {
-      return error.error_code && error.error_code === "ITEM_LOGIN_REQUIRED";
-    });
-  };
-
-  const isPlaidOtherError = (errors) => {
-    return errors.some((error) => {
-      return error.error_type && error.error_code !== "ITEM_LOGIN_REQUIRED";
-    });
-  };
-
-  const syncRequestTransactionHasErrors = () => {
-    setSyncOperationHasErrors(
-      syncAccountRequest.errors.length > 0 ||
-        syncTransactionRequest.errors.length > 0 ||
-        syncUserRequest.errors.length > 0
-    );
-  };
+  /**
+   * Resets all possible sync request states to their initial state.
+   */
   const resetSyncState = () => {
     dispatch(setSyncRequestItems([]));
     dispatch(
@@ -72,7 +68,9 @@ const useSyncRequestManager = () => {
       })
     );
   };
-
+  /**
+   * Displays an alert message to the user indicating the beginning of a sync operation.
+   */
   const showBeginSyncAlert = () => {
     // Display BEGIN Sync message
     let message = "";
@@ -93,7 +91,9 @@ const useSyncRequestManager = () => {
       })
     );
   };
-
+  /**
+   * Displays an alert message to the user indicating the end of a sync operation with errors.
+   */
   const showErrorMessage = () => {
     let message = "";
     let headerText = "";
@@ -129,7 +129,9 @@ const useSyncRequestManager = () => {
     );
     resetSyncState();
   };
-
+  /**
+   * Displays an alert message to the user indicating the end of a sync operation with no errors.
+   */
   const showSuccessMessage = () => {
     let message = "";
     let headerText = "";
@@ -154,31 +156,24 @@ const useSyncRequestManager = () => {
     );
     resetSyncState();
   };
-
-  const hasSyncOperationCompleted = () => {
-    // Presumption: only 3 types of sync requests are possible:  
-    //      1. User, 2. Account(Balance), 3. Transaction
-    // Therefore, foregoing dynamic evaluation of syncRequestItems array.
-    // User will be processed on Login, and Account will be processed on Login and on Account (Refresh) page.
-    if(transactionSyncItems.length === 3){
-      setSyncOperationComplete(!syncAccountRequest.inProgress && !syncTransactionRequest.inProgress && !syncUserRequest.inProgress); 
-    }
-    
-    if(transactionSyncItems.length === 1 && transactionSyncItems.includes("account")){
-      setSyncOperationComplete(!syncAccountRequest.inProgress);
-    } 
-
-    if(transactionSyncItems.length === 1 && transactionSyncItems.includes("transaction")){
-      setSyncOperationComplete(!syncTransactionRequest.inProgress);
-    } 
-    syncRequestTransactionHasErrors();
+  /**
+   * Determines if any of the sync requests returned errors.
+   */
+  const syncRequestTransactionHasErrors = () => {
+    setSyncOperationHasErrors(
+      syncAccountRequest.errors.length > 0 ||
+        syncTransactionRequest.errors.length > 0 ||
+        syncUserRequest.errors.length > 0
+    );
   };
+  
 
   useEffect(() => {
     const evaluateSyncTransactionState = () => {
       if (!alertIsVisible) {
         showBeginSyncAlert();
       }
+      
       hasSyncOperationCompleted();
 
       if (syncOperationComplete && alertIsVisible && syncOperationHasErrors) {
@@ -189,6 +184,7 @@ const useSyncRequestManager = () => {
         showSuccessMessage();
       }
     };
+
     if(transactionSyncItems.length > 0)
       evaluateSyncTransactionState();
   }, [syncOperationComplete, syncAccountRequest.inProgress,syncTransactionRequest.inProgress,syncUserRequest.inProgress,transactionSyncItems]);
