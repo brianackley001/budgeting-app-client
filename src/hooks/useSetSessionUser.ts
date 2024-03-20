@@ -3,22 +3,21 @@ import { useMsal, useAccount } from "@azure/msal-react";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import { setName, setSyncUserRequest, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
+import { createUser, getUser } from "@store/userSlice";
+import { setSyncUserRequest } from "@store/userSlice";
 import { setSyncTransactionRequest } from "@store/transactionSlice"; 
 import { setSyncAccountRequest } from "@store/accountSlice"; 
 import { logError, logEvent } from "@utils/logger";
-import axiosInstance from "@utils/axiosInstance";
 
 const useSetSessionUser = () => {
   const syncAccountRequest =  useAppSelector(state => state.accountSlice.syncAccountRequest);
   const syncTransactionRequest =  useAppSelector(state => state.transactionSlice.syncTransactionRequest);
   const syncUserRequest =  useAppSelector(state => state.userSlice.syncUserRequest);
-  let sessionUser = {};
   const { accounts } = useMsal();
   const account = useAccount(accounts[0] || {});
   const dispatch = useAppDispatch();
 
-  const saveNewUser = async (sessionUser) => {
+  const saveNewUser = async () => {
     // NEW User, save to DB:
     logEvent("user-login", {
       type: "BEGIN save new user to DB",
@@ -34,35 +33,11 @@ const useSetSessionUser = () => {
       dateCreated: new Date().toUTCString(),
       dateUpdated: new Date().toUTCString(),
     };
-
-    await axiosInstance
-      .post(`user`, saveUserPayload)
-      .then((response) => {
-        sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-        sessionUser = response.data;
-        logEvent("user-login", {
-          type: "END save new user to DB",
-          userId: account ? account.localAccountId: "unknown",
-        });
-      })
-      .catch((error) => {
-        console.error(
-          `useMsalEvents: error saving/posting new user to DB: ${error}`
-        );
-        logError(error);
-        dispatch(setSyncUserRequest({ ...syncUserRequest, errors: ["Error saving new user"]}));
-      });
-      return sessionUser;
+    return await dispatch(createUser(saveUserPayload));
   };
   
   const setUserState = async (sessionUser) => {
     try {
-      dispatch(setUserId(sessionUser.id));
-      dispatch(setUserName(sessionUser.userName));
-      dispatch(setName(sessionUser.userShortName));
-      dispatch(setTransactionTags(sessionUser.transactionTags));
-      dispatch(setTransactionsPerPage(sessionUser.preferences.transactionItemsPerPage));
-
       if(sessionUser.linkedItems && sessionUser.linkedItems.length > 0)
         dispatch(setLinkedItems(sessionUser.linkedItems));
 
@@ -117,37 +92,30 @@ const useSetSessionUser = () => {
     if (account && syncUserRequest.inProgress) {
       const fetchUserData = async () => {
         // Get User from DB:
-        axiosInstance
-          .get(`/user/${account.localAccountId}`)
-          .then(async (response) => {
-            //User Exists:
-            if (response.data && response.data.id.length > 0) {
-              sessionStorage.setItem("DB_USER_EXISTS", "true");
-              sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-              sessionUser = response.data;
-            } else {
-              sessionUser = await saveNewUser(sessionUser);
-            }
+        try {
+          const sessionUser = await dispatch(getUser(account.localAccountId));
+          if ( sessionUser && sessionUser.id.length > 0 && sessionUser.userShortName.length > 0) {
+            sessionStorage.setItem("DB_USER_EXISTS", "true");
+            sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+
             await setUserState(sessionUser);
             await syncLinkedItems(sessionUser);
-          })
-          .catch((error) => {
-            console.error(
-              `useMsalEvents - getUser catch => error getting user from DB: ${error}`
-            );
-            logError(error);
-            dispatch(
-              setSyncUserRequest({
-                ...syncUserRequest,
-                errors: ["Error retrieving user details"],
-              })
-            );
-          })
-          .finally(() => {
-            dispatch(
-              setSyncUserRequest({ ...syncUserRequest, inProgress: false })
-            );
-          });
+          } else {
+            await saveNewUser();
+          }
+        } catch (error) {
+          logError(error as Error);
+          dispatch(
+            setSyncUserRequest({
+              ...syncUserRequest,
+              errors: ["Error retrieving user details"],
+            })
+          );
+        } finally {
+          dispatch(
+            setSyncUserRequest({ ...syncUserRequest, inProgress: false })
+          );
+        }
       };
 
       // Start the user sync process...
@@ -156,6 +124,6 @@ const useSetSessionUser = () => {
     }
   }, [account]);
 
-  return sessionUser;
+  return true;
 };
 export { useSetSessionUser };

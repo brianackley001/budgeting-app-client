@@ -203,8 +203,7 @@ export function syncTransactions(userId: string) {
     try {
       logEvent("syncTransactions THUNK STARTED", { userId: userId});
       const response = await axiosInstance.post("transactionsSync", { userId: userId });
-      if(response.data.errors && response.data.errors.length > 0){ //} && response.data.type && response.data.code && response.data.type=="ITEM_ERROR" && response.data.code=="ITEM_LOGIN_REQUIRED"){
-        //throw new Error("There was a problem logging into one of your accounts. Please navigate to the Accounts page to correct this issue.");
+      if(response.data.errors && response.data.errors.length > 0){
         console.error(`transactionSlice - syncTransactions: loginFailed = true`);
         requestErrors = response.data.errors;
       }

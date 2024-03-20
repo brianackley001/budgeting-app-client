@@ -125,6 +125,63 @@ export function deleteTransactionTag(userId, tag, tags) {
   };
 }
 
+// Thunk function
+export function getUser(userId) {
+  return async function (dispatch) {
+    let sessionUser = {
+      id: "",
+      userName: "",
+      userShortName: "",
+      transactionTags: ["Verify"],
+      preferences: { transactionItemsPerPage: 10 },
+      dateCreated: new Date().toUTCString(),
+      dateUpdated: new Date().toUTCString(),
+    };
+
+    //API Call (Get User from DB):
+    const response = await axiosInstance.get(`/user/${userId}`);
+
+    //User Exists:
+    if (response.data && response.data.id.length > 0) {
+      sessionUser = response.data;
+      dispatch(setUserId(sessionUser.id));
+      dispatch(setUserName(sessionUser.userName));
+      dispatch(setName(sessionUser.userShortName));
+      dispatch(setTransactionTags(sessionUser.transactionTags));
+      dispatch(setTransactionsPerPage(sessionUser.preferences.transactionItemsPerPage));
+
+      return sessionUser;
+    }
+  };
+}
+// Thunk function
+export function createUser(sessionUser) {
+  return async function (dispatch) {
+    //API Call (Create New User in DB):
+    await axiosInstance.post(`user`, sessionUser).then((response) => {
+      sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+      sessionUser = response.data;
+      logEvent("user-login", {
+        type: "END save new user to DB",
+        userId: sessionUser.id || "unknown",
+      });
+
+      if (response.data && response.data.id.length > 0) {
+        dispatch(setUserId(sessionUser.id));
+        dispatch(setUserName(sessionUser.userName));
+        dispatch(setName(sessionUser.userShortName));
+        dispatch(setTransactionTags(sessionUser.transactionTags));
+        dispatch(
+          setTransactionsPerPage(
+            sessionUser.preferences.transactionItemsPerPage
+          )
+        );
+      }
+    });
+    return sessionUser;
+  };
+}
+
 export function updateTransactionTag(userId, modifiedTag, tags) {
   return async function (dispatch) {
     //API Call(s):
