@@ -4,7 +4,7 @@ import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleExclamation, faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
 
-/** <FontAwesomeIcon icon={faCircleExclamation} />
+/**
  * Renders Institution Header item with display and edit capabilities
  * @param props
  */
