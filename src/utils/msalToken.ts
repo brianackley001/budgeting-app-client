@@ -1,4 +1,4 @@
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import { selectAccessToken, setAccessToken } from "@store/msalSlice";
 import { msalConfig } from "../config/authConfig";
 import { logError }  from "@utils/logger";

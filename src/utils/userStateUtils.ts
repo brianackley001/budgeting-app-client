@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-//import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+//import { useAppSelector, useAppDispatch } from "@hooks/useStoreHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
 import {getAccountBalances} from '@store/accountSlice';
 import { getPagedTransactions, setTransactionPagination, syncTransactions } from "@store/transactionSlice"; 
 import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
-import  axiosInstance from "@utils/axiosInstance";
 import {
+  setAlertState,
   setHeaderText,
   setMessageText,
   setInProgress,
@@ -29,6 +29,7 @@ const broadcastSyncError = async (dispatch, error) => {
   dispatch(setMessageText(error.message));
   dispatch(setVariantStyle("danger"));
   dispatch(setShowAlert(true));
+  console.error(`loginStateUtils - broadcastSyncError: ${error.message}`);
 };
 
 const endSyncOperation = async (dispatch) => {
@@ -37,6 +38,7 @@ const endSyncOperation = async (dispatch) => {
   dispatch(setMessageText("Your account sync is complete."));
   dispatch(setVariantStyle("success"));
   dispatch(setShowAlert(true));
+  console.log("loginStateUtils -endSyncOperation - dispatch Alert: 'Your account sync is complete'.");
 };
 
 const setAccountState = async (dispatch, user) => {
@@ -130,15 +132,8 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
       });
 
       const storeRequests = itemRequests.map((request) =>{
-        dispatch(syncTransactions(request.userId, request.itemId, request.institution, false))
+        dispatch(syncTransactions(request.userId))
       });
-
-      // let investmentStoreRequests = new Array();
-      // if(investmentItemRequests.length > 0) {
-      //   investmentStoreRequests = investmentItemRequests.map((request) =>{
-      //     return dispatch(syncTransactions(request.userId, request.itemId, request.institution, false))
-      //   });
-      // }
 
       //let outputCollection = new Array<Object>();
       const responses = await Promise.all(storeRequests)
@@ -164,7 +159,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
 
       return true;
     } catch (error) {
-      console.log(error);
+      console.error(`loginStateUtils - setTransactionState error: ${error}`);
       logError(error as Error);
       broadcastSyncError(dispatch, {
         header: "Sync Error",

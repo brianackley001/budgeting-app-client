@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
-import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, selectTransactionPagination, setPaginationSortBy, setPaginationSortDirection } from "@store/transactionSlice";
 
 

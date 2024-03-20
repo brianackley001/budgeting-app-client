@@ -2,7 +2,7 @@ import React , { useEffect, useState } from "react";
 import { Badge, Button, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleCheck, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons"
-import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
 import { setTransactionItemsPerPage}  from "@store/userSlice"
 

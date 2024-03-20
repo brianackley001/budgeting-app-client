@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pagination } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setActivePageItems, setTransactionPagination } from "@store/transactionSlice";
 import { paginationLinkSet } from "@utils/transactionUtils"
 

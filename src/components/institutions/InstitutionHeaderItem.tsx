@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card } from "react-bootstrap";
 import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faCircleExclamation, faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Renders Institution Header item with display and edit capabilities
@@ -13,6 +13,7 @@ export default function InstitutionHeaderItem({institution}) {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [formInstitutionName, setFormInstitutionName] = useState(institution.accounts[0].institutionName);
+  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED";
 
   const handleDeleteClose = () => setShowDelete(false);
   const handleDeleteShow = () => setShowDelete(true);
@@ -31,23 +32,30 @@ export default function InstitutionHeaderItem({institution}) {
 
   return (
     <>
-      <Card.Subtitle className="headerBottmMargin">{institution.accounts[0].institutionName}
-        <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
-        <Dropdown>
-          <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
-          <FontAwesomeIcon icon={faGear} color="gray" />
-          </Dropdown.Toggle>
+      <Card.Subtitle className="headerBottomMargin">{institution.accounts[0].institutionName}
+        {hasCredentialError && <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
+          <Button variant="danger" size="sm">
+            <FontAwesomeIcon icon={faCircleExclamation} color="white"  className='iconStyle' /><span>Repair Credentials</span>
+          </Button>
+        </span>}
+        {!hasCredentialError &&
+          <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
+            <Dropdown>
+              <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
+                <FontAwesomeIcon icon={faGear} color="gray" />
+              </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={handleEditShow}  as="button">
-              <FontAwesomeIcon icon={faPencil} size='lg' className="iconStyle" style={{color: "gray"}} />Edit
-            </Dropdown.Item>
-            <Dropdown.Item onClick={handleDeleteShow} as="button">
-              <FontAwesomeIcon icon={faTrashCan} size='lg' className="iconStyle" style={{color: "gray"}}  />Delete
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleEditShow} as="button">
+                  <FontAwesomeIcon icon={faPencil} size='lg' className="iconStyle" style={{ color: "gray" }} />Edit
+                </Dropdown.Item>
+                <Dropdown.Item onClick={handleDeleteShow} as="button">
+                  <FontAwesomeIcon icon={faTrashCan} size='lg' className="iconStyle" style={{ color: "gray" }} />Delete
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </span>
+        }
       </Card.Subtitle>
 
       <Modal show={showEdit} onHide={handleEditClose}>

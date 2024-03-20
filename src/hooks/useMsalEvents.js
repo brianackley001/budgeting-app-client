@@ -1,34 +1,28 @@
 import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { EventType } from "@azure/msal-browser";
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { useAppDispatch } from "@hooks/useStoreHooks";
 import { setAccessToken, setUid } from "@store/msalSlice";
-//import { selectTransactionPagination } from "@store/transactionSlice"; 
+import { setSyncRequestItems } from "@store/syncRequestSlice";
 import { setName, setUserId, setUserName } from "@store/userSlice";
-import axiosInstance  from "@utils/axiosInstance";
-import { loginSync } from '@utils/loginStateUtils';
-import {
-  setHeaderText,
-  setMessageText,
-  setInProgress,
-  setShowAlert,
-  setVariantStyle,
-} from "@store/alertSlice";
-import { logError, logEvent } from "@utils/logger";
+import { setSyncUserRequest } from "@store/userSlice"; 
+import { useSetSyncAccount } from "@hooks/useSyncAccount";
+import { useSyncRequestManager } from "@hooks/useSyncRequestManager";
+import { useSetSessionUser } from "@hooks/useSetSessionUser";
+import { useSetSyncTransaction } from "@hooks/useSyncTransaction";
+import { logEvent } from "@utils/logger";
 
 const useMsalEvents = () => {
   const [token, setToken] = useState("");
-
   const { instance } = useMsal();
   const dispatch = useAppDispatch();
-  const paginationSelector = useAppSelector(state => state.transactionSlice.transactionPagination);
-  const linkedItemSelector = useAppSelector(state => state.plaidSlice.linkedItems);
- // const userId = useAppSelector(state => state.userSlice.userId);
-  const useSyncUser = loginSync;
+  useSetSyncAccount();
+  useSetSessionUser();
+  useSetSyncTransaction();
+  useSyncRequestManager();
 
   useEffect(() => {
     const callbackId = instance.addEventCallback((event) => {
-      //store/update token in state
       if (
         event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS &&
         event.payload.account
@@ -36,79 +30,18 @@ const useMsalEvents = () => {
         setToken(event.payload.accessToken);
         dispatch(setAccessToken(event.payload.accessToken));
         dispatch(setUid(event.payload.uniqueId));
-        let accessTokenValue = event.payload.accessToken;
 
-        const userLoginSuccess= sessionStorage.getItem("msal_LOGIN_SUCCESS");
+        const userLoginSuccess = sessionStorage.getItem("msal_LOGIN_SUCCESS");
         if (userLoginSuccess) {
-          logEvent("user-login", "success");
-          // immediately display alert:
-          dispatch(setInProgress(true));
-          dispatch(setHeaderText("Syncing"));
-          dispatch(setMessageText("Please wait while we sync your accounts..."));
-          dispatch(setShowAlert(true));
-
-          // Get User from DB:
-          axiosInstance
-            .get(`/user/${event.payload.uniqueId}`)
-            .then(async (response) => {
-              //User Exists:
-              if(response.data && response.data.id.length > 0){
-                sessionStorage.setItem("DB_USER_EXISTS", true);
-                sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-                await useSyncUser(response.data, dispatch, paginationSelector, linkedItemSelector);
-              }
-              else{
-                logEvent("user-login", "new user saved to DB");
-                // NEW User, save to DB:
-                const saveUserPayload = {
-                  id: sessionStorage.getItem("userId"),
-                  userId: sessionStorage.getItem("userId"),
-                  userName: sessionStorage.getItem("userName"),
-                  userShortName: sessionStorage.getItem("userShortName"),
-                  preferences: {transactionItemsPerPage: 10},
-                  transactionTags: ["Verify"],
-                  dateCreated: new Date().toUTCString(),
-                  dateUpdated: new Date().toUTCString(),
-                };
-    
-                axiosInstance
-                  .post(`user`, saveUserPayload)
-                  .then((response) => {
-                    //console.log("New User Saved:/n" + JSON.stringify(response.data));
-                    sessionStorage.removeItem("msal_LOGIN_SUCCESS");
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                    logError(error);
-                  })
-                  .finally(() => {
-                    dispatch(setInProgress(false));
-                    dispatch(setHeaderText("Sync Complete"));
-                    dispatch(setMessageText("Your accounts have been synced successfully."));
-                    dispatch(setVariantStyle("success"));
-                    dispatch(setShowAlert(true));
-                  });
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              logError(error);
-              dispatch(setInProgress(false));
-              dispatch(setHeaderText(error.header));
-              dispatch(setMessageText(error.message));
-              dispatch(setVariantStyle("danger"));
-              dispatch(setShowAlert(true));
-            })
-          }
+          logEvent("user-login", { userId: event.payload.uniqueId });
+        }
       }
 
-      // persist user to data store
       if (
         event.eventType === EventType.LOGIN_SUCCESS &&
         event.payload.account
       ) {
-        //console.log(event.payload.account);
-        //setUserInfoSaved(false);
+        // persist user to Redux store
         dispatch(setUserId(event.payload.account.localAccountId));
         dispatch(setUserName(event.payload.account.username));
         dispatch(setName(event.payload.account.name));
@@ -116,6 +49,10 @@ const useMsalEvents = () => {
         sessionStorage.setItem("userId", event.payload.account.localAccountId);
         sessionStorage.setItem("userName", event.payload.account.username);
         sessionStorage.setItem("userShortName", event.payload.account.name);
+
+        // Initiate user/account/transaction sync:
+        dispatch(setSyncRequestItems(["user", "account", "transaction"]));
+        dispatch(setSyncUserRequest({inProgress: true, standAloneRequest: false, errors: []}));
       }
     });
 

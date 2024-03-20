@@ -25,26 +25,50 @@ interface institutionItem {
 // Define a type for the slice state
 interface AccountState {
   accounts: accountItem[],
-  institutions: institutionItem[]
+  institutions: institutionItem[],
+  syncAccountRequest: {
+    inProgress: boolean,
+    errors:string [],
+    standAloneRequest: boolean,
+  },
 }
 // Define the initial state using that type
 const initialState: AccountState = {
   accounts: [],
-  institutions: []
+  institutions: [],
+  syncAccountRequest:{
+    inProgress: false,
+    errors: [],
+    standAloneRequest: false,
+  }
 }
 
 // Thunk function
 export function getAccountBalances(userId) {
-  return async function (dispatch) {
-      //API Call:
-      try {
-        logEvent('getAccountBalances', {userId: userId});
-        const response = await axiosInstance.post(`accountbalance`, {userId: userId});
-        await dispatch(setAccounts(response.data));
-      } catch (error) {
-        console.log(error);
-        logError(error as Error);
-      }
+  return async function (dispatch, getState) {
+    let requestErrors = [];
+    //API Call:
+    try {
+      logEvent("getAccountBalances THUNK START", { userId: userId });
+      const response = await axiosInstance.post(`accountbalance`, {
+        userId: userId,
+      });
+      requestErrors = response.data.errors ? response.data.errors : [];
+      await dispatch(setAccounts(response.data.accounts));
+      const currentSyncRequest = getState().accountSlice.syncAccountRequest;
+      dispatch(
+        setSyncAccountRequest({
+          inProgress: false,
+          standAloneRequest: currentSyncRequest.standAloneRequest,
+          errors: requestErrors
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      logError(error as Error);
+    } finally {
+      logEvent("getAccountBalances THUNK END", { userId: userId });
+    }
   };
 }
 
@@ -100,11 +124,7 @@ export function getItemAccounts(userId, itemId) {
         // Reflect the latest accounts in the user.accounts context
         await dispatch(setAccounts(response.data));
         // Refresh the transactions as well...
-        const institution = {
-          institutionId: response.data[0].institutionId, 
-          institutionName: response.data[0].institutionName
-        }
-        await syncTransactions(userId, itemId, institution, true);
+        await syncTransactions(userId);
       } catch (error) {
         console.log(error);
         logError(error as Error);
@@ -124,13 +144,17 @@ export const accountSlice = createSlice({
     setInstitutions: (state, action) => {
       state.institutions = action.payload;
     },
+    setSyncAccountRequest: (state, action) => {
+      state.syncAccountRequest = action.payload;
+    },
   },
 })
 
-export const { setAccounts, setInstitutions } = accountSlice.actions
+export const { setAccounts, setInstitutions, setSyncAccountRequest } = accountSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectAccounts = (state: RootState) => state.accountSlice.accounts
 export const selectInstitutions = (state: RootState) => state.accountSlice.institutions
+export const selectSyncAccountRequest = (state: RootState) => state.accountSlice.syncAccountRequest
 
 export default accountSlice.reducer 

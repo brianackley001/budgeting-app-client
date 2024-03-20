@@ -1,5 +1,5 @@
-import { loginSync } from '@utils/loginStateUtils.ts';
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { loginSync } from '@/utils/userStateUtils';
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { selectTransactionPagination } from "@store/transactionSlice"; 
 import axiosInstance from "@utils/axiosInstance";

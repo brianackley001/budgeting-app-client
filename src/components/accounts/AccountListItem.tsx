@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {Button, Col, Row, Accordion, Form } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "@hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { upsertAccount } from "@store/accountSlice.ts";
 
 /**
@@ -13,7 +13,7 @@ function AccountListItem({item}) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.userSlice.userId);
 
-  const [activeAccordianKeys, setActiveAccordianKeys] = useState<string[]>([]);
+  const [activeAccordionKeys, setActiveAccordionKeys] = useState<string[]>([]);
   const [formAccountName, setFormAccountName] = useState((item.customName && item.customName.length > 0) ? item.customName : item.name);
   const [formUseInTransactions, setFormUseInTransactions] = useState(item.includeAccountTransactions);
   const [validated, setValidated] = useState(false);
@@ -30,10 +30,10 @@ function AccountListItem({item}) {
     setFormUseInTransactions(e.target.checked);
   }
 
-  const handleSelect = (eventKey: any) => setActiveAccordianKeys(eventKey as string[]);
+  const handleSelect = (eventKey: any) => setActiveAccordionKeys(eventKey as string[]);
 
   const handleCollapseClick = () => {
-    setActiveAccordianKeys([]);
+    setActiveAccordionKeys([]);
   }
 
   const handleSubmit = (event) => {
@@ -59,18 +59,18 @@ function AccountListItem({item}) {
   };
 
   return (
-    <Accordion data-testid="accordian-container"  activeKey={activeAccordianKeys} onSelect={handleSelect}>
+    <Accordion data-testid="accordion-container"  activeKey={activeAccordionKeys} onSelect={handleSelect}>
       <Accordion.Item eventKey="0" >
-        <Accordion.Header data-testid="accordian-header">{accountDisplayValue} (<i>...{item.mask}</i>)</Accordion.Header>
-        <Accordion.Body data-testid="accordian-body">
-          <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordian-form">
+        <Accordion.Header data-testid="accordion-header">{accountDisplayValue} (<i>...{item.mask}</i>)</Accordion.Header>
+        <Accordion.Body data-testid="accordion-body">
+          <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordion-form">
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridSystemName">
                 <Form.Label>Original Imported Name (system)</Form.Label>
                 <Form.Control 
                   type="text" 
                   name="accountName" 
-                  data-testid="accordian-form-account-name" 
+                  data-testid="accordion-form-account-name" 
                   defaultValue={item.name} 
                   aria-label="Disabled input example"
                   disabled
@@ -97,12 +97,12 @@ function AccountListItem({item}) {
                   placeholder="Enter account name" 
                   type="text" 
                   name="accountName" 
-                  data-testid="accordian-form-account-name" 
+                  data-testid="accordion-form-account-name" 
                   defaultValue={formAccountName} 
                   onChange={handleTextareaChange}
                   style={{fontSize: ".90em"}} />
-                <Form.Control.Feedback data-testid="accordian-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid" data-testid="accordian-form-account-name-is-invalid">
+                <Form.Control.Feedback data-testid="accordion-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid" data-testid="accordion-form-account-name-is-invalid">
                   Please provide a valid account name.
                 </Form.Control.Feedback>
               </Form.Group>
@@ -116,13 +116,13 @@ function AccountListItem({item}) {
                   label="Include in transactions"
                   defaultChecked={formUseInTransactions}
                   onChange={handleCheckboxChange}
-                  data-testid="accordian-form-include-in-transactions" 
+                  data-testid="accordion-form-include-in-transactions" 
                 />
                 </Form.Group>
               </Col>
             </Row>
 
-            <Button variant="primary" type="submit" data-testid="accordian-form-submit-btn"> 
+            <Button variant="primary" type="submit" data-testid="accordion-form-submit-btn"> 
               Save
             </Button>
           </Form>

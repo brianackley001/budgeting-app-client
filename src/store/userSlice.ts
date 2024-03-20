@@ -19,6 +19,11 @@ interface UserState {
   }
   userId: string,
   userName: string,
+  syncUserRequest: {
+    inProgress: boolean,
+    errors:string [],
+    standAloneRequest: boolean,
+  },
   transactionTags: string[]
 }
 
@@ -30,6 +35,11 @@ const initialState: UserState = {
   },
   userId: '',
   userName: '',
+  syncUserRequest:{
+    inProgress: false,
+    errors: [],
+    standAloneRequest: false,
+  },
   transactionTags: []
 }
 
@@ -115,6 +125,63 @@ export function deleteTransactionTag(userId, tag, tags) {
   };
 }
 
+// Thunk function
+export function getUser(userId) {
+  return async function (dispatch) {
+    let sessionUser = {
+      id: "",
+      userName: "",
+      userShortName: "",
+      transactionTags: ["Verify"],
+      preferences: { transactionItemsPerPage: 10 },
+      dateCreated: new Date().toUTCString(),
+      dateUpdated: new Date().toUTCString(),
+    };
+
+    //API Call (Get User from DB):
+    const response = await axiosInstance.get(`/user/${userId}`);
+
+    //User Exists:
+    if (response.data && response.data.id.length > 0) {
+      sessionUser = response.data;
+      dispatch(setUserId(sessionUser.id));
+      dispatch(setUserName(sessionUser.userName));
+      dispatch(setName(sessionUser.userShortName));
+      dispatch(setTransactionTags(sessionUser.transactionTags));
+      dispatch(setTransactionsPerPage(sessionUser.preferences.transactionItemsPerPage));
+
+      return sessionUser;
+    }
+  };
+}
+// Thunk function
+export function createUser(sessionUser) {
+  return async function (dispatch) {
+    //API Call (Create New User in DB):
+    await axiosInstance.post(`user`, sessionUser).then((response) => {
+      sessionStorage.removeItem("msal_LOGIN_SUCCESS");
+      sessionUser = response.data;
+      logEvent("user-login", {
+        type: "END save new user to DB",
+        userId: sessionUser.id || "unknown",
+      });
+
+      if (response.data && response.data.id.length > 0) {
+        dispatch(setUserId(sessionUser.id));
+        dispatch(setUserName(sessionUser.userName));
+        dispatch(setName(sessionUser.userShortName));
+        dispatch(setTransactionTags(sessionUser.transactionTags));
+        dispatch(
+          setTransactionsPerPage(
+            sessionUser.preferences.transactionItemsPerPage
+          )
+        );
+      }
+    });
+    return sessionUser;
+  };
+}
+
 export function updateTransactionTag(userId, modifiedTag, tags) {
   return async function (dispatch) {
     //API Call(s):
@@ -191,6 +258,9 @@ export const userSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload
     },
+    setSyncUserRequest: (state, action) => {
+      state.syncUserRequest = action.payload;
+    },
     setTransactionsPerPage: (state, action: PayloadAction<number>) => {
       state.preferences.transactionItemsPerPage = action.payload
     },
@@ -206,10 +276,11 @@ export const userSlice = createSlice({
   },
 })
 
-export const { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } = userSlice.actions
+export const { setName, setSyncUserRequest, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectName = (state: RootState) => state.userSlice.name
+export const selectSyncUserRequest = (state: RootState) => state.userSlice.syncUserRequest
 export const selectTransactionItemsPerPage = (state: RootState) => state.userSlice.preferences.transactionItemsPerPage
 export const selectTransactionTags = (state: RootState) => state.userSlice.transactionTags
 export const selectUserId = (state: RootState) => state.userSlice.userId

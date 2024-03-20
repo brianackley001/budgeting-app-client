@@ -1,7 +1,7 @@
 // import React, { useState } from 'react';
 import { Col, Row, Table } from "react-bootstrap";
 
-import { useAppSelector } from "@hooks/storeHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 
 import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
@@ -37,7 +37,7 @@ export const Transactions = () => {
     paginationConfig.amountTo !== 0 ||
     paginationConfig.startDate.length > 0 ||
     paginationConfig.endDate.length > 0 ||
-    paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length);
+    (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
 
   // Methods:
   const formatAmount = (amount) => {

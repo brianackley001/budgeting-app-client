@@ -1,6 +1,6 @@
 
 import Button from "react-bootstrap/Button";
-import { useAppSelector, useAppDispatch } from "@hooks/storeHooks";
+import { useAppSelector, useAppDispatch } from "@hooks/useStoreHooks";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
 import { syncTransactions} from "@store/transactionSlice";
@@ -27,7 +27,7 @@ export const TestingButton = () => {
         id: 'ins_127991',
         name: 'Wells Fargo'
       }
-      dispatch(syncTransactions(userId, 'b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz', institution));
+      dispatch(syncTransactions(userId, 'b0gv6ge1q7fxD0pNjebruZevZ4OK9bFqrqxqz'));
     }
     catch (error) {
       console.error(error);

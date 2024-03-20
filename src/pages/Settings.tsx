@@ -1,6 +1,6 @@
 import { Card, Row, Col } from "react-bootstrap";
 import PageSizeComponent from '@/components/transactions/PageSizeComponent';
-import { useAppSelector } from "@hooks/storeHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { logTrace } from "@utils/logger";
 import EditTag from '@/components/tags/EditTag';
 import CreateTag from "@/components/tags/CreateTag";
