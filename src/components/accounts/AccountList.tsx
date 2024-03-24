@@ -9,7 +9,7 @@ import { Key } from "react";
  */
 
 export default function AccountList({ institution }) {
-  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED";
+  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED" && !institution.itemError.isResolved;
   const cardClass = hasCredentialError ? "mb-5 red" : "mb-5";
   return (
     <>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Card } from "react-bootstrap";
-import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
+import { Button, Card, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleExclamation, faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
+import { RefreshCredentialsButton } from "@components/buttons/RefreshCredentialsButton";
 
 /**
  * Renders Institution Header item with display and edit capabilities
@@ -13,7 +13,7 @@ export default function InstitutionHeaderItem({institution}) {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [formInstitutionName, setFormInstitutionName] = useState(institution.accounts[0].institutionName);
-  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED";
+  const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED" && !institution.itemError.isResolved;
 
   const handleDeleteClose = () => setShowDelete(false);
   const handleDeleteShow = () => setShowDelete(true);
@@ -34,9 +34,7 @@ export default function InstitutionHeaderItem({institution}) {
     <>
       <Card.Subtitle className="headerBottomMargin">{institution.accounts[0].institutionName}
         {hasCredentialError && <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
-          <Button variant="danger" size="sm">
-            <FontAwesomeIcon icon={faCircleExclamation} color="white"  className='iconStyle' /><span>Repair Credentials</span>
-          </Button>
+          <RefreshCredentialsButton itemId={institution.itemId}></RefreshCredentialsButton>
         </span>}
         {!hasCredentialError &&
           <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">

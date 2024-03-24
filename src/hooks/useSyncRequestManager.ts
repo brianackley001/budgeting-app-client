@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
 import { setAlertState } from "@store/alertSlice";
 import { setSyncAccountRequest } from "@store/accountSlice";
+import { getLinkedItems } from "@store/plaidSlice";
 import { setSyncRequestItems } from "@store/syncRequestSlice";
 import { setSyncTransactionRequest } from "@store/transactionSlice";
 import { setSyncUserRequest } from "@store/userSlice";
@@ -16,6 +17,7 @@ const useSyncRequestManager = () => {
   const syncTransactionRequest = useAppSelector((state) => state.transactionSlice.syncTransactionRequest);
   const syncUserRequest = useAppSelector((state) => state.userSlice.syncUserRequest);
   const transactionSyncItems = useAppSelector((state) => state.syncRequestSlice.syncRequestItems);
+  const userId = useAppSelector((state) => state.userSlice.userId);
   const dispatch = useAppDispatch();
   const [syncOperationComplete, setSyncOperationComplete] = useState(false);
   const [syncOperationHasErrors, setSyncOperationHasErrors] = useState(false);
@@ -94,7 +96,8 @@ const useSyncRequestManager = () => {
   /**
    * Displays an alert message to the user indicating the end of a sync operation with errors.
    */
-  const showErrorMessage = () => {
+  const showErrorMessage = async () => {
+    let plaidLoginError = false;
     let message = "";
     let headerText = "";
     if (syncUserRequest.errors.length > 0) {
@@ -102,6 +105,7 @@ const useSyncRequestManager = () => {
       headerText = "Error syncing your user account...";
     } else {
       if (syncAccountRequest.errors.length > 0) {
+        plaidLoginError = isPlaidLoginError(syncAccountRequest.errors);
         message = isPlaidLoginError(syncAccountRequest.errors)
           ? "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials."
           : isPlaidOtherError(syncAccountRequest.errors)
@@ -110,6 +114,7 @@ const useSyncRequestManager = () => {
         headerText = "Error syncing your accounts...";
       }
       if (syncTransactionRequest.errors.length > 0) {
+        plaidLoginError = isPlaidLoginError(syncTransactionRequest.errors);
         message = isPlaidLoginError(syncTransactionRequest.errors)
           ? "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials."
           : isPlaidOtherError(syncTransactionRequest.errors)
@@ -127,6 +132,12 @@ const useSyncRequestManager = () => {
         variantStyle: "danger",
       })
     );
+    
+    // If there is a Plaid login error, then pull the user and linkedItems data from the server.
+    if (plaidLoginError) {
+      dispatch(getLinkedItems(userId));
+    }
+    
     resetSyncState();
   };
   /**
