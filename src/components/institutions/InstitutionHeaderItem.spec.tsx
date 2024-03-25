@@ -7,7 +7,7 @@ beforeAll(() => {
     return {
       RefreshCredentialsButton: () => {
         return (
-          <div data-testid="refresh-credentials-button">Refresh Credentials Component MOCK</div>
+          <div data-testid="refresh-credentials-button">Repair Credentials Component MOCK</div>
         )
       }
     }
@@ -15,7 +15,7 @@ beforeAll(() => {
 });
 
 describe("InstitutionHeaderItem", () => {
-  test("should render InstitutionHeaderItem with edit and no itemError 'Refresh Credentials' button present", () => {
+  test("should render InstitutionHeaderItem with edit and no itemError 'Repair Credentials' button present", () => {
     const institution = {
       institutionId: "ins_133234",
       accounts: [{accountId: "PMxN8r", institutionId: "ins_133234", institutionName: "Test-Institution", itemId: "PMxN8r"}],
@@ -28,7 +28,7 @@ describe("InstitutionHeaderItem", () => {
     expect(screen.getByLabelText('Edit Institution')).toBeInTheDocument();
   });
   
-  test("should render InstitutionHeaderItem with edit and isResolved itemError  => NO 'Refresh Credentials' button present", () => {
+  test("should render InstitutionHeaderItem with edit and isResolved itemError  => NO 'Repair Credentials' button present", () => {
     const institution = {
       institutionId: "ins_133234",
       accounts: [{accountId: "PMxN8r", institutionId: "ins_133234", institutionName: "Test-Institution", itemId: "PMxN8r"}],
@@ -44,7 +44,7 @@ describe("InstitutionHeaderItem", () => {
     expect(screen.getByLabelText('Edit Institution')).toBeInTheDocument();
   });
 
-  test("should render InstitutionHeaderItem with no edit button and  itemError 'Refresh Credentials' button present", () => {
+  test("should render InstitutionHeaderItem with no edit button and  itemError 'Repair Credentials' button present", () => {
     const institution = {
       institutionId: "ins_133234",
       accounts: [{accountId: "PMxN8r", institutionId: "ins_133234", institutionName: "Test-Institution", itemId: "PMxN8r"}],
