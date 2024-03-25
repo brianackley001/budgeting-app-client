@@ -13,7 +13,7 @@ export default function AccountList({ institution }) {
   const cardClass = hasCredentialError ? "mb-5 red" : "mb-5";
   return (
     <>
-      <Card className={cardClass}>
+      <Card className={cardClass} data-testid="institution-card-container">
         <Card.Body>
           <InstitutionHeaderItem institution={institution} />
           <span className='card-text'>
