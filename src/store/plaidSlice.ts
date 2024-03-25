@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
+import axiosInstance  from "@utils/axiosInstance";
+import { logError, logEvent } from "@utils/logger";
 
 // Define a type for the slice state
 interface PlaidState {
@@ -13,6 +15,26 @@ const initialState: PlaidState = {
   institutions: [],
   linkedItems: [],
   publicToken: ''
+}
+
+
+// Thunk function
+export function getLinkedItems(userId) {
+  return async function (dispatch) {
+    //API Call:
+    try {
+      logEvent("getLinkedItems THUNK START", { userId: userId });
+      const response = await axiosInstance.post(`user/linkedItems`, {
+        userId: userId,
+      });
+      await dispatch(setLinkedItems(response.data));
+    } catch (error) {
+      console.log(error);
+      logError(error as Error);
+    } finally {
+      logEvent("getLinkedItems THUNK END", { userId: userId });
+    }
+  };
 }
 
 export const plaidSlice = createSlice({

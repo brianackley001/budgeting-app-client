@@ -16,7 +16,8 @@ export const Accounts = () => {
       return {
         institutionId: institutionId, 
         accounts: accountItems.filter((item) => item.institutionId === institutionId),
-        itemError: linkedItems.find((item) => item.institution_id === institutionId)?.itemError
+        itemError: linkedItems.find((item) => item.institution_id === institutionId)?.itemError,
+        itemId: linkedItems.find((item) => item.institution_id === institutionId)?.item_id,
       };
     })
     .sort((a, b) => a.institutionId.localeCompare(b.institutionId));

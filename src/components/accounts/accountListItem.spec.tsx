@@ -1,4 +1,3 @@
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AccountListItemType } from "../../types/accountListItem";
 import AccountListItem from "./AccountListItem";
@@ -30,58 +29,58 @@ afterEach(() => {
 
 describe.skip("Accordion test", () => {
   test("should show title data points", () => {
-    let accordianHeader = screen.getByTestId('accordian-header');
-    expect(accordianHeader).toBeInTheDocument();
-    expect(accordianHeader).toHaveTextContent(accountListItem.name);
-    expect(accordianHeader).toHaveTextContent(accountListItem.mask);
-    expect(accordianHeader).toHaveTextContent(accountListItem.balances.available.toString());
+    let accordionHeader = screen.getByTestId('accordion-header');
+    expect(accordionHeader).toBeInTheDocument();
+    expect(accordionHeader).toHaveTextContent(accountListItem.name);
+    expect(accordionHeader).toHaveTextContent(accountListItem.mask);
+    expect(accordionHeader).toHaveTextContent(accountListItem.balances.available.toString());
   })
   test("should set Account Name form field value", () => {
-    let formAccountName = screen.getByTestId('accordian-form-account-name');
+    let formAccountName = screen.getByTestId('accordion-form-account-name');
     expect(formAccountName).toBeInTheDocument();
     expect(formAccountName).toHaveValue(accountListItem.name);
   })
   test("should set Include In Transactions form field value", () => {
-    let formIncludeInTrasactions = screen.getByTestId('accordian-form-include-in-transactions');
-    expect(formIncludeInTrasactions).toBeInTheDocument();
+    let formIncludeInTransactions = screen.getByTestId('accordion-form-include-in-transactions');
+    expect(formIncludeInTransactions).toBeInTheDocument();
     if(accountListItem.includeInTransactions)
-     expect(formIncludeInTrasactions).toBeChecked();
+     expect(formIncludeInTransactions).toBeChecked();
     else
-      expect(formIncludeInTrasactions).not.toBeChecked();
+      expect(formIncludeInTransactions).not.toBeChecked();
   })
   // test("should call handleSubmit when 'Save' button is clicked", () => {
     
   //   const spy = vi.spyOn(AccountListItem.prototype, 'handleSubmit' as never);
-  //   const submitButton = screen.getByTestId('accordian-form-submit-btn');
+  //   const submitButton = screen.getByTestId('accordion-form-submit-btn');
   //   fireEvent.click(submitButton);
   //   expect(spy).toHaveBeenCalledTimes(1)
   // })
 
 //   test("should display validation error for blank account name", async () => {
-//       const submitButton = screen.getByTestId('accordian-form-submit-btn'); //
+//       const submitButton = screen.getByTestId('accordion-form-submit-btn'); //
       
-//       expect(await screen.getByTestId('accordian-form-account-name-is-invalid')).toHaveStyle();
-//       expect(await screen.getByTestId('accordian-form-account-name-is-valid')).toBeVisible();
+//       expect(await screen.getByTestId('accordion-form-account-name-is-invalid')).toHaveStyle();
+//       expect(await screen.getByTestId('accordion-form-account-name-is-valid')).toBeVisible();
 // //
       // screen.debug();
-      // //const accountNameInput = screen.getByTestId('accordian-form-account-name');
-      // fireEvent.change(screen.getByTestId('accordian-form-account-name'), {target: {value: ''}});
+      // //const accountNameInput = screen.getByTestId('accordion-form-account-name');
+      // fireEvent.change(screen.getByTestId('accordion-form-account-name'), {target: {value: ''}});
       // fireEvent.click(submitButton);
-      // expect(await screen.getByTestId('accordian-form-account-name-is-invalid')).toBeVisible();
-      // expect(await screen.getByTestId('accordian-form-account-name-is-valid')).not.toBeVisible();
+      // expect(await screen.getByTestId('accordion-form-account-name-is-invalid')).toBeVisible();
+      // expect(await screen.getByTestId('accordion-form-account-name-is-valid')).not.toBeVisible();
   })
 
   // test("should display validation feedback for valid account name", async () => {
-  //     const submitButton = screen.getByTestId('accordian-form-submit-btn'); //
+  //     const submitButton = screen.getByTestId('accordion-form-submit-btn'); //
   //     screen.debug();
-  //     const accountNameInput = screen.getByTestId('accordian-form-account-name');
+  //     const accountNameInput = screen.getByTestId('accordion-form-account-name');
   //     fireEvent.change(accountNameInput, {target: {value: ''}});
   //     fireEvent.click(submitButton);
-  //     expect(await screen.getByTestId('accordian-form-account-name-is-invalid')).toBeVisible();
-  //     expect(screen.getByTestId('accordian-form-account-name-is-valid')).not.toBeVisible();
+  //     expect(await screen.getByTestId('accordion-form-account-name-is-invalid')).toBeVisible();
+  //     expect(screen.getByTestId('accordion-form-account-name-is-valid')).not.toBeVisible();
   //     fireEvent.change(accountNameInput, {target: {value: 'TestName1'}});
-  //     expect(await screen.getByTestId('accordian-form-account-name-is-invalid')).not.toBeVisible();
-  //     expect(await screen.getByTestId('accordian-form-account-name-is-valid')).toBeVisible();
+  //     expect(await screen.getByTestId('accordion-form-account-name-is-invalid')).not.toBeVisible();
+  //     expect(await screen.getByTestId('accordion-form-account-name-is-valid')).toBeVisible();
   // })
 // })
 

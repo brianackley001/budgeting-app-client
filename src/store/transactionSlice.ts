@@ -125,16 +125,7 @@ const initialState: TransactionState = {
 };
 
 export const isNewSearchRequest = (requestedTransactionPagination: TransactionPagination, prevTransactionPagination: TransactionPagination) => {
-  return !isEqual(requestedTransactionPagination, prevTransactionPagination) && requestedTransactionPagination.pageNumber === 1; //&& (
-  //   requestedTransactionPagination.accountIds !== prevTransactionPagination.accountIds ||
-  //   requestedTransactionPagination.amountFrom !== prevTransactionPagination.amountFrom ||
-  //   requestedTransactionPagination.amountTo !== prevTransactionPagination.amountTo ||
-  //   requestedTransactionPagination.categorySearchValue !== prevTransactionPagination.categorySearchValue ||
-  //   requestedTransactionPagination.startDate !== prevTransactionPagination.startDate ||
-  //   requestedTransactionPagination.endDate !== prevTransactionPagination.endDate ||
-  //   requestedTransactionPagination.tagSearchValue !== prevTransactionPagination.tagSearchValue ||
-  //   requestedTransactionPagination.userNotesSearchValue !== prevTransactionPagination.userNotesSearchValue
-  // );
+  return !isEqual(requestedTransactionPagination, prevTransactionPagination) && requestedTransactionPagination.pageNumber === 1; 
 };
 
 // Thunk function
@@ -142,6 +133,10 @@ export function getPagedTransactions(
   transactionPagination: TransactionPagination
 ) {
   return async function (dispatch, getState) {
+    const userId = getState().userSlice.userId;
+    // Using data from redux (slice, RTK Query whatever) can cause problems as the values are immutable - clone the object to manipulate it
+    const requestPagination = JSON.parse(JSON.stringify(transactionPagination));
+    
     let targetPage = getState().transactionSlice.pagedTransactions.pages.find(
       (page) => page.pageNumber === transactionPagination.pageNumber
     );
@@ -151,8 +146,20 @@ export function getPagedTransactions(
       !targetPage.items || targetPage.items == undefined || targetPage.items.length === 0 ||
       !isEqual(targetPage.transactionPagination, transactionPagination)
     ) {
-      //console.log("No cached page found - Call the API");
       dispatch(setIsLoading(true));
+
+      // ensure accountIds are hydrated - if not present in transactionPagination, check accountSlice
+      if (transactionPagination.accountIds === "") {
+        const accountIds = getState().accountSlice.accounts.map(account => account.accountId).join(",");
+        dispatch(setTransactionPagination({
+          ...transactionPagination,
+          accountIds: accountIds,
+          userId: userId
+        }));
+        requestPagination.accountIds = accountIds;
+        requestPagination.userId = userId;
+      }
+
       //API Call:
       try {
         logEvent("getPagedTransactions", 
@@ -173,7 +180,7 @@ export function getPagedTransactions(
         });
         const response = await axiosInstance.post(
           "transactions",
-          transactionPagination
+          requestPagination
         );
 
         dispatch(setPagedTransactions(response.data));
@@ -209,6 +216,9 @@ export function syncTransactions(userId: string) {
       }
       const currentSyncRequest = getState().transactionSlice.syncTransactionRequest;
       dispatch(setSyncTransactionRequest({inProgress: false, standAloneRequest: currentSyncRequest.standAloneRequest, errors: requestErrors}));
+      //hydrate 1st page of pagedTransactions...
+      dispatch(getPagedTransactions(getState().transactionSlice.transactionPagination));
+
     } catch (error) {
       console.log(error);
       logError(error as Error);
