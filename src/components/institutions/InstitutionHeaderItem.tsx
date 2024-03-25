@@ -33,7 +33,7 @@ export default function InstitutionHeaderItem({institution}) {
   return (
     <>
       <Card.Subtitle className="headerBottomMargin">{institution.accounts[0].institutionName}
-        {hasCredentialError && <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
+        {hasCredentialError && <span className='cardHeaderIconRight' aria-label="Refresh Credentials" title="Refresh Credentials">
           <RefreshCredentialsButton itemId={institution.itemId}></RefreshCredentialsButton>
         </span>}
         {!hasCredentialError &&
