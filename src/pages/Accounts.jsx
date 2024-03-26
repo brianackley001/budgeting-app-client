@@ -2,7 +2,7 @@
 import { Card } from "react-bootstrap";
 import { useAppSelector } from "@hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import SimplePlaidLink from "@components/SimplePlaidLink";
+import SimplePlaidLink from "@components/buttons/SimplePlaidLink";
 import AccountList from "@components/accounts/AccountList.tsx";
 import {logTrace} from "@utils/logger";
 

@@ -1,8 +1,8 @@
 
 import { Accordion } from 'react-bootstrap';
-import AccountAccordianItem from './AccountAccordianItem';
+import AccountAccordionItem from './AccountAccordionItem';
 
-export default function AccountTypeAccordian (props) {
+export default function AccountTypeAccordion (props) {
   const { accounts, onSelect, trackedAccounts } = props;
 
   const depositoryAccounts = accounts.filter((account) => account.type.toLowerCase() === "depository").sort((a, b) => {
@@ -23,7 +23,7 @@ export default function AccountTypeAccordian (props) {
       {accounts && accounts.length > 0 &&
         <Accordion flush>
           {depositoryAccounts && depositoryAccounts.length > 0 &&
-            <AccountAccordianItem
+            <AccountAccordionItem
               accounts={depositoryAccounts}
               accountTypeIdLabel="depository"
               accountTypeLabel="Checking and Savings"
@@ -32,7 +32,7 @@ export default function AccountTypeAccordian (props) {
               trackedAccounts={trackedAccounts} />
           }
           {creditAccounts && creditAccounts.length > 0 &&
-            <AccountAccordianItem
+            <AccountAccordionItem
               accounts={creditAccounts}
               accountTypeIdLabel="credit"
               accountTypeLabel="Credit"
@@ -41,7 +41,7 @@ export default function AccountTypeAccordian (props) {
               trackedAccounts={trackedAccounts} />
           }
           {investmentAccounts && investmentAccounts.length > 0 &&
-            <AccountAccordianItem
+            <AccountAccordionItem
               accounts={investmentAccounts}
               accountTypeIdLabel="investment"
               accountTypeLabel="Investment"
@@ -50,7 +50,7 @@ export default function AccountTypeAccordian (props) {
               trackedAccounts={trackedAccounts} />
           }
           {loanAccounts && loanAccounts.length > 0 &&
-            <AccountAccordianItem
+            <AccountAccordionItem
               accounts={loanAccounts}
               accountTypeIdLabel="loan"
               accountTypeLabel="Loan"

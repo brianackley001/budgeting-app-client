@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
-import AccountTypeAccordian from './AccountTypeAccordian';
+import AccountTypeAccordion from './AccountTypeAccordion';
 
 describe('AccountTypeAccordian', async() => {
   const accounts = [
@@ -33,7 +33,7 @@ test.each([
   // Arrange
     render(
 
-        <AccountTypeAccordian
+        <AccountTypeAccordion
           accounts={accounts}
           onSelect={onSelect}
           trackedAccounts={trackedAccounts}

@@ -63,7 +63,7 @@ export const Transactions = () => {
       {((transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0) || filteringInEffect) &&
       <Row>
         <Col xs={12}>
-          <FilterOptions placement="top" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig} filteringInEffect={filteringInEffect}></FilterOptions>
+          <FilterOptions placement="start" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig} filteringInEffect={filteringInEffect}></FilterOptions>
         </Col>
       </Row>}
       <Row>

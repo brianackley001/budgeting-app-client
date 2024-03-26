@@ -4,12 +4,13 @@ import { getPagedTransactions, setTransactionPagination } from "@store/transacti
 import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
-import AccountTypeAccordian from "./filterOptions/AccountTypeAccordian";
-import AmountAccordianItem from "./filterOptions/AmountAccordianItem";
-import CategoryAccordianItem from "./filterOptions/CategoryAccordianItem";
-import DateRangeAccordianItem from "./filterOptions/DateRangeAccordianItem";
-import NotesAccordianItem from "./filterOptions/NotesAccordianItem";
-import TagAccordianItem from "./filterOptions/TagAccordianItem";
+import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
+import AmountAccordionItem from "./filterOptions/AmountAccordionItem";
+import CategoryAccordionItem from "./filterOptions/CategoryAccordionItem";
+import DateRangeAccordionItem from "./filterOptions/DateRangeAccordionItem";
+import MerchantNameAccordionItem from "./filterOptions/MerchantNameAccordion";
+import NotesAccordionItem from "./filterOptions/NotesAccordionItem";
+import TagAccordionItem from "./filterOptions/TagAccordionItem";
 
 export default function FilterOptions(props: any){
   const { accounts, filteringInEffect, paginationConfig, placement, tags } = props;
@@ -48,6 +49,7 @@ export default function FilterOptions(props: any){
   const [trackedCategory, setTrackedCategory] = useState(initPaginationConfigState("category"));
   const [trackedEndDate, setTrackedEndDate] = useState(initPaginationConfigState("endDate"));
   const [trackedFromAmount, setTrackedFromAmount] = useState(0);
+  const [trackedMerchantName, setTrackedMerchantName] = useState("");
   const [trackedStartDate, setTrackedStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
   const [trackedToAmount, setTrackedToAmount] = useState(0);
@@ -89,44 +91,43 @@ export default function FilterOptions(props: any){
     }
   }
 
-  const handleFormSubmit = () => {
-    const accountIdCollectionSubmitValue = trackedAccounts.length > 0 
+  const handleFormSubmit = (isReset) => {
+    const accountIdCollectionSubmitValue = isReset ? 
+      accounts.map(account => account.accountId).join(",") : 
+      trackedAccounts.length > 0 
         ? trackedAccounts.join(",") 
         : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",");
-    const pageNumber = (trackedFromAmount > 0 || trackedToAmount > 0 || trackedCategory.length > 0 || 
-          trackedEndDate.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || 
-          trackedUserNotes.length > 0) ? 1 : paginationConfig.pageNumber;
+
+    const pageNumber = isReset ? 
+        1 : 
+        (trackedFromAmount > 0 || trackedToAmount > 0 || trackedCategory.length > 0 || 
+        trackedEndDate.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || 
+        trackedUserNotes.length > 0) ? 1 : paginationConfig.pageNumber;
 
     const updatedPaginationConfig = {
       ...paginationConfig,
       accountIds: accountIdCollectionSubmitValue,
-      amountFrom: trackedFromAmount > 0 ? trackedFromAmount : 0,
-      amountTo: trackedToAmount > 0 ? trackedToAmount : 0,
-      categorySearchValue: trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category fomat = "CATEGORY_SUBCATEGORY"
-      endDate: trackedEndDate.length > 0 ? trackedEndDate : "",
+      amountFrom: isReset ? 0 : trackedFromAmount > 0 ? trackedFromAmount : 0,
+      amountTo: isReset ? 0 : trackedToAmount > 0 ? trackedToAmount : 0,
+      categorySearchValue: isReset ? "" : trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category format = "CATEGORY_SUBCATEGORY"
+      endDate: isReset ? "" : trackedEndDate.length > 0 ? trackedEndDate : "",
+      merchantNameSearchValue: isReset ? "" : trackedMerchantName.length > 0 ? trackedMerchantName : "",
       pageNumber: pageNumber,
-      startDate: trackedStartDate.length > 0 ? trackedStartDate : "",
-      tagSearchValue: trackedTags.length > 0 ? trackedTags.join(",") : "",
-      userNotesSearchValue: trackedUserNotes.length > 0 ? trackedUserNotes : ""
+      startDate: isReset ? "" : trackedStartDate.length > 0 ? trackedStartDate : "",
+      tagSearchValue: isReset ? "" : trackedTags.length > 0 ? trackedTags.join(",") : "",
+      userNotesSearchValue: isReset ? "" : trackedUserNotes.length > 0 ? trackedUserNotes : ""
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
-    //dispatch(setTransactionPagination(updatedPaginationConfig));
+    handleClose();
+  }
+
+  const handleMerchantNameChange = (event) => {
+    setTrackedMerchantName(event.target.value);
   }
 
   const handleNotesChange = (event) => {
     setTrackedUserNotes(event.target.value);
-  }
-
-  const handleReset = () => {
-    setTrackedAccounts([]);
-    setTrackedCategory("");
-    setTrackedEndDate("");
-    setTrackedStartDate("");
-    setTrackedFromAmount(0);
-    setTrackedToAmount(0);
-    setTrackedTags([]);
-    setTrackedUserNotes("");
   }
 
   const handleShow = () => setShow(true);
@@ -147,12 +148,12 @@ export default function FilterOptions(props: any){
           <FontAwesomeIcon icon={faFilter} flip="horizontal" className="iconStyle" />Filters
         </Button>
       </span>
-      <Offcanvas show={show} onHide={handleClose} placement={placement} backdrop="static">
+      <Offcanvas show={show} onHide={handleClose} placement={placement} backdrop="static" className="vw-100" >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title as="div"><FontAwesomeIcon icon={faFilter} size="xl" flip="horizontal" className="iconStyle text-primary" /><span className="text-primary">Transaction Filters</span></Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Form noValidate validated={validated} data-testid="filter-options-form">   {/* onSubmit={handleFormSubmit} */}
+          <Form noValidate validated={validated} data-testid="filter-options-form">
             <Row>
               <Col xs={6}>
                 <h6>Account Types</h6>
@@ -163,24 +164,27 @@ export default function FilterOptions(props: any){
             </Row>
             <Row>
               <Col xs={6}>
-                <AccountTypeAccordian accounts={accounts} 
+                <AccountTypeAccordion accounts={accounts} 
                   onSelect={(eventItem: any) => handleAccountCheckboxChange(eventItem)} 
                   trackedAccounts={trackedAccounts} />
               </Col>
               <Col xs={6}>
                 <Accordion flush>
-                  <DateRangeAccordianItem eventKey={"DateRangeAccordianItemFilter"}
-                    onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
-                    trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
-                  <CategoryAccordianItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
-                    trackedValue={trackedCategory} />
-                  <TagAccordianItem eventKey={"TagAccordianItemFilter"}
+                  <MerchantNameAccordionItem eventKey={"MerchantNameAccordionItemFilter"}
+                    onSelect={(eventItem: any) => { handleMerchantNameChange(eventItem) }} 
+                    trackedValue={trackedMerchantName} />
+                  <TagAccordionItem eventKey={"TagAccordionItemFilter"}
                     onSelect={(eventItem: any) => { handleTagCheckboxChange(eventItem) }}
                     trackedTags={trackedTags} tags={tags} />
-                  <NotesAccordianItem eventKey={"NotesAccordianItemFilter"} 
+                  <CategoryAccordionItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
+                    trackedValue={trackedCategory} />
+                  <NotesAccordionItem eventKey={"NotesAccordionItemFilter"} 
                     onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
                     trackedValue={trackedUserNotes} />
-                  <AmountAccordianItem eventKey={"AmountAccordianItemFilter"}
+                  <DateRangeAccordionItem eventKey={"DateRangeAccordionItemFilter"}
+                      onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
+                      trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
+                  <AmountAccordionItem eventKey={"AmountAccordionItemFilter"}
                     onSelect={(eventItem: any, boundaryValue: string) => handleAmountChange(eventItem, boundaryValue)}
                     trackedFromAmount={trackedFromAmount} 
                     trackedToAmount={trackedToAmount} />
@@ -188,14 +192,13 @@ export default function FilterOptions(props: any){
               </Col>
             </Row>
             <Row>
-              <Col xs={7}>
-                &nbsp;
-              </Col>
-              <Col xs={5}>
-                <Button variant="secondary" onClick={handleReset} className="me-2">Reset</Button>
-                <Button variant="primary" onClick={() =>{handleFormSubmit()}} className="me-2">Apply Filters
+              <Col xs={2}>&nbsp;</Col>
+              <Col xs={8} className="mx-auto mt-5">
+                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}}className="mx-5">Reset</Button>
+                <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="mx-5">Apply Filters
                 </Button>
               </Col>
+              <Col xs={2}>&nbsp;</Col>
             </Row>
           </Form>
         </Offcanvas.Body>

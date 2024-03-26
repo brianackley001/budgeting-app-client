@@ -39,15 +39,15 @@ export default function InstitutionHeaderItem({institution}) {
         {!hasCredentialError &&
           <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
             <Dropdown>
-              <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
+              <Dropdown.Toggle variant="outline-light" id="dropdown-basic" data-testid="institution-dropdown-toggle">
                 <FontAwesomeIcon icon={faGear} color="gray" />
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={handleEditShow} as="button">
+                <Dropdown.Item onClick={handleEditShow} as="button" data-testid="edit-institution-dropdown-item-button">
                   <FontAwesomeIcon icon={faPencil} size='lg' className="iconStyle" style={{ color: "gray" }} />Edit
                 </Dropdown.Item>
-                <Dropdown.Item onClick={handleDeleteShow} as="button">
+                <Dropdown.Item onClick={handleDeleteShow} as="button" data-testid="delete-institution-dropdown-item-button">
                   <FontAwesomeIcon icon={faTrashCan} size='lg' className="iconStyle" style={{ color: "gray" }} />Delete
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -56,7 +56,7 @@ export default function InstitutionHeaderItem({institution}) {
         }
       </Card.Subtitle>
 
-      <Modal show={showEdit} onHide={handleEditClose}>
+      <Modal show={showEdit} onHide={handleEditClose} data-testid="edit-institution-modal-container">
         <Modal.Header closeButton>
           <Modal.Title as="h6">Edit {institution.accounts[0].institutionName}</Modal.Title>
         </Modal.Header>
@@ -86,10 +86,10 @@ export default function InstitutionHeaderItem({institution}) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditClose}>
+          <Button variant="secondary" onClick={handleEditClose} data-testid="institution-edit-modal-close-button">
             Close
           </Button>
-          <Button variant="primary" onClick={handleEditClose}>
+          <Button variant="primary" onClick={handleEditClose} data-testid="institution-edit-modal-save-button">
             Save Changes
           </Button>
         </Modal.Footer>
@@ -97,20 +97,20 @@ export default function InstitutionHeaderItem({institution}) {
 
       
 
-      <Modal show={showDelete} onHide={handleDeleteClose}>
+      <Modal show={showDelete} onHide={handleDeleteClose}  data-testid="delete-institution-modal-container">
         <Modal.Header closeButton>
           <Modal.Title as="h6">Remove all {institution.accounts[0].institutionName} accounts</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to remove all <b>{institution.accounts[0].institutionName}</b> accounts?
           <br/><br/>
-          <i>(You can link to {institution.accounts[0].institutionName} again in the future with the "Add Acount" button) </i>
+          <i>(You can link to {institution.accounts[0].institutionName} again in the future with the "Add Account" button) </i>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleDeleteClose}>
+          <Button variant="secondary" onClick={handleDeleteClose} data-testid="institution-delete-modal-close-button">
             Close
           </Button>
-          <Button variant="primary" onClick={handleDeleteClose}>
+          <Button variant="primary" onClick={handleDeleteClose} data-testid="institution-delete-modal-save-button">
             Delete
           </Button>
         </Modal.Footer>

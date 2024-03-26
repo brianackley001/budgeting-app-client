@@ -3,7 +3,7 @@ import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, Fo
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
-import TagAccordianItem from './filterOptions/TagAccordianItem';
+import TagAccordianItem from './filterOptions/TagAccordionItem';
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
@@ -146,7 +146,7 @@ export const TransactionListItem = (item) =>{
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Form noValidate validated={validated} data-testid="accordian-form" onSubmit={handleFormSubmit}>
+        <Form noValidate validated={validated} data-testid="accordion-form" onSubmit={handleFormSubmit}>
           <Modal.Header closeButton>
             <Modal.Title as="h6">Transaction Details</Modal.Title>
           </Modal.Header>
