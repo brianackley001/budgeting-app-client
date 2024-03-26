@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import InstitutionHeaderItem from "./InstitutionHeaderItem";
 
 let institution;
@@ -53,15 +53,15 @@ describe("InstitutionHeaderItem", () => {
     expect(screen.queryByLabelText('Edit Institution')).not.toBeInTheDocument();
     //screen.debug();
   });
-  test("should toggle the edit button", () => {
+  test("should toggle the edit button", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
     const editButton = screen.getByTestId('institution-dropdown-toggle');
     expect(editButton).toBeInTheDocument();
     expect(screen.queryByTestId('edit-institution-dropdown-item-button')).not.toBeInTheDocument();
     expect(screen.queryByTestId('delete-institution-dropdown-item-button')).not.toBeInTheDocument();
     fireEvent.click(editButton);
-    expect(screen.getByTestId('edit-institution-dropdown-item-button')).toBeVisible();
-    expect(screen.getByTestId('delete-institution-dropdown-item-button')).toBeVisible();
+    await waitFor(() => expect(screen.getByTestId('edit-institution-dropdown-item-button')).toBeVisible());
+    await waitFor(() => expect(screen.getByTestId('delete-institution-dropdown-item-button')).toBeVisible());
   });
   test("should close the edit pop-over menu when open", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
@@ -70,13 +70,13 @@ describe("InstitutionHeaderItem", () => {
     expect(screen.queryByTestId('edit-institution-dropdown-item-button')).not.toBeInTheDocument();
     expect(screen.queryByTestId('delete-institution-dropdown-item-button')).not.toBeInTheDocument();
   });
-  test("should launch the edit modal", () => {
+  test("should launch the edit modal", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
     const editButton = screen.getByTestId('institution-dropdown-toggle');
     fireEvent.click(editButton);
     const editModalButton = screen.getByTestId('edit-institution-dropdown-item-button');
     fireEvent.click(editModalButton);
-    expect(screen.getByTestId('edit-institution-modal-container')).toBeVisible();
+    await waitFor(() => expect(screen.getByTestId('edit-institution-modal-container')).toBeVisible());
   });
   test("should close the edit modal", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
@@ -89,13 +89,13 @@ describe("InstitutionHeaderItem", () => {
     fireEvent.click(closeModalButton);
     expect(await waitForElementToBeRemoved(() => screen.getByTestId('edit-institution-modal-container')));
   });
-  test("should launch the delete modal", () => {
+  test("should launch the delete modal", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
     const editButton = screen.getByTestId('institution-dropdown-toggle');
     fireEvent.click(editButton);
     const deleteModalButton = screen.getByTestId('delete-institution-dropdown-item-button');
     fireEvent.click(deleteModalButton);
-    expect(screen.getByTestId('delete-institution-modal-container')).toBeVisible();
+    await waitFor(() => expect(screen.getByTestId('delete-institution-modal-container')).toBeVisible());
   });
   test("should close the delete modal", async() => {
     render(<InstitutionHeaderItem institution={institution} />);
