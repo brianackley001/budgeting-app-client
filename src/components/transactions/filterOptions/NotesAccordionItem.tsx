@@ -1,6 +1,6 @@
 import { Accordion, Form} from 'react-bootstrap';
 
-export default function NotesAccordianItem(props) {
+export default function NotesAccordionItem(props) {
   const { eventKey, onSelect, trackedValue } = props;
   return (
     <>
@@ -12,7 +12,7 @@ export default function NotesAccordianItem(props) {
             <Form.Control as="textarea" rows={1} placeholder="Search for..." 
             onChange={(event) => { onSelect(event) }}
             value={trackedValue}
-            data-testid="notes-accordian-item-text-search-text-value" />
+            data-testid="notes-accordion-item-text-search-text-value" />
           </Form.Group>
         </Accordion.Body>
       </Accordion.Item>

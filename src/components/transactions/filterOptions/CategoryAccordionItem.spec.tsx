@@ -1,12 +1,12 @@
 import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
-import CategoryAccordianItem from './CategoryAccordianItem';
+import CategoryAccordionItem from './CategoryAccordionItem';
 
 describe('CategoryAccordianItem', async() => {
   test("Presents expected textarea placeholder text", () => {
     // Arrange
-    render(<CategoryAccordianItem  eventKey="category-accordian-item" 
+    render(<CategoryAccordionItem  eventKey="category-accordion-item" 
       onSelect={() => {}} 
       trackedValue="" /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
     //Act
@@ -17,12 +17,12 @@ describe('CategoryAccordianItem', async() => {
 
   test("Textarea value displays expected trackedValue", () => {
     // Arrange
-    render(<CategoryAccordianItem  eventKey="category-accordian-item" 
+    render(<CategoryAccordionItem  eventKey="category-accordion-item" 
       onSelect={() => {}} 
       trackedValue="test" /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
     //Act
     //Assert
-    expect(screen.getByTestId("category-accordian-item-search-text-value")).toHaveValue("test");
+    expect(screen.getByTestId("category-accordion-item-search-text-value")).toHaveValue("test");
     //screen.debug();
   });
 });

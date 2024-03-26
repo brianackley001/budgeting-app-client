@@ -1,6 +1,6 @@
 
 import { Accordion, Col, Form, Row } from 'react-bootstrap';
-export default function DateRangeAccordianItem(props) {
+export default function DateRangeAccordionItem(props) {
   const { eventKey, onSelect, trackedStartDate, trackedEndDate } = props;
   return (
     <>
@@ -16,7 +16,7 @@ export default function DateRangeAccordianItem(props) {
                   type="date" 
                   value={trackedStartDate}
                   placeholder="Start Date"
-                  data-testid="date-range-accordian-item-start-date" />
+                  data-testid="date-range-accordion-item-start-date" />
               </Form.Group>
             </Col>
             <Col xs={6}>
@@ -27,7 +27,7 @@ export default function DateRangeAccordianItem(props) {
                   type="date" 
                   value={trackedEndDate}
                   placeholder="End Date"
-                  data-testid="date-range-accordian-item-end-date"  />
+                  data-testid="date-range-accordion-item-end-date"  />
               </Form.Group>
             </Col>
           </Row>

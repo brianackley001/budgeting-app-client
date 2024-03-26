@@ -1,12 +1,12 @@
 import { Accordion, Col, Form, InputGroup, Row } from "react-bootstrap"
 
-export default function AmountAccordianItem(props) {
+export default function AmountAccordionItem(props) {
   const { eventKey, onSelect, trackedFromAmount, trackedToAmount } = props;
   return(
     <>
     <Accordion.Item eventKey={eventKey}>
-        <Accordion.Header data-testid="amount-accordian-item-header">Amount</Accordion.Header>
-        <Accordion.Body data-testid="amount-accordian-item-body">
+        <Accordion.Header data-testid="amount-accordion-item-header">Amount</Accordion.Header>
+        <Accordion.Body data-testid="amount-accordion-item-body">
           <Row>
             <Col xs={6}>
               <Form.Group className="mb-3" controlId="formFromAmount">
@@ -18,7 +18,7 @@ export default function AmountAccordianItem(props) {
                   type="number" 
                   value={trackedFromAmount}
                   placeholder="From amount"
-                  data-testid="amount-accordian-item-from-value" />
+                  data-testid="amount-accordion-item-from-value" />
                 </InputGroup>
               </Form.Group>
             </Col>
@@ -32,7 +32,7 @@ export default function AmountAccordianItem(props) {
                   type="number" 
                   value={trackedToAmount}
                   placeholder="To amount"
-                  data-testid="amount-accordian-item-to-value" />
+                  data-testid="amount-accordion-item-to-value" />
                 </InputGroup>
               </Form.Group>
             </Col>

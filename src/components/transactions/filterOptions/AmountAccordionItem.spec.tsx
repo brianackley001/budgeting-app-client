@@ -1,10 +1,10 @@
 import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
-import AmountAccordianItem from './AmountAccordianItem';
+import AmountAccordionItem from './AmountAccordionItem';
 
 describe('AmountAccordianItem', async() => {
-  const eventKey = "amount-accordian-item";
+  const eventKey = "amount-accordion-item";
   const onSelect = () => {};
   test.each([
     { trackedFromAmount: 1.00, trackedToAmount:10.00, expected: {trackedFromAmount:1.00, trackedToAmount:10.00}},
@@ -14,18 +14,18 @@ describe('AmountAccordianItem', async() => {
   ])('AmountAccordianItem($trackedFromAmount, $trackedToAmount) -> $expected', (
     { trackedFromAmount, trackedToAmount, expected }) => {
     // Arrange
-    render(<AmountAccordianItem  eventKey={eventKey} 
+    render(<AmountAccordionItem  eventKey={eventKey} 
       onSelect={onSelect} 
       trackedFromAmount={trackedFromAmount}
       trackedToAmount={trackedToAmount} /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
     //Act
 
     //Assert
-    expect(screen.getByTestId("amount-accordian-item-header")).toBeInTheDocument();
-    expect(screen.getByTestId("amount-accordian-item-body")).toBeInTheDocument();
-    expect(screen.getByTestId("amount-accordian-item-from-value")).toBeInTheDocument();
-    expect(screen.getByTestId("amount-accordian-item-to-value")).toHaveValue(expected.trackedToAmount);
-    expect(screen.getByTestId("amount-accordian-item-from-value")).toHaveValue(expected.trackedFromAmount);
+    expect(screen.getByTestId("amount-accordion-item-header")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-accordion-item-body")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-accordion-item-from-value")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-accordion-item-to-value")).toHaveValue(expected.trackedToAmount);
+    expect(screen.getByTestId("amount-accordion-item-from-value")).toHaveValue(expected.trackedFromAmount);
     //screen.debug();
   });
 });

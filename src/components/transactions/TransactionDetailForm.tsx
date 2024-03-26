@@ -65,7 +65,7 @@ export default function TransactionDetailForm(props){
   return(
     <>
     <span className="card-text" id="transactionDetailEditFormTransaction" data-testid="transaction-detail=read-only-container">
-    <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordian-form">
+    <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="accordion-form">
     <Row className="mb-3 transactionModalSummary">
       <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{item.merchant}</b>" on <b>{item.date}</b></Col>
     </Row>

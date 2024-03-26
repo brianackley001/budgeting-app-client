@@ -87,7 +87,7 @@ export default function EditTag(props) {
         onHide={toggleEditMode}
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Form noValidate validated={validated} onSubmit={handleFormSubmit} data-testid="accordian-form" >
+        <Form noValidate validated={validated} onSubmit={handleFormSubmit} data-testid="accordion-form" >
           <Modal.Header closeButton>
             <Modal.Title as="h6">Edit "{tag}" Tag</Modal.Title>
           </Modal.Header>
