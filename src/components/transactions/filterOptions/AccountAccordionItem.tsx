@@ -3,8 +3,9 @@ import { Accordion, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
-export default function AccountAccordianItem(props) {
+export default function AccountAccordionItem(props) {
   const { accounts, accountTypeIdLabel, accountTypeLabel, eventKey, onSelect, trackedAccounts } = props;
+  // const selectedItemSummaryText = `Selected ${accountTypeLabel} accounts`;
   return (
     <>
       {accounts.length > 0 &&

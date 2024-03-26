@@ -1,6 +1,6 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { describe, expect } from "vitest";
-import AccountAccordianItem from './AccountAccordionItem';
+import AccountAccordionItem from './AccountAccordionItem';
 
 
 describe("Account Accordian Item", async() => {
@@ -16,7 +16,7 @@ describe("Account Accordian Item", async() => {
 
   beforeEach(() => {
     render(
-    <AccountAccordianItem accounts={accounts} 
+    <AccountAccordionItem accounts={accounts} 
       accountTypeIdLabel={accountTypeIdLabel} 
       accountTypeLabel={accountTypeLabel} 
       eventKey={eventKey} onSelect={onSelect} 
