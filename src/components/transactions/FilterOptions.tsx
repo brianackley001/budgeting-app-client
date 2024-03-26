@@ -8,6 +8,7 @@ import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
 import AmountAccordionItem from "./filterOptions/AmountAccordionItem";
 import CategoryAccordionItem from "./filterOptions/CategoryAccordionItem";
 import DateRangeAccordionItem from "./filterOptions/DateRangeAccordionItem";
+import MerchantNameAccordionItem from "./filterOptions/MerchantNameAccordion";
 import NotesAccordionItem from "./filterOptions/NotesAccordionItem";
 import TagAccordionItem from "./filterOptions/TagAccordionItem";
 
@@ -48,6 +49,7 @@ export default function FilterOptions(props: any){
   const [trackedCategory, setTrackedCategory] = useState(initPaginationConfigState("category"));
   const [trackedEndDate, setTrackedEndDate] = useState(initPaginationConfigState("endDate"));
   const [trackedFromAmount, setTrackedFromAmount] = useState(0);
+  const [trackedMerchantName, setTrackedMerchantName] = useState("");
   const [trackedStartDate, setTrackedStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
   const [trackedToAmount, setTrackedToAmount] = useState(0);
@@ -109,6 +111,7 @@ export default function FilterOptions(props: any){
       amountTo: isReset ? 0 : trackedToAmount > 0 ? trackedToAmount : 0,
       categorySearchValue: isReset ? "" : trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category format = "CATEGORY_SUBCATEGORY"
       endDate: isReset ? "" : trackedEndDate.length > 0 ? trackedEndDate : "",
+      merchantNameSearchValue: isReset ? "" : trackedMerchantName.length > 0 ? trackedMerchantName : "",
       pageNumber: pageNumber,
       startDate: isReset ? "" : trackedStartDate.length > 0 ? trackedStartDate : "",
       tagSearchValue: isReset ? "" : trackedTags.length > 0 ? trackedTags.join(",") : "",
@@ -117,6 +120,10 @@ export default function FilterOptions(props: any){
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
     handleClose();
+  }
+
+  const handleMerchantNameChange = (event) => {
+    setTrackedMerchantName(event.target.value);
   }
 
   const handleNotesChange = (event) => {
@@ -163,17 +170,20 @@ export default function FilterOptions(props: any){
               </Col>
               <Col xs={6}>
                 <Accordion flush>
-                  <DateRangeAccordionItem eventKey={"DateRangeAccordionItemFilter"}
-                    onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
-                    trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
-                  <CategoryAccordionItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
-                    trackedValue={trackedCategory} />
+                  <MerchantNameAccordionItem eventKey={"MerchantNameAccordionItemFilter"}
+                    onSelect={(eventItem: any) => { handleMerchantNameChange(eventItem) }} 
+                    trackedValue={trackedMerchantName} />
                   <TagAccordionItem eventKey={"TagAccordionItemFilter"}
                     onSelect={(eventItem: any) => { handleTagCheckboxChange(eventItem) }}
                     trackedTags={trackedTags} tags={tags} />
+                  <CategoryAccordionItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
+                    trackedValue={trackedCategory} />
                   <NotesAccordionItem eventKey={"NotesAccordionItemFilter"} 
                     onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
                     trackedValue={trackedUserNotes} />
+                  <DateRangeAccordionItem eventKey={"DateRangeAccordionItemFilter"}
+                      onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
+                      trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
                   <AmountAccordionItem eventKey={"AmountAccordionItemFilter"}
                     onSelect={(eventItem: any, boundaryValue: string) => handleAmountChange(eventItem, boundaryValue)}
                     trackedFromAmount={trackedFromAmount} 
@@ -182,14 +192,13 @@ export default function FilterOptions(props: any){
               </Col>
             </Row>
             <Row>
-              <Col xs={7}>
-                &nbsp;
-              </Col>
-              <Col xs={5}>
-                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}}className="me-2">Reset</Button>
-                <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="me-2">Apply Filters
+              <Col xs={2}>&nbsp;</Col>
+              <Col xs={8} className="mx-auto mt-5">
+                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}}className="mx-5">Reset</Button>
+                <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="mx-5">Apply Filters
                 </Button>
               </Col>
+              <Col xs={2}>&nbsp;</Col>
             </Row>
           </Form>
         </Offcanvas.Body>
