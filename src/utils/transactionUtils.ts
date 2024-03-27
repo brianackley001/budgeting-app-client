@@ -1,3 +1,19 @@
+export const formatAmount = (amount) => {
+  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+};
+
+export const formatCategory = (category) => {
+  var words = category.split("_");
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+  }
+  return words.join(" ");
+};
+
+export const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
+};
+
 export const formatMerchantDisplayName = (merchantName, itemName) => {
   let displayValue = "";
   if(merchantName && merchantName !== undefined && itemName && itemName !== undefined && merchantName !== itemName) {

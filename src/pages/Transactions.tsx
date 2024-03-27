@@ -1,22 +1,19 @@
-// import React, { useState } from 'react';
 import { Col, Row, Table } from "react-bootstrap";
-
 import { useAppSelector } from "@/hooks/useStoreHooks";
-import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 
-import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
-import { TransactionListItem } from "@components/transactions/TransactionListItem";
-import TransactionPagination from "@components/transactions/TransactionPagination";
-import PageSizeComponent from '@/components/transactions/PageSizeComponent';
-import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
 import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
 import FilterOptions from "@components/transactions/FilterOptions";
 import { LoadingMessage } from '@/components/transactions/LoadingMessage';
+import PageSizeComponent from '@/components/transactions/PageSizeComponent';
+import PaginationSummaryComponent from '@/components/transactions/PaginationSummaryComponent';
+import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
+import { TransactionListItem } from "@components/transactions/TransactionListItem";
+import TransactionPagination from "@components/transactions/TransactionPagination";
 import {logTrace} from "@utils/logger";
+import {formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
 
 
 export const Transactions = () => {
-  useAcquireAccessToken();
   logTrace('Transactions.tsx');
   
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
@@ -27,7 +24,6 @@ export const Transactions = () => {
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
-  
   const filteringInEffect = !isLoading && 
     (!transactionItems || transactionItems.items == undefined || transactionItems.items.length === 0) && 
     ( paginationConfig.tagSearchValue.length > 0 || 
@@ -39,22 +35,6 @@ export const Transactions = () => {
     paginationConfig.endDate.length > 0 ||
     (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
 
-  // Methods:
-  const formatAmount = (amount) => {
-    return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-  };
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
-  };
-
-  const formatCategory = (category) => {
-    var words = category.split("_");
-    for (let i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
-    }
-    return words.join(" ");
-  };
   return (
     <>
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
@@ -63,13 +43,22 @@ export const Transactions = () => {
       {((transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0) || filteringInEffect) &&
       <Row>
         <Col xs={12}>
-          <FilterOptions placement="start" accounts={accountItems} tags={transactionTags} paginationConfig={paginationConfig} filteringInEffect={filteringInEffect}></FilterOptions>
+          <FilterOptions 
+            placement="start" 
+            accounts={accountItems} 
+            tags={transactionTags} 
+            paginationConfig={paginationConfig} 
+            filteringInEffect={filteringInEffect}>
+          </FilterOptions>
         </Col>
       </Row>}
       <Row>
         <Col xs={12}>
           <Table hover responsive id="transactions-table" className="transactionTableContainer">
-            <SortableHeaderRow currentSortBy={paginationConfig.sortBy} currentSortDirection={paginationConfig.sortDirection}></SortableHeaderRow>
+            <SortableHeaderRow 
+              currentSortBy={paginationConfig.sortBy} 
+              currentSortDirection={paginationConfig.sortDirection}>
+            </SortableHeaderRow>
 
             {transactionItems !== undefined && transactionItems.items && transactionItems.items.length > 0 &&
               <tbody>
@@ -99,17 +88,26 @@ export const Transactions = () => {
 
       {transactionItems && transactionItems.items.length > 0 && 
       <Row className='topMarginSpacer transactionTableContainer'>
-        <TransactionPagination collectionTotal={paginationConfig.total} itemsPerPage={transactionPaginationSize} currentPage={paginationConfig.pageNumber}></TransactionPagination>
+        <TransactionPagination 
+          collectionTotal={paginationConfig.total} 
+          itemsPerPage={transactionPaginationSize} 
+          currentPage={paginationConfig.pageNumber}>
+        </TransactionPagination>
       </Row>}
 
-      {!isLoading && (!transactionItems || transactionItems.items.length < 1) && <EmptyTransactionResult></EmptyTransactionResult>}
+      {!isLoading && (!transactionItems || transactionItems.items.length < 1) && <EmptyTransactionResult />}
 
-      {!isLoading && <Row className='topMarginSpacer transactionTableContainer'>
-        <Col xs={6}>
-          <PageSizeComponent pageSize={transactionPaginationSize}></PageSizeComponent>
-        </Col>
-        <PaginationSummaryComponent currentPage={paginationConfig.pageNumber} pageSize={transactionPaginationSize} totalItemCount={paginationConfig.total}></PaginationSummaryComponent>
-      </Row>}
+      {!isLoading && 
+        <Row className='topMarginSpacer transactionTableContainer'>
+          <Col xs={6}>
+            <PageSizeComponent pageSize={transactionPaginationSize}></PageSizeComponent>
+          </Col>
+          <PaginationSummaryComponent 
+            currentPage={paginationConfig.pageNumber} 
+            pageSize={transactionPaginationSize} 
+            totalItemCount={paginationConfig.total}>
+          </PaginationSummaryComponent>
+        </Row>}
     </>
   );
 };

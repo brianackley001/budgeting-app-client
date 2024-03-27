@@ -38,7 +38,6 @@ const endSyncOperation = async (dispatch) => {
   dispatch(setMessageText("Your account sync is complete."));
   dispatch(setVariantStyle("success"));
   dispatch(setShowAlert(true));
-  console.log("loginStateUtils -endSyncOperation - dispatch Alert: 'Your account sync is complete'.");
 };
 
 const setAccountState = async (dispatch, user) => {

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
 import {
   getPagedTransactions,
   setTransactionPagination,
+  setPaginationPageSize,
   syncTransactions,
   setSyncTransactionRequest,
 } from "@store/transactionSlice";
@@ -24,6 +25,7 @@ const useSetSyncTransaction = () => {
   );
   const linkedItems = useAppSelector((state) => state.plaidSlice.linkedItems);
   const userId = useAppSelector((state) => state.userSlice.userId);
+  const transactionItemsPerPage = useAppSelector((state) => state.userSlice.preferences.transactionItemsPerPage);
   const [syncInProgress, setSyncInProgress] = useState(false);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ const useSetSyncTransaction = () => {
       let requestErrors = [];
       if (linkedItems && linkedItems.length > 0) {
         setSyncInProgress(true);
+        dispatch(setPaginationPageSize(transactionItemsPerPage));
         try {
           logEvent("transaction-sync", {
             type: "BEGIN sync transaction",
