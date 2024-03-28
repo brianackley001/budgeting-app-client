@@ -1,5 +1,6 @@
 import { loginSync } from '@/utils/userStateUtils';
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
+import { setAlertState } from "@store/alertSlice";
 import { selectAccessToken, selectUid} from "@store/msalSlice";
 import { selectTransactionPagination } from "@store/transactionSlice"; 
 import axiosInstance from "@utils/axiosInstance";
@@ -34,6 +35,21 @@ export const StoreRefreshButton = () => {
     .catch((error) => {
       console.error(error);
       logError(error);
+      dispatch(
+        setAlertState({
+          headerText: "There was an error refreshing your accounts.",
+          icon: {
+            iconType:'error', 
+            isVisible: true,
+            iconSize: '',
+            iconColor: 'white',
+          },
+          inProgress: false,
+          messageText: error.message,
+          showAlert: true,
+          variantStyle: "danger",
+        })
+      );
     });
     
   };
