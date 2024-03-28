@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl, Accordion } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencil  } from '@fortawesome/free-solid-svg-icons';
+import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
-import TagAccordianItem from './filterOptions/TagAccordionItem';
-import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
+import TagAccordionItem from './filterOptions/TagAccordionItem';
 import { useAppDispatch } from "@/hooks/useStoreHooks";
-import { setHeaderText, setMessageText, setShowAlert, setVariantStyle} from "@store/alertSlice";
+import { setAlertState} from "@store/alertSlice";
 import { setUpdatedTransactionItem } from "@store/transactionSlice";
 import { formatMerchantDisplayName } from "@utils/transactionUtils.ts";
 import axiosInstance from "@utils/axiosInstance";
@@ -16,7 +16,6 @@ import axiosInstance from "@utils/axiosInstance";
  * @param props
  */
 export const TransactionListItem = (item) =>{
-  useAcquireAccessToken();
   const dispatch = useAppDispatch();
 
   const [showDetail, setShowDetail] = useState(false);
@@ -87,17 +86,39 @@ export const TransactionListItem = (item) =>{
   };
 
   const handleSaveMessageError= (messageLabel) => {
-    dispatch(setHeaderText("Transaction Update Error"));
-    dispatch(setMessageText(`Unable to update "${messageLabel}" transaction. Please try again later`));
-    dispatch(setShowAlert(true));
-    dispatch(setVariantStyle("danger"));
+    dispatch(
+      setAlertState({
+        headerText: "Transaction Update Error",
+        icon: {
+          iconType:'error', 
+          isVisible: true,
+          iconSize: '',
+          iconColor: 'white',
+        },
+        inProgress: false,
+        messageText: `Unable to update "${messageLabel}" transaction. Please try again later`,
+        showAlert: true,
+        variantStyle: "danger",
+      })
+    );
   }
 
   const handleSaveMessageSuccess = (messageLabel) => {
-    dispatch(setHeaderText("Transaction Updated"));
-    dispatch(setMessageText(`"${messageLabel}" transaction updated successfully`));
-    dispatch(setShowAlert(true));
-    dispatch(setVariantStyle("success"));
+    dispatch(
+      setAlertState({
+        headerText: "Transaction Updated",
+        icon: {
+          iconType:'success', 
+          isVisible: true,
+          iconSize: '',
+          iconColor: 'white',
+        },
+        inProgress: false,
+        messageText: `"${messageLabel}" transaction updated successfully`,
+        showAlert: true,
+        variantStyle: "success",
+      })
+    );
   }
 
   const handleShowDetail = () => setShowDetail(true);
@@ -135,7 +156,11 @@ export const TransactionListItem = (item) =>{
     <>
     <tr onClick={handleShowDetail}>
       <td className="transactionGridLineItem">{item.date}</td>
-      <td className="transactionGridLineItem">{formTranDescription}</td>
+      <td className="transactionGridLineItem">
+      {item.userNotes && item.userNotes.length > 0 && 
+            <span className="iconStyle" title={item.userNotes}><FontAwesomeIcon icon={faNoteSticky} size="sm"  style={{color: "#808185",}}/></span>}
+        {formTranDescription}
+      </td>
       <td className="transactionGridLineItem">{item.amount}</td>
       <td className="transactionGridLineItem">{item.category}</td>
     </tr>
@@ -252,7 +277,7 @@ export const TransactionListItem = (item) =>{
                       <Col xs={6}>
                       <Form.Group controlId="formGridTags">
                       <Accordion flush defaultActiveKey="transaction-tags">
-                        <TagAccordianItem eventKey="transaction-tags" data-testid="transaction-detail-form-transaction-tags"
+                        <TagAccordionItem eventKey="transaction-tags" data-testid="transaction-detail-form-transaction-tags"
                           onSelect={handleTagCheckboxChange}
                           trackedTags={trackedTags} tags={item.userTags} />
                           </Accordion>
