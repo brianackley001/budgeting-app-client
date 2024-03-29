@@ -37,6 +37,7 @@ export const Transactions = () => {
 
   return (
     <>
+    <div className="dashboardAccountContainer">
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
       {!isLoading && 
       <>
@@ -108,6 +109,7 @@ export const Transactions = () => {
             totalItemCount={paginationConfig.total}>
           </PaginationSummaryComponent>
         </Row>}
+        </div>
     </>
   );
 };
