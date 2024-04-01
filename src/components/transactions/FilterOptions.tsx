@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
-import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Accordion, Button, Col, Form,Offcanvas, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
@@ -17,7 +17,7 @@ export default function FilterOptions(props: any){
   const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [validated] = useState(false);
   
   const initPaginationConfigState = (stateItem) => {
     switch (stateItem) {
