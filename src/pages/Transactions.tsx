@@ -36,7 +36,6 @@ export const Transactions = () => {
     (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
 
   return (
-    <>
     <div className="dashboardAccountContainer">
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
       {!isLoading && 
@@ -109,7 +108,6 @@ export const Transactions = () => {
             totalItemCount={paginationConfig.total}>
           </PaginationSummaryComponent>
         </Row>}
-        </div>
-    </>
+    </div>
   );
 };
