@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
-import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
@@ -35,8 +35,10 @@ export default function FilterOptions(props: any){
         return paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "";
       case "startDate":
         return paginationConfig.startDate.length > 0 ? paginationConfig.startDate : "";
+      case "merchantName":
+        return paginationConfig.merchantNameSearchValue.length > 0 ? paginationConfig.merchantNameSearchValue : "";
       case "notes":
-        return paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "";
+          return paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "";
       case "tags": 
         return paginationConfig.tagSearchValue.length > 0 ? paginationConfig.tagSearchValue.split(",") : [];
       default:
@@ -49,7 +51,7 @@ export default function FilterOptions(props: any){
   const [trackedCategory, setTrackedCategory] = useState(initPaginationConfigState("category"));
   const [trackedEndDate, setTrackedEndDate] = useState(initPaginationConfigState("endDate"));
   const [trackedFromAmount, setTrackedFromAmount] = useState(0);
-  const [trackedMerchantName, setTrackedMerchantName] = useState("");
+  const [trackedMerchantName, setTrackedMerchantName] = useState(initPaginationConfigState("merchantName"))
   const [trackedStartDate, setTrackedStartDate] = useState(initPaginationConfigState("startDate"));
   const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
   const [trackedToAmount, setTrackedToAmount] = useState(0);

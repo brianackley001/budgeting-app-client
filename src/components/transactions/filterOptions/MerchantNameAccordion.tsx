@@ -8,7 +8,6 @@ export default function MerchantNameAccordionItem(props) {
         <Accordion.Header>Merchant Name</Accordion.Header>
         <Accordion.Body>
           <Form.Group className="mb-3" controlId="formMerchantName">
-            {/* <Form.Label>Notes</Form.Label> */}
             <Form.Control as="textarea" rows={1} placeholder="Search for..." 
             onChange={(event) => { onSelect(event) }}
             value={trackedValue}
