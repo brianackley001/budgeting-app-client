@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
-// import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
 import {logError, logEvent } from "@utils/logger";
 
