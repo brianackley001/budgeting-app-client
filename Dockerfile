@@ -7,7 +7,7 @@
 # ARG VITE_TRANSACTION_PAGINATION_SET_SIZE
 
 # build stage
-FROM node:lts-alpine as build-stage
+FROM node:lts-alpine AS build-stage
 # make the 'app' folder the current working directory
 WORKDIR /app
 # copy 'package.json' to install dependencies
