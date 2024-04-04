@@ -26,13 +26,10 @@ export const TransactionListItem = (item) =>{
   const [formTranCategory, setFormTranCategory] = useState(item.category);
   const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
   const [formTranDescription, setFormTranDescription] = useState(
-          item.userDescription === null || item.userDescription === undefined || item.userDescription === "" ?
-          formatMerchantDisplayName(item.merchantName, item.name) :
-          item.userDescription);
-  const [formTranNotes, setFormTranNotes] = useState(item.userNotes === null || item.userNotes === undefined ?
-          "" :
-          item.userNotes);
-  const [trackedTags, setTrackedTags] = useState(item.tags === null || item.tags === undefined ? [] : item.tags);
+          item.userDescription ?? 
+          formatMerchantDisplayName(item.merchantName, item.name));
+  const [formTranNotes, setFormTranNotes] = useState(item.userNotes ?? "");
+  const [trackedTags, setTrackedTags] = useState(item.tags ?? []);
 
 // Methods: 
   const handleFormSubmit = async (event) => {
@@ -179,8 +176,8 @@ export const TransactionListItem = (item) =>{
             <Card>
               <CardTitle as="h6" className='navbarStyle'> {isEditMode ? "Edit Transaction" : `Account: ${item.bankAccountName}`}
                 <span className='cardHeaderIconRight' aria-label="Edit Transaction" title="Edit Institution">
-                  {!isEditMode && <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()}>
-                    <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()}>Edit</span>
+                  {!isEditMode && <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()} role="button">
+                    <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()} role="button">Edit</span>
                   </Button>}
                 </span>
               </CardTitle>
