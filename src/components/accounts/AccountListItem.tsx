@@ -4,12 +4,11 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { upsertAccount } from "@store/accountSlice.ts";
 
 /**
- * Renders information about the user account
+ * Account List Item
  * @param props
  */
 
 function AccountListItem({item}) {
-  //const { name, mask, type, balances, includeInTransactions } = props;
   const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.userSlice.userId);
 
