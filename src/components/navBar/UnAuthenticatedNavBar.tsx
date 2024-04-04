@@ -10,7 +10,6 @@ import { SignInButton } from "../buttons/SignInButton";
  */
 export const UnAuthenticatedNavBar = () => {
   return (
-    <>
       <Navbar
         variant="dark"
         collapseOnSelect
@@ -23,6 +22,5 @@ export const UnAuthenticatedNavBar = () => {
             <SignInButton className="justify-content-end" />
         </Container>
       </Navbar>
-    </>
   );
 };
