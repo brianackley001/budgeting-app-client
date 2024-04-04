@@ -9,15 +9,13 @@ import SortableHeaderItem from "./SortableHeaderItem";
 export default function SortableHeaderRow(props) {
   const { currentSortBy, currentSortDirection } = props;
   return (
-    <>
-      <thead>
-        <tr>
-          <th><SortableHeaderItem sortBy={"date"} sortLabel={"Date"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"merchant"} sortLabel={"Merchant"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"amount"} sortLabel={"Amount"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
-          <th><SortableHeaderItem sortBy={"category"} sortLabel={"Category"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
-        </tr>
-      </thead>
-    </>
+    <thead>
+      <tr>
+        <th><SortableHeaderItem sortBy={"date"} sortLabel={"Date"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+        <th><SortableHeaderItem sortBy={"merchant"} sortLabel={"Merchant"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+        <th><SortableHeaderItem sortBy={"amount"} sortLabel={"Amount"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+        <th><SortableHeaderItem sortBy={"category"} sortLabel={"Category"} currentSortBy={currentSortBy} currentSortDirection={currentSortDirection}></SortableHeaderItem></th>
+      </tr>
+    </thead>
   );
 };
