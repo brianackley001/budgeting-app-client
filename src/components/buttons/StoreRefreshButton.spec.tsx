@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { StoreRefreshButton } from "./StoreRefreshButton";
-import { vi, describe, it, expect, afterAll, vitest, afterEach } from 'vitest';
+import { vi, describe, expect } from 'vitest';
 
 import axiosInstance from "@utils/axiosInstance"; 
 
