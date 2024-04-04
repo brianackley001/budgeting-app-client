@@ -67,7 +67,7 @@ export default function CreateTag(props) {
 
   return (
     <>
-      <Button variant="outline-primary" size="sm" className='addAccountButton' onClick={toggleModal}>
+      <Button variant="outline-primary" size="sm" className='addAccountButton' onClick={toggleModal}  role="button">
         <FontAwesomeIcon icon={faPlus} className='iconStyle' /><span onClick={toggleModal}>Create Tag</span>
       </Button>
 
