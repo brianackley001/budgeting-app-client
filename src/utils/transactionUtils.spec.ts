@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatAmount, formatCategory, formatDate, formatMerchantDisplayName, paginationLinkSet } from "./transactionUtils";
+import { filteringOptionsInEffect, formatAmount, formatCategory, formatDate, formatMerchantDisplayName, paginationLinkSet } from "./transactionUtils";
 
 describe ("transactionUtils", () => {
   describe ("paginationLinkSet", () => {
@@ -152,5 +152,98 @@ describe ("transactionUtils", () => {
       //Assert
       expect(result).toBe(expected);
     });
+  });
+
+  describe("filteringOptionsInEffect", () => {
+    it("returns true when pagination accounts length differs from accountItems length", () => {
+      // Arrange
+      let paginationConfig = {
+        tagSearchValue: "",
+        userNotesSearchValue: "",
+        categorySearchValue: "",
+        amountFrom: 0,
+        amountTo: 0,
+        startDate: "",
+        endDate: "",
+        accountIds: ["1", "2"],
+        pageNumber: 1,
+      };
+      let accountItems = [
+        { accountId: 1, includeAccountTransactions: true },
+        { accountId: 2, includeAccountTransactions: true },
+        { accountId: 3, includeAccountTransactions: true },
+        { accountId: 4, includeAccountTransactions: false },
+      ];
+      let sut = filteringOptionsInEffect;
+
+      // Act
+      let result = sut(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
+
+      //Assert
+      expect(result).toBe(true);
+    });
+    it("returns false when pagination accounts length equals accountItems length", () => {
+      // Arrange
+      let paginationConfig = {
+        tagSearchValue: "",
+        userNotesSearchValue: "",
+        categorySearchValue: "",
+        amountFrom: 0,
+        amountTo: 0,
+        startDate: "",
+        endDate: "",
+        accountIds: ["1", "2", "3"],
+        pageNumber: 1,
+      };
+      let accountItems = [
+        { accountId: 1, includeAccountTransactions: true },
+        { accountId: 2, includeAccountTransactions: true },
+        { accountId: 3, includeAccountTransactions: true },
+        { accountId: 4, includeAccountTransactions: false },
+      ];
+      let sut = filteringOptionsInEffect;
+
+      // Act
+      let result = sut(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
+
+      //Assert
+      expect(result).toBe(false);
+    });
+    describe("paginationConfig filtering properties", () => {
+    test.each([
+      { tagSearchValue: "Tag1", userNotesSearchValue: "", categorySearchValue: "", amountFrom: 0, amountTo: 0, startDate: "", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "Note1", categorySearchValue: "", amountFrom: 0, amountTo: 0, startDate: "", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "", categorySearchValue: "Category1", amountFrom: 0, amountTo: 0, startDate: "", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "", categorySearchValue: "", amountFrom: 1, amountTo: 0, startDate: "", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "", categorySearchValue: "", amountFrom: 0, amountTo: 1, startDate: "", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "", categorySearchValue: "", amountFrom: 0, amountTo: 0, startDate: "2021-01-01", endDate: "", expected: true },
+      { tagSearchValue: "", userNotesSearchValue: "", categorySearchValue: "", amountFrom: 0, amountTo: 0, startDate: "", endDate: "2021-01-01", expected: true },
+    ])("returns true when $tagSearchValue, $userNotesSearchValue, $categorySearchValue, $amountFrom, $amountTo, $startDate, $endDate are present", 
+      ({ tagSearchValue, userNotesSearchValue, categorySearchValue, amountFrom, amountTo, startDate, endDate, expected }) => {
+      // Arrange
+      let paginationConfig = {
+        tagSearchValue,
+        userNotesSearchValue,
+        categorySearchValue,
+        amountFrom,
+        amountTo,
+        startDate,
+        endDate,
+        accountIds: ["1"],
+        pageNumber: 1,
+      };
+      let accountItems = [
+        { accountId: 1, includeAccountTransactions: true },
+        { accountId: 4, includeAccountTransactions: false },
+      ];
+      let sut = filteringOptionsInEffect;
+
+      // Act
+      let result = sut(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
+
+      //Assert
+      expect(result).toBe(expected);  
+    });
+  });
   });
 });

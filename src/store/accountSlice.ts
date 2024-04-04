@@ -108,8 +108,8 @@ export function getItemAccounts(userId, itemId) {
         const tranPagination = getState().transactionSlice.transactionPagination; 
 
         if (tranPagination.accountIds && tranPagination.accountIds.length > 0) {
-          const newAccountIdSet = new Set([...tranPagination.accountIds.split(","), ...itemAccountIds]);
-          const accountIds = Array.from(newAccountIdSet).sort().join(",");
+          const newAccountIdSet = new Set([...tranPagination.accountIds, ...itemAccountIds]);
+          const accountIds = Array.from(newAccountIdSet).map((accountId) => accountId.toString());
           await dispatch(setPaginationAccountIds(accountIds));
         } else {
           const accountIds = itemAccountIds;

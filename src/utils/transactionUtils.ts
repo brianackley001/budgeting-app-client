@@ -1,3 +1,17 @@
+export const filteringOptionsInEffect = (paginationConfig, eligibleAccounts: number) => {
+  let filteringIsInEffect =  
+    (paginationConfig.accountIds.length > 0 && paginationConfig.accountIds.length !== eligibleAccounts) ||
+    paginationConfig.tagSearchValue.length > 0 || 
+    paginationConfig.userNotesSearchValue.length > 0 ||
+    paginationConfig.categorySearchValue.length > 0 ||
+    paginationConfig.amountFrom !== 0 ||
+    paginationConfig.amountTo !== 0 ||
+    paginationConfig.startDate.length > 0 ||
+    paginationConfig.endDate.length > 0;
+
+    return filteringIsInEffect;
+} 
+
 export const formatAmount = (amount) => {
   return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 };

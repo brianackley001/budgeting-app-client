@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button, Card, CardTitle, CardBody, Col, Form, Modal, Row, FormGroup, FormControl, Accordion } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil  } from '@fortawesome/free-solid-svg-icons';
-import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
+import { faPencil, faNoteSticky  } from '@fortawesome/free-solid-svg-icons';
+// import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
 import TagAccordionItem from './filterOptions/TagAccordionItem';
 import { useAppDispatch } from "@/hooks/useStoreHooks";
@@ -158,7 +158,7 @@ export const TransactionListItem = (item) =>{
       <td className="transactionGridLineItem">{item.date}</td>
       <td className="transactionGridLineItem">
       {item.userNotes && item.userNotes.length > 0 && 
-            <span className="iconStyle" title={item.userNotes}><FontAwesomeIcon icon={faNoteSticky} size="sm"  style={{color: "#808185",}}/></span>}
+            <span className="iconStyle" title={item.userNotes}><FontAwesomeIcon icon={faNoteSticky} size="sm"  style={{color: "#ecc63c",}}/></span>}
         {formTranDescription}
       </td>
       <td className="transactionGridLineItem">{item.amount}</td>

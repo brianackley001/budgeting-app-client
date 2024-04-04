@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
+<<<<<<< HEAD
+import { Accordion, Button, Col, Form,Offcanvas, Row } from "react-bootstrap";
+=======
 import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
+>>>>>>> main
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
@@ -17,7 +21,36 @@ export default function FilterOptions(props: any){
   const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
+<<<<<<< HEAD
+  const [validated] = useState(false);
+  
+  const initPaginationConfigState = (stateItem) => {
+    switch (stateItem) {
+      case "accountIds":
+        return paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length 
+            ? [] 
+            : paginationConfig.accountIds.split(",");
+      case "amountFrom":
+        return paginationConfig.amountFrom > 0 ? paginationConfig.amountFrom : 0;
+      case "amountTo": 
+        return paginationConfig.amountTo > 0 ? paginationConfig.amountTo : 0;
+      case "category":
+        return paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "";
+      case "endDate":
+        return paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "";
+      case "startDate":
+        return paginationConfig.startDate.length > 0 ? paginationConfig.startDate : "";
+      case "notes":
+        return paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "";
+      case "tags": 
+        return paginationConfig.tagSearchValue.length > 0 ? paginationConfig.tagSearchValue.split(",") : [];
+      default:
+        return "";
+    }
+  };
+=======
   const [validated, setValidated] = useState(false);
+>>>>>>> main
 
   // Track form field values for submission:
   const [trackedAccounts, setTrackedAccounts] = useState( paginationConfig.accountIds.length === accounts.filter(account => account.includeAccountTransactions).length 

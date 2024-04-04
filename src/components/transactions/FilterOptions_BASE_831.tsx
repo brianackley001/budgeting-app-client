@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
-import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
+import { Accordion, Button, Col, Form, FormGroup, FormControl, Offcanvas, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import AccountTypeAccordion from "./filterOptions/AccountTypeAccordion";
@@ -18,19 +18,42 @@ export default function FilterOptions(props: any){
 
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
+  
+  const initPaginationConfigState = (stateItem) => {
+    switch (stateItem) {
+      case "accountIds":
+        return paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length 
+            ? [] 
+            : paginationConfig.accountIds.split(",");
+      case "amountFrom":
+        return paginationConfig.amountFrom > 0 ? paginationConfig.amountFrom : 0;
+      case "amountTo": 
+        return paginationConfig.amountTo > 0 ? paginationConfig.amountTo : 0;
+      case "category":
+        return paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "";
+      case "endDate":
+        return paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "";
+      case "startDate":
+        return paginationConfig.startDate.length > 0 ? paginationConfig.startDate : "";
+      case "notes":
+        return paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "";
+      case "tags": 
+        return paginationConfig.tagSearchValue.length > 0 ? paginationConfig.tagSearchValue.split(",") : [];
+      default:
+        return "";
+    }
+  };
 
   // Track form field values for submission:
-  const [trackedAccounts, setTrackedAccounts] = useState( paginationConfig.accountIds.length === accounts.filter(account => account.includeAccountTransactions).length 
-    ? [] 
-    : paginationConfig.accountIds.map(accountId => accountId.toString()));
-  const [trackedCategory, setTrackedCategory] = useState(paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "");
-  const [trackedEndDate, setTrackedEndDate] = useState(paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "");
-  const [trackedFromAmount, setTrackedFromAmount] = useState(paginationConfig.amountFrom.length > 0 ? paginationConfig.amountFrom : 0);
-  const [trackedMerchantName, setTrackedMerchantName] = useState(paginationConfig.merchantNameSearchValue.length > 0 ? paginationConfig.merchantNameSearchValue : "")
-  const [trackedStartDate, setTrackedStartDate] = useState(paginationConfig.startDate.length > 0 ? paginationConfig.startDate : "");
-  const [trackedTags, setTrackedTags] = useState(paginationConfig.tagSearchValue.length > 0 ? paginationConfig.tagSearchValue.split(",") : []);
-  const [trackedToAmount, setTrackedToAmount] = useState(paginationConfig.amountTo.length > 0 ? paginationConfig.amountTo : 0);;
-  const [trackedUserNotes, setTrackedUserNotes] = useState(paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "");
+  const [trackedAccounts, setTrackedAccounts] = useState(initPaginationConfigState("accountIds"));
+  const [trackedCategory, setTrackedCategory] = useState(initPaginationConfigState("category"));
+  const [trackedEndDate, setTrackedEndDate] = useState(initPaginationConfigState("endDate"));
+  const [trackedFromAmount, setTrackedFromAmount] = useState(0);
+  const [trackedMerchantName, setTrackedMerchantName] = useState("");
+  const [trackedStartDate, setTrackedStartDate] = useState(initPaginationConfigState("startDate"));
+  const [trackedTags, setTrackedTags] = useState(initPaginationConfigState("tags"));
+  const [trackedToAmount, setTrackedToAmount] = useState(0);
+  const [trackedUserNotes, setTrackedUserNotes] = useState(initPaginationConfigState("notes"));
 
   //Event Handler Methods:
   const handleAccountCheckboxChange = (event) => {
@@ -69,15 +92,11 @@ export default function FilterOptions(props: any){
   }
 
   const handleFormSubmit = (isReset) => {
-    if(!isReset){
-      setValidated(true);
-    }
-
     const accountIdCollectionSubmitValue = isReset ? 
-      accounts.map(account => account.accountId) : 
+      accounts.map(account => account.accountId).join(",") : 
       trackedAccounts.length > 0 
-        ? trackedAccounts 
-        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId);
+        ? trackedAccounts.join(",") 
+        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",");
 
     const pageNumber = isReset ? 
         1 : 
@@ -184,6 +203,7 @@ export default function FilterOptions(props: any){
           </Form>
         </Offcanvas.Body>
       </Offcanvas>
+
     </>
   );
 }
