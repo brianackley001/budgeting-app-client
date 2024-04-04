@@ -5,10 +5,8 @@ import { Alert, Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "rea
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { deleteTransactionTag, updateTransactionTag } from '@/store/userSlice';
 
-{/* <Badge pill bg="secondary" key={index}>{tag}</Badge> */ }
-
 /**
- * Renders mesaging to user that no transaction data matches the current filter criteria
+ * Edit existing tag
  * @param props
  */
 
