@@ -27,15 +27,6 @@ export const Transactions = () => {
   const filteringInEffect = !isLoading && 
     (!transactionItems || transactionItems.items == undefined || transactionItems.items.length === 0) && 
     filteringOptionsInEffect(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
-    // ( paginationConfig.tagSearchValue.length > 0 || 
-    // paginationConfig.userNotesSearchValue.length > 0 ||
-    // paginationConfig.categorySearchValue.length > 0 ||
-    // paginationConfig.amountFrom !== 0 ||
-    // paginationConfig.amountTo !== 0 ||
-    // paginationConfig.startDate.length > 0 ||
-    // paginationConfig.endDate.length > 0 ||
-    // (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
-
   return (
     <>
     <div className="dashboardAccountContainer">
