@@ -12,19 +12,13 @@ import {logError, logEvent } from "@utils/logger";
 import MsalUtils from '@utils/msalToken'
 import {
   usePlaidLink,
-  PlaidLinkOnSuccessMetadata,
-  PlaidLinkOnExitMetadata,
-  PlaidLinkError,
-  PlaidLinkOptionsWithLinkToken,
-  PlaidLinkOnEventMetadata,
-  PlaidLinkStableEvent,
+  PlaidLinkOnSuccessMetadata
 } from 'react-plaid-link';
 
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const accessToken = useAppSelector(selectAccessToken);
   const userId = useAppSelector(state => state.userSlice.userId);
-  const transactionPagination = useAppSelector(state => state.transactionSlice.transactionPagination);
   const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
@@ -73,7 +67,7 @@ const SimplePlaidLink = () => {
     }
   };
 
-  const { open, ready } = usePlaidLink({
+  const { open } = usePlaidLink({
     token: plaidLinkToken,
     onSuccess,
     // onEvent
@@ -82,7 +76,7 @@ const SimplePlaidLink = () => {
 
   return (
     <Button variant="outline-success" size="sm" className='addAccountButton' onClick={() => open()}>
-      <FontAwesomeIcon icon={faPlus} className='iconStyle' /><span onClick={() => open()}>Add Account</span>
+      <FontAwesomeIcon icon={faPlus} className='iconStyle' /><span onClick={() => open()}  role="button">Add Account</span>
     </Button>
   );
 };
