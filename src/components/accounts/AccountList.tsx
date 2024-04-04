@@ -12,7 +12,6 @@ export default function AccountList({ institution }) {
   const hasCredentialError = institution.itemError && institution.itemError.errorCode === "ITEM_LOGIN_REQUIRED" && !institution.itemError.isResolved;
   const cardClass = hasCredentialError ? "mb-5 red" : "mb-5";
   return (
-    <>
       <Card className={cardClass} data-testid="institution-card-container">
         <Card.Body>
           <InstitutionHeaderItem institution={institution} />
@@ -23,6 +22,5 @@ export default function AccountList({ institution }) {
           </span>
         </Card.Body>
       </Card>
-    </>
   );
 }
