@@ -60,7 +60,7 @@ describe('Store Refresh Button', () => {
         }
       }
     });
-    let item = render(<StoreRefreshButton />);
+    render(<StoreRefreshButton />);
   });
   test('Renders the Store Refresh Button', () => {
     expect(screen.getByTestId('button-store-refresh')).toBeInTheDocument();
