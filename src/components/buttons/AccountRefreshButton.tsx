@@ -11,7 +11,7 @@ import { faRotate } from '@fortawesome/free-solid-svg-icons'
 
 
 export const AccountRefreshButton = () => {
-  const [isAccountBalanceLoading, setAccountBalanceLoading] = useState(false);
+  const [isAccountBalanceLoading, setIsAccountBalanceLoading] = useState(false);
   const userId = useAppSelector(state => state.userSlice.userId);
   const syncAccountRequest = useAppSelector((state) => state.accountSlice.syncAccountRequest);
   const dispatch = useAppDispatch();
@@ -25,13 +25,13 @@ export const AccountRefreshButton = () => {
     dispatch(setSyncRequestItems(["account"]));
     dispatch(setSyncAccountRequest({inProgress: true, standAloneRequest: false, errors: []}));
 
-    setAccountBalanceLoading(true);
+    setIsAccountBalanceLoading(true);
     await dispatch(getAccountBalances(userId));
   };
 
   useEffect(() => {
     if (isAccountBalanceLoading && !syncAccountRequest.inProgress) {
-      setAccountBalanceLoading(false);
+      setIsAccountBalanceLoading(false);
     }
   }, [isAccountBalanceLoading, syncAccountRequest.inProgress]);
 
