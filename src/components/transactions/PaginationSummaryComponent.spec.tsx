@@ -14,7 +14,7 @@ describe("Transaction Pagination Summary test", () => {
   ])('Pagination Summary($currentPage, $pageSize, $totalItemCount) -> $expected', (
     { currentPage, pageSize, totalItemCount, expected }) => {
     // Act
-    let item = render(
+    render(
       <PaginationSummaryComponent 
         currentPage={currentPage} 
         pageSize={pageSize} 
