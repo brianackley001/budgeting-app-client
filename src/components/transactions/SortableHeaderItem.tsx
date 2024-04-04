@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
-import { getPagedTransactions, selectTransactionPagination, setPaginationSortBy, setPaginationSortDirection } from "@store/transactionSlice";
+import { getPagedTransactions, setPaginationSortBy, setPaginationSortDirection } from "@store/transactionSlice";
 
 
 /**
@@ -40,14 +40,14 @@ export default function  SortableHeaderItem(props){
   return (
     <>
       {currentSortBy !== sortBy && 
-      <span  onClick={() => handleSort("", sortBy)}>{sortLabel}&nbsp;&nbsp;
+      <span  onClick={() => handleSort("", sortBy)} role="button">{sortLabel}&nbsp;&nbsp;
       <FontAwesomeIcon size="sm" icon={faSort} style={{ color: iconColorValue, }} />
       </span>}
       {currentSortBy === sortBy && currentSortDirection === "asc" && 
-      <span  onClick={() => handleSort("asc", sortBy)}>{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortUp} style={{ color: iconColorValue, }} />
+      <span  onClick={() => handleSort("asc", sortBy)} role="button">{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortUp} style={{ color: iconColorValue, }} />
       </span>}
       {currentSortBy === sortBy && currentSortDirection === "desc" && 
-      <span  onClick={() => handleSort("desc", sortBy)}>{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortDown} style={{ color: iconColorValue, }}/>
+      <span  onClick={() => handleSort("desc", sortBy)} role="button">{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortDown} style={{ color: iconColorValue, }}/>
       </span>}
     </>
   );
