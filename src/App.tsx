@@ -1,11 +1,8 @@
-import * as React from 'react';
-import { EventType } from "@azure/msal-browser";
 import "./scss/app.scss";
 
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
-  useMsal,
 } from "@azure/msal-react";
 
 import Image from 'react-bootstrap/Image';
