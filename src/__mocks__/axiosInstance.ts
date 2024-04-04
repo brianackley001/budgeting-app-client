@@ -1,5 +1,4 @@
 import { vi } from "vitest";
-//import axiosInstance from "@utils/axiosInstance";
 export const MOCK_ACCESS_TOKEN = "mockAccessTokenTestValue-xyz"
 const mockAccessTokenRequest = () => {
   return MOCK_ACCESS_TOKEN;
