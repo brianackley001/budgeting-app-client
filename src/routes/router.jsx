@@ -27,7 +27,7 @@ const routes = [
     path: '/settings',
     component: {Settings},
     errorElement: {ErrorPage},
-  },,
+  },
   {
     path: '/session-expired',
     component: {SessionExpired},

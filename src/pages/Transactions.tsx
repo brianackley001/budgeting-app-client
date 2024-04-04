@@ -25,7 +25,7 @@ export const Transactions = () => {
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
   const filteringInEffect = !isLoading && 
-    (!transactionItems || transactionItems.items == undefined || transactionItems.items.length === 0) && 
+    (!transactionItems || transactionItems.items?.length === 0) && 
     filteringOptionsInEffect(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
   return (
     <div className="dashboardAccountContainer">
