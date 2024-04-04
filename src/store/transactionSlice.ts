@@ -45,7 +45,7 @@ interface PagedTransactions{
 }
 
 interface TransactionPagination {
-  accountIds: string,
+  accountIds: string[],
   amountFrom: number,
   amountTo: number,
   categorySearchValue: string,
@@ -84,7 +84,7 @@ const initialState: TransactionState = {
         pageNumber: 1,
         items: [],
         transactionPagination: {
-          accountIds: "",
+          accountIds: [],
           amountFrom: 0,
           amountTo: 0,
           categorySearchValue: "",
@@ -109,7 +109,7 @@ const initialState: TransactionState = {
     standAloneRequest: false,
   },
   transactionPagination: {
-    accountIds: "",
+    accountIds: [],
     amountFrom: 0,
     amountTo: 0,
     categorySearchValue: "",
@@ -152,8 +152,8 @@ export function getPagedTransactions(
       dispatch(setIsLoading(true));
 
       // ensure accountIds are hydrated - if not present in transactionPagination, check accountSlice
-      if (transactionPagination.accountIds === "") {
-        const accountIds = getState().accountSlice.accounts.map(account => account.accountId).join(",");
+      if (transactionPagination.accountIds.length ===0) {
+        const accountIds = getState().accountSlice.accounts.map(account => account.accountId).map(accountId => accountId.toString());
         dispatch(setTransactionPagination({
           ...transactionPagination,
           accountIds: accountIds,
@@ -173,7 +173,7 @@ export function getPagedTransactions(
           sortDirection: transactionPagination.sortDirection,
           merchantNameSearchValue: transactionPagination.merchantNameSearchValue,
           userNotesSearchValue: transactionPagination.userNotesSearchValue,
-          accountIds: transactionPagination.accountIds,
+          accountIds: transactionPagination.accountIds.join(","),
           categorySearchValue: transactionPagination.categorySearchValue,
           tagSearchValue: transactionPagination.tagSearchValue,
           amountFrom: transactionPagination.amountFrom.toString(),

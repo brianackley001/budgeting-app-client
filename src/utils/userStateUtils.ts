@@ -148,7 +148,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
         ...paginationConfig,
         accountIds: user.accounts
           .filter((item) => item.includeAccountTransactions)
-          .map((item) => item.accountId).join(","),
+          .map((item) => item.accountId),
         pageSize: user.preferences.transactionItemsPerPage,
         userId: user.id,
       };

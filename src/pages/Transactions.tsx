@@ -10,7 +10,7 @@ import SortableHeaderRow from '@/components/transactions/SortableHeaderRow';
 import { TransactionListItem } from "@components/transactions/TransactionListItem";
 import TransactionPagination from "@components/transactions/TransactionPagination";
 import {logTrace} from "@utils/logger";
-import {formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
+import { filteringOptionsInEffect, formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
 
 
 export const Transactions = () => {
@@ -26,14 +26,15 @@ export const Transactions = () => {
 
   const filteringInEffect = !isLoading && 
     (!transactionItems || transactionItems.items == undefined || transactionItems.items.length === 0) && 
-    ( paginationConfig.tagSearchValue.length > 0 || 
-    paginationConfig.userNotesSearchValue.length > 0 ||
-    paginationConfig.categorySearchValue.length > 0 ||
-    paginationConfig.amountFrom !== 0 ||
-    paginationConfig.amountTo !== 0 ||
-    paginationConfig.startDate.length > 0 ||
-    paginationConfig.endDate.length > 0 ||
-    (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
+    filteringOptionsInEffect(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
+    // ( paginationConfig.tagSearchValue.length > 0 || 
+    // paginationConfig.userNotesSearchValue.length > 0 ||
+    // paginationConfig.categorySearchValue.length > 0 ||
+    // paginationConfig.amountFrom !== 0 ||
+    // paginationConfig.amountTo !== 0 ||
+    // paginationConfig.startDate.length > 0 ||
+    // paginationConfig.endDate.length > 0 ||
+    // (paginationConfig.accountIds.length > 2 && paginationConfig.accountIds.split(",").length !== accountItems.filter(account => account.includeAccountTransactions).length));
 
   return (
     <>

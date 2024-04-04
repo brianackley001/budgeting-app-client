@@ -20,9 +20,9 @@ export default function FilterOptions(props: any){
   const [validated, setValidated] = useState(false);
 
   // Track form field values for submission:
-  const [trackedAccounts, setTrackedAccounts] = useState( paginationConfig.accountIds.split(",").length === accounts.filter(account => account.includeAccountTransactions).length 
+  const [trackedAccounts, setTrackedAccounts] = useState( paginationConfig.accountIds.length === accounts.filter(account => account.includeAccountTransactions).length 
     ? [] 
-    : paginationConfig.accountIds.split(","));
+    : paginationConfig.accountIds.map(accountId => accountId.toString()));
   const [trackedCategory, setTrackedCategory] = useState(paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "");
   const [trackedEndDate, setTrackedEndDate] = useState(paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "");
   const [trackedFromAmount, setTrackedFromAmount] = useState(paginationConfig.amountFrom.length > 0 ? paginationConfig.amountFrom : 0);
@@ -74,10 +74,10 @@ export default function FilterOptions(props: any){
     }
 
     const accountIdCollectionSubmitValue = isReset ? 
-      accounts.map(account => account.accountId).join(",") : 
+      accounts.map(account => account.accountId) : 
       trackedAccounts.length > 0 
-        ? trackedAccounts.join(",") 
-        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId).join(",");
+        ? trackedAccounts 
+        : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId);
 
     const pageNumber = isReset ? 
         1 : 
