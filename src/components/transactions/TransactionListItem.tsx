@@ -25,9 +25,7 @@ export const TransactionListItem = (item) =>{
   const [validated, setValidated] = useState(false);
   const [formTranCategory, setFormTranCategory] = useState(item.category);
   const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
-  const [formTranDescription, setFormTranDescription] = useState(
-          item.userDescription ?? 
-          formatMerchantDisplayName(item.merchantName, item.name));
+  const [formTranDescription, setFormTranDescription] = useState(formatMerchantDisplayName(item.merchantName, item.name));
   const [formTranNotes, setFormTranNotes] = useState(item.userNotes ?? "");
   const [trackedTags, setTrackedTags] = useState(item.tags ?? []);
 
