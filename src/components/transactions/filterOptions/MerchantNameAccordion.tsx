@@ -1,4 +1,4 @@
-import { Accordion, Form} from 'react-bootstrap';
+import { Accordion, Form } from 'react-bootstrap';
 
 export default function MerchantNameAccordionItem(props) {
   const { eventKey, onSelect, trackedValue } = props;
