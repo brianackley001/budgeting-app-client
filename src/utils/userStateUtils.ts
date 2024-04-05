@@ -1,50 +1,61 @@
-import React, { useCallback, useEffect, useState } from "react";
-//import { useAppSelector, useAppDispatch } from "@hooks/useStoreHooks";
 import { setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import {getAccountBalances} from '@store/accountSlice';
-import { getPagedTransactions, setTransactionPagination, syncTransactions } from "@store/transactionSlice"; 
-import { setName, setTransactionsPerPage, setTransactionTags, setUserId, setUserName } from "@store/userSlice";
+import { getAccountBalances } from "@store/accountSlice";
 import {
-  setAlertState,
-  setHeaderText,
-  setMessageText,
-  setInProgress,
-  setShowAlert,
-  setVariantStyle,
-} from "@store/alertSlice";
-import {logError} from "@utils/logger";
-
-
+  getPagedTransactions,
+  setTransactionPagination,
+  syncTransactions,
+} from "@store/transactionSlice";
+import {
+  setName,
+  setTransactionsPerPage,
+  setTransactionTags,
+  setUserId,
+  setUserName,
+} from "@store/userSlice";
+import { setAlertState } from "@store/alertSlice";
+import { logError } from "@utils/logger";
 
 const beginSyncOperation = async (dispatch) => {
-  dispatch(setInProgress(true));
-  dispatch(setHeaderText("Syncing"));
-  dispatch(setMessageText("Please wait while we sync your accounts..."));
-  dispatch(setShowAlert(true));
+  dispatch(
+    setAlertState({
+      headerText: "Syncing",
+      inProgress: false,
+      messageText: "Please wait while we sync your accounts...",
+      showAlert: true,
+      variantStyle: "info",
+    })
+  );
 };
 const broadcastSyncError = async (dispatch, error) => {
-  dispatch(setInProgress(false));
-  dispatch(setHeaderText(error.header));
-  dispatch(setMessageText(error.message));
-  dispatch(setVariantStyle("danger"));
-  dispatch(setShowAlert(true));
+  dispatch(
+    setAlertState({
+      headerText: error.header,
+      inProgress: false,
+      messageText: error.message,
+      showAlert: true,
+      variantStyle: "danger",
+    })
+  );
   console.error(`loginStateUtils - broadcastSyncError: ${error.message}`);
 };
 
 const endSyncOperation = async (dispatch) => {
-  dispatch(setInProgress(false));
-  dispatch(setHeaderText("Sync Completed"));
-  dispatch(setMessageText("Your account sync is complete."));
-  dispatch(setVariantStyle("success"));
-  dispatch(setShowAlert(true));
+  dispatch(
+    setAlertState({
+      headerText: "Sync Completed",
+      inProgress: false,
+      messageText: "Your account sync is complete.",
+      showAlert: true,
+      variantStyle: "success",
+    })
+  );
 };
 
 const setAccountState = async (dispatch, user) => {
   try {
-    
     dispatch(setAccounts(user.accounts));
-    dispatch(getAccountBalances(user.id))
+    dispatch(getAccountBalances(user.id));
     return true;
   } catch (error) {
     console.log(error);
@@ -94,9 +105,8 @@ const setUserState = async (dispatch, user) => {
 const setTransactionState = async (dispatch, paginationConfig, user) => {
   if (user.accounts && user.accounts.length > 0) {
     try {
-      //  syncTransactions(userId: string, itemId: string, institution: any, showAlert: boolean = true)
       let itemRequests = new Array();
-      let investmentItemRequests = new Array();     
+      let investmentItemRequests = new Array();
       user.linkedItems.forEach((item) => {
         if (
           user.accounts.find((account) => account.itemId === item.item_id)
@@ -130,15 +140,17 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
         }
       });
 
-      const storeRequests = itemRequests.map((request) =>{
-        dispatch(syncTransactions(request.userId))
+      const storeRequests = itemRequests.map((request) => {
+        dispatch(syncTransactions(request.userId));
       });
 
-      //let outputCollection = new Array<Object>();
-      const responses = await Promise.all(storeRequests)
-        .then((values) => {console.log(values); return values;})
+      await Promise.all(storeRequests)
+        .then((values) => {
+          console.log(values);
+          return values;
+        })
         .catch((error) => {
-          console.log(error); 
+          console.log(error);
           logError(error as Error);
           return null;
         });
@@ -170,8 +182,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
   return true;
 };
 
- const loginSync = async (user, dispatch, paginationConfig) => {
-
+const loginSync = async (user, dispatch, paginationConfig) => {
   if (user) {
     await beginSyncOperation(dispatch);
     let success = await setUserState(dispatch, user);
@@ -183,7 +194,7 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
         success &&= await setAccountState(dispatch, user);
       }
 
-      if(success) {
+      if (success) {
         success &&= await setTransactionState(dispatch, paginationConfig, user);
       }
     }
@@ -193,4 +204,4 @@ const setTransactionState = async (dispatch, paginationConfig, user) => {
   }
 };
 
-export  { loginSync } ;
+export { loginSync };
