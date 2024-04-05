@@ -1,6 +1,6 @@
+import {useEffect, useState} from 'react';
 import { Col, Row, Table } from "react-bootstrap";
 import { useAppSelector } from "@/hooks/useStoreHooks";
-
 import EmptyTransactionResult from '@/components/transactions/EmptyTransactionResult';
 import FilterOptions from "@components/transactions/FilterOptions";
 import { LoadingMessage } from '@/components/transactions/LoadingMessage';
@@ -17,6 +17,7 @@ export const Transactions = () => {
   logTrace('Transactions.tsx');
   
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const [filteringInEffect, setFilteringInEffect] = useState(false);
   const isLoading = useAppSelector(state => state.transactionSlice.isLoading);
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
   const transactionItems = useAppSelector(state => 
@@ -24,9 +25,12 @@ export const Transactions = () => {
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
 
-  const filteringInEffect = !isLoading && 
-    (!transactionItems || transactionItems.items?.length === 0) && 
-    filteringOptionsInEffect(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length);
+  useEffect(() => {
+    setFilteringInEffect(!isLoading && 
+      (!transactionItems || transactionItems.items?.length === 0) && 
+      filteringOptionsInEffect(paginationConfig, accountItems.filter(account => account.includeAccountTransactions).length));
+  }, [isLoading, transactionItems, paginationConfig, accountItems]);
+
   return (
     <div className="dashboardAccountContainer">
       <LoadingMessage isLoading={isLoading}></LoadingMessage>
