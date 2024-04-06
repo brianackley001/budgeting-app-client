@@ -174,8 +174,8 @@ export const TransactionListItem = (item) =>{
             <Card>
               <CardTitle as="h6" className='navbarStyle'> {isEditMode ? "Edit Transaction" : `Account: ${item.bankAccountName}`}
                 <span className='cardHeaderIconRight' aria-label="Edit Transaction" title="Edit Institution">
-                  {!isEditMode && <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()} role="button">
-                    <FontAwesomeIcon icon={faPencil} className='iconStyle' /><span onClick={() => handleToggleEditMode()} role="button" tabIndex={0}>Edit</span>
+                  {!isEditMode && <Button variant="outline-dark" size="sm" className='addAccountButton' onClick={() => handleToggleEditMode()}>
+                    <FontAwesomeIcon icon={faPencil} className='iconStyle' />Edit
                   </Button>}
                 </span>
               </CardTitle>
