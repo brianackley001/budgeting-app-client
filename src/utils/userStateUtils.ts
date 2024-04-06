@@ -1,6 +1,5 @@
-import { setAccounts } from "@store/accountSlice";
+import { getAccountBalances, setAccounts } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import { getAccountBalances } from "@store/accountSlice";
 import {
   getPagedTransactions,
   setTransactionPagination,
