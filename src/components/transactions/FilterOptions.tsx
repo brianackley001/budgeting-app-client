@@ -81,16 +81,6 @@ export default function FilterOptions(props: any){
         ? trackedAccounts
         : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId);
     }
-    //   accounts.map(account => account.accountId) : 
-    //   trackedAccounts.length > 0 
-    //     ? trackedAccounts 
-    //     : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId);
-
-    // let pageNumber = isReset ? 
-        // 1 : 
-        // (trackedFromAmount > 0 || trackedToAmount > 0 || trackedCategory.length > 0 || 
-        // trackedEndDate.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || 
-        // trackedUserNotes.length > 0) ? 1 : paginationConfig.pageNumber;
 
     let updatedPaginationConfig = {
       ...paginationConfig,
