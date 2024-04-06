@@ -46,11 +46,13 @@ export default function PageSizeComponent(props) {
   return (
     <div className="cardHeaderIconRight" data-testid="page-size-component-parent-container">
       {!showEdit &&
-        <div data-testid="page-size-component-read-only-container" onClick={() => handleToggleEditMode()} role="button" tabIndex={0}>
+        <div data-testid="page-size-component-read-only-container" onClick={() => handleToggleEditMode()}>
+          <Button variant="link" className="iconButton buttonLinkTextGrey" size="sm" tabIndex={0}>
           <FontAwesomeIcon icon={faPencil} className="iconStyle" color="gray" />
           <Badge pill bg="secondary" >
             {pageSize}
-          </Badge> items per page
+          </Badge> <span className="buttonLinkTextGrey">items per page</span>
+          </Button>
         </div>}
 
       {showEdit &&
@@ -71,10 +73,10 @@ export default function PageSizeComponent(props) {
                 />
               </Col>
               <Col xs="auto">
-                {showCancel && <Button onClick={() => handleFormButtonClick("cancel")} className="mb-2" size="sm" role="button" tabIndex={0}>
+                {showCancel && <Button onClick={() => handleFormButtonClick("cancel")} className="mb-2" size="sm">
                   <span><FontAwesomeIcon icon={faXmark} className="iconStyle" />Cancel</span>
                 </Button>}
-                {!showCancel && <Button onClick={() => handleFormButtonClick("save")} className="mb-2" size="sm" role="button" tabIndex={0}>
+                {!showCancel && <Button onClick={() => handleFormButtonClick("save")} className="mb-2" size="sm">
                   <span><FontAwesomeIcon icon={faCircleCheck} className="iconStyle" />Save</span>
                 </Button>}
               </Col>
