@@ -165,7 +165,18 @@ body {
   color: #6c757d !important;
   text-decoration: none !important;
 }
-
+.buttonLinkSortableHeader{
+  color: #4d534d !important;
+  text-decoration: none !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+.buttonLinkSortableHeaderSelected{
+  color: #198754 !important;
+  text-decoration: none !important;
+  font-size: 13px;
+  font-weight: 700;
+}
 .cardHeaderIconRight {
   margin-right: 15px;
   float: right;
