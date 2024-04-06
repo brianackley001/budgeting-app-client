@@ -75,9 +75,11 @@ export default function EditTag(props) {
 
   return (
     <>
+    <Button variant="link" size="sm" >
       <Badge pill bg="secondary" className="settings-tag-pill" onClick={toggleEditMode}>
         <FontAwesomeIcon className="tag-settings-icon-padding" icon={faGear} color="white" />{tag}
       </Badge>
+    </Button>
 
       <Modal show={isEditMode}
         tag={tag}
