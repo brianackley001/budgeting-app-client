@@ -5,7 +5,6 @@ import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
 export default function AccountAccordionItem(props) {
   const { accounts, accountTypeIdLabel, accountTypeLabel, eventKey, onSelect, trackedAccounts } = props;
-  // const selectedItemSummaryText = `Selected ${accountTypeLabel} accounts`;
   return (
     <>
       {accounts.length > 0 &&

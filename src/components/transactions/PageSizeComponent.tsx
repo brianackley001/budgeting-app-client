@@ -46,8 +46,8 @@ export default function PageSizeComponent(props) {
   return (
     <div className="cardHeaderIconRight" data-testid="page-size-component-parent-container">
       {!showEdit &&
-        <div data-testid="page-size-component-read-only-container" onClick={() => handleToggleEditMode()}>
-          <Button variant="link" className="iconButton buttonLinkTextGrey" size="sm" tabIndex={0}>
+        <div data-testid="page-size-component-read-only-container">
+          <Button variant="link" className="iconButton buttonLinkTextGrey" size="sm" onClick={() => handleToggleEditMode()}>
           <FontAwesomeIcon icon={faPencil} className="iconStyle" color="gray" />
           <Badge pill bg="secondary" >
             {pageSize}

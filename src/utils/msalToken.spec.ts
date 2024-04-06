@@ -2,7 +2,7 @@
 import { msalConfig } from "../config/authConfig";
 // import * as useStoreHooks from "../hooks/useStoreHooks";
 // import msalSlice, { selectAccessToken, setAccessToken } from "../store/msalSlice";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect,  vi } from "vitest";
 // import MsalUtils from "./msalToken";
 
 const localSessionStorageMock: Storage = (() => {

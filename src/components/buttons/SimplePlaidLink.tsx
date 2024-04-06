@@ -9,7 +9,6 @@ import  axiosInstance  from '@utils/axiosInstance';
 import {logError, logEvent } from "@utils/logger";
 
 
-import MsalUtils from '@utils/msalToken'
 import {
   usePlaidLink,
   PlaidLinkOnSuccessMetadata

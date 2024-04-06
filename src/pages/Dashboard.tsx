@@ -1,38 +1,23 @@
-
-import { useState } from 'react';
 import{ Card } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
 import {AccountRefreshButton} from "@components/buttons/AccountRefreshButton.tsx";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import {getAccountBalances} from '@store/accountSlice.ts';
 import {logTrace} from "@utils/logger";
-
 
 export const Dashboard = () => {
   useAcquireAccessToken();
   logTrace('Dashboard.tsx');
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
-  const userId = useAppSelector(state => state.userSlice.userId);
-  const dispatch = useAppDispatch();
-  const [isAccountBalanceLoading, setAccountBalanceLoading] = useState(false);
   
-  const netWorth = accountItems && accountItems.length > 0 ? accountItems
+  const netWorth = accountItems?.length > 0 ? accountItems
     .filter((item) => (item.type === 'depository' || item.type === 'investment'))
     .reduce((a, item) => a + item.balances.current, 0) : 0;
-  const debtTotal = accountItems && accountItems.length > 0 ? accountItems
+  const debtTotal = accountItems?.length > 0 ? accountItems
     .filter((item) => item.type === 'credit' || item.type === 'loan')
     .reduce((a, item) => a + item.balances.current, 0) : 0;
     const netWorthDisplayValue =( netWorth - debtTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
 
-  const refreshAccountBalances = async() => {
-    setAccountBalanceLoading(true);
-    await dispatch(getAccountBalances(userId));
-    // delay timer to allow for the loading spinner to be displayed for a minimum amount of time 
-    setTimeout(() => {
-      setAccountBalanceLoading(false);
-    }, 125);  
-  };
   return (
     <div className="dashboardAccountContainer">
       <Card>

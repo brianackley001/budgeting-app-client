@@ -35,39 +35,25 @@ export const getSyncRequestErrorDetails = (
   let headerText = "";
   
   if (syncUserRequestErrors.length > 0) {
-    message = syncUserRequestErrors.join(", ");
     headerText = "Error syncing your user account...";
+    message = syncUserRequestErrors.join(", ");
   } else {
     const errorsCollection = syncAccountRequestErrors.length > 0 ? syncAccountRequestErrors : syncTransactionRequestErrors;
     plaidLoginError = isPlaidLoginError(errorsCollection);
     plaidOtherError = isPlaidOtherError(errorsCollection);
-  }
 
-  if (syncAccountRequestErrors.length > 0) {
+    const headerErrorType = syncAccountRequestErrors.length > 0 ? "accounts" : "transactions";
+    headerText = `Error syncing your ${headerErrorType}...`;
+
     if(plaidLoginError){
       message = "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials.";
     }
     if(plaidOtherError){
-      message = getPlaidGeneralErrorMessage(syncAccountRequestErrors);
+      message = getPlaidGeneralErrorMessage(errorsCollection);
     }
     if(!plaidLoginError && !plaidOtherError){
-      message = syncAccountRequestErrors.join(", ");
+      message = errorsCollection.join(", ");
     }
-    headerText = "Error syncing your accounts...";
-  }
-
-  if (syncTransactionRequestErrors.length > 0) {
-    if(plaidLoginError){
-      message = "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials.";
-    }
-    if(plaidOtherError){
-      message = getPlaidGeneralErrorMessage(syncTransactionRequestErrors);
-    }
-    if(!plaidLoginError && !plaidOtherError){
-      message = syncTransactionRequestErrors.join(", ");
-    }
-
-    headerText = "Error syncing your transactions...";
   }
   return { headerText, message, plaidLoginError };
 };
