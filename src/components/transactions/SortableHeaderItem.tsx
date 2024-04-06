@@ -44,7 +44,7 @@ export default function  SortableHeaderItem(props){
       <Button variant="link" className='buttonLinkSortableHeader' onClick={() => handleSort("", sortBy)}>{sortLabel}&nbsp;&nbsp;
       <FontAwesomeIcon size="sm" icon={faSort} style={{ color: iconColorValue, }} /></Button>}
       {currentSortBy === sortBy && currentSortDirection === "asc" && 
-      <Button variant="link" className='buttonLinkSortableHeaderSelected' onClick={() => handleSort("asc", sortBy)}>{sortLabel}&nbsp;&nbsp;{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortUp} style={{ color: iconColorValue, }} />
+      <Button variant="link" className='buttonLinkSortableHeaderSelected' onClick={() => handleSort("asc", sortBy)}>{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortUp} style={{ color: iconColorValue, }} />
       </Button>}
       {currentSortBy === sortBy && currentSortDirection === "desc" && 
       <Button variant="link" className='buttonLinkSortableHeaderSelected' onClick={() => handleSort("desc", sortBy)}>{sortLabel}&nbsp;&nbsp;<FontAwesomeIcon size="sm" icon={faSortDown} style={{ color: iconColorValue, }}/>
