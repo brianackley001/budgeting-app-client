@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMsal, useAccount } from "@azure/msal-react";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
-import { setAccounts } from "@store/accountSlice";
+import { setAccounts, setSyncAccountRequest } from "@store/accountSlice";
 import { setLinkedItems } from "@store/plaidSlice";
-import { createUser, getUser } from "@store/userSlice";
-import { setSyncUserRequest } from "@store/userSlice";
+import { createUser, getUser, setSyncUserRequest } from "@store/userSlice";
 import { setSyncTransactionRequest } from "@store/transactionSlice"; 
-import { setSyncAccountRequest } from "@store/accountSlice"; 
 import { logError, logEvent } from "@utils/logger";
 
 const useSetSessionUser = () => {
@@ -21,7 +19,7 @@ const useSetSessionUser = () => {
     // NEW User, save to DB:
     logEvent("user-login", {
       type: "BEGIN save new user to DB",
-      userId: sessionStorage.getItem("userId") || "unknown",
+      userId: sessionStorage.getItem("userId") ?? "unknown",
     });
     const saveUserPayload = {
       id: sessionStorage.getItem("userId"),
@@ -63,8 +61,7 @@ const useSetSessionUser = () => {
   const syncLinkedItems = async (sessionUser) => {
     try {
       if (
-        sessionUser &&
-        sessionUser.linkedItems &&
+        sessionUser?.linkedItems &&
         sessionUser.linkedItems.length > 0
       ) {
         try {

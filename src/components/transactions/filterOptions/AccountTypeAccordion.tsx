@@ -5,18 +5,10 @@ import AccountAccordionItem from './AccountAccordionItem';
 export default function AccountTypeAccordion (props) {
   const { accounts, onSelect, trackedAccounts } = props;
 
-  const depositoryAccounts = accounts.filter((account) => account.type.toLowerCase() === "depository").sort((a, b) => {
-    return a.institutionName > b.institutionName ? 1 : b.institutionName < a.institutionName ? -1 : 0;
-  });
-  const creditAccounts = accounts.filter((account) => account.type.toLowerCase() === "credit").sort((a, b) => {
-    return a.institutionName > b.institutionName ? 1 : b.institutionName < a.institutionName ? -1 : 0;
-  });
-  const investmentAccounts = accounts.filter((account) => account.type.toLowerCase() === "investment").sort((a, b) => {
-    return a.institutionName > b.institutionName ? 1 : b.institutionName < a.institutionName ? -1 : 0;
-  });
-  const loanAccounts = accounts.filter((account) => account.type.toLowerCase() === "loan").sort((a, b) => {
-    return a.institutionName > b.institutionName ? 1 : b.institutionName < a.institutionName ? -1 : 0;
-  });
+  const depositoryAccounts = accounts.filter((account) => account.type.toLowerCase() === "depository");
+  const creditAccounts = accounts.filter((account) => account.type.toLowerCase() === "credit");
+  const investmentAccounts = accounts.filter((account) => account.type.toLowerCase() === "investment");
+  const loanAccounts = accounts.filter((account) => account.type.toLowerCase() === "loan");
 
   return (
     <>

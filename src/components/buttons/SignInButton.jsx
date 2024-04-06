@@ -13,8 +13,6 @@ export const SignInButton = () => {
         .loginPopup(loginRequest)
         .then((loginResponse) => {
           instance.setActiveAccount(loginResponse.account);
-          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
-          // console.log(loginResponse);
         })
         .catch((e) => {
           console.log(e);
@@ -26,8 +24,6 @@ export const SignInButton = () => {
         .loginRedirect(loginRequest)
         .then((loginResponse) => {
           instance.setActiveAccount(loginResponse.account);
-          // sessionStorage.setItem("_msalAccount", JSON.stringify(loginResponse.account));
-          // console.log(loginResponse);
         })
         .catch((e) => {
           console.log(e);

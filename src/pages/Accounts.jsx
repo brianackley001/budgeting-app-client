@@ -1,4 +1,3 @@
-//import React, { useCallback, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useAppSelector } from "@hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
@@ -30,20 +29,28 @@ export const Accounts = () => {
     }
   });
   return (
-    <>
     <div className="dashboardAccountContainer">
-        <Card>
-          <Card.Body>
-            <Card.Title>All Accounts <span className='cardHeaderIconRight'><SimplePlaidLink /></span></Card.Title>
-            <Card.Subtitle className="mb-2 mt-4 text-muted"></Card.Subtitle>
-            <span className='card-text'>
-                {institutions.map((institution) => {
-                  return <AccountList key={institution.institutionId} institution={institution} />
-                })}
-              </span>
-          </Card.Body>
-        </Card>
-      </div>
-    </>
+      <Card>
+        <Card.Body>
+          <Card.Title>
+            All Accounts{" "}
+            <span className="cardHeaderIconRight">
+              <SimplePlaidLink />
+            </span>
+          </Card.Title>
+          <Card.Subtitle className="mb-2 mt-4 text-muted"></Card.Subtitle>
+          <span className="card-text">
+            {institutions.map((institution) => {
+              return (
+                <AccountList
+                  key={institution.institutionId}
+                  institution={institution}
+                />
+              );
+            })}
+          </span>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };

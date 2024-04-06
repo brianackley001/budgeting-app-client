@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { Col, Card, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 
 
 export const LoadingMessage = (props) => {

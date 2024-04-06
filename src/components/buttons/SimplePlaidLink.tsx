@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { selectAccessToken } from "@store/msalSlice";
 import { getItemAccounts } from "@store/accountSlice";
-// import { getPagedTransactions, syncTransactions} from "@store/transactionSlice";
 import  axiosInstance  from '@utils/axiosInstance';
 import {logError, logEvent } from "@utils/logger";
 
@@ -13,19 +12,13 @@ import {logError, logEvent } from "@utils/logger";
 import MsalUtils from '@utils/msalToken'
 import {
   usePlaidLink,
-  PlaidLinkOnSuccessMetadata,
-  PlaidLinkOnExitMetadata,
-  PlaidLinkError,
-  PlaidLinkOptionsWithLinkToken,
-  PlaidLinkOnEventMetadata,
-  PlaidLinkStableEvent,
+  PlaidLinkOnSuccessMetadata
 } from 'react-plaid-link';
 
 const SimplePlaidLink = () => {
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const accessToken = useAppSelector(selectAccessToken);
   const userId = useAppSelector(state => state.userSlice.userId);
-  const transactionPagination = useAppSelector(state => state.transactionSlice.transactionPagination);
   const dispatch = useAppDispatch();
 
   // get link_token from your server when component mounts
@@ -74,7 +67,7 @@ const SimplePlaidLink = () => {
     }
   };
 
-  const { open, ready } = usePlaidLink({
+  const { open } = usePlaidLink({
     token: plaidLinkToken,
     onSuccess,
     // onEvent
@@ -82,8 +75,8 @@ const SimplePlaidLink = () => {
   });
 
   return (
-    <Button variant="outline-success" size="sm" className='addAccountButton' onClick={() => open()}>
-      <FontAwesomeIcon icon={faPlus} className='iconStyle' /><span onClick={() => open()}>Add Account</span>
+    <Button variant="outline-success" size="sm" className='addAccountButton' onClick={() => open()} tabIndex={0}>
+      <FontAwesomeIcon icon={faPlus} className='iconStyle' />Add Account
     </Button>
   );
 };

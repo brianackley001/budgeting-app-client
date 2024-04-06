@@ -5,7 +5,7 @@ import axiosInstance  from "@utils/axiosInstance";
 import { paginationLinkSet } from "@utils/transactionUtils";
 import { logError, logEvent } from "@utils/logger";
 
-interface transactionItem {
+interface TransactionItem {
   id: string,
   transactionId: string,
   institutionId: string,
@@ -38,7 +38,7 @@ interface PagedTransactions{
   pages: [
     {
       pageNumber: number,
-      items: transactionItem[],
+      items: TransactionItem[],
       transactionPagination: TransactionPagination
     }
   ]
@@ -144,9 +144,8 @@ export function getPagedTransactions(
       (page) => page.pageNumber === transactionPagination.pageNumber
     );
     if (
-      !targetPage || targetPage == undefined ||
-      !targetPage.transactionPagination || targetPage.transactionPagination == undefined ||
-      !targetPage.items || targetPage.items == undefined || targetPage.items.length === 0 ||
+      !targetPage?.transactionPagination ||
+      targetPage?.items.length === 0 ||
       !isEqual(targetPage.transactionPagination, transactionPagination)
     ) {
       dispatch(setIsLoading(true));
@@ -228,8 +227,8 @@ export function syncTransactions(userId: string) {
       logError(error as Error);
     } finally {
       logEvent("syncTransactions THUNK COMPLETED", { userId: userId });
-      return requestErrors;
     }
+    return requestErrors;
   };
 }
 export const transactionSlice = createSlice({
@@ -247,7 +246,7 @@ export const transactionSlice = createSlice({
       state.transactionPagination.total = action.payload.total;
       // Look for cached page:  (TO-DO:  THUNKs for cache pull / API retrieval)
       let targetPage = state.pagedTransactions.pages.find(page => page.pageNumber === state.transactionPagination.pageNumber);
-      if(targetPage && targetPage.transactionPagination && isEqual(targetPage.transactionPagination, state.transactionPagination)){
+      if(targetPage?.transactionPagination && isEqual(targetPage.transactionPagination, state.transactionPagination)){
         targetPage.items = action.payload.items;
       }
       else{

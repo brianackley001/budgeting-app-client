@@ -5,10 +5,8 @@ import { Alert, Badge, Button, Card, CardBody, Col, Form, Modal, Row } from "rea
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { deleteTransactionTag, updateTransactionTag } from '@/store/userSlice';
 
-{/* <Badge pill bg="secondary" key={index}>{tag}</Badge> */ }
-
 /**
- * Renders mesaging to user that no transaction data matches the current filter criteria
+ * Edit existing tag
  * @param props
  */
 
@@ -77,9 +75,11 @@ export default function EditTag(props) {
 
   return (
     <>
+    <Button variant="link" size="sm" >
       <Badge pill bg="secondary" className="settings-tag-pill" onClick={toggleEditMode}>
         <FontAwesomeIcon className="tag-settings-icon-padding" icon={faGear} color="white" />{tag}
       </Badge>
+    </Button>
 
       <Modal show={isEditMode}
         tag={tag}

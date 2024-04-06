@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AccountListItemType } from "../../types/accountListItem";
 import AccountListItem from "./AccountListItem";
 
@@ -21,7 +21,7 @@ const accountListItem: AccountListItemType = {
 };
 
 beforeEach(() => {
-  let item = render(<AccountListItem item={undefined} {...accountListItem} />);
+  render(<AccountListItem item={undefined} {...accountListItem} />);
 });
 afterEach(() => {
   vi.restoreAllMocks()

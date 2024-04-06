@@ -1,9 +1,9 @@
-import Store from "../store/store";
+// import Store from "../store/store";
 import { msalConfig } from "../config/authConfig";
-import * as useStoreHooks from "../hooks/useStoreHooks";
-import msalSlice, { selectAccessToken, setAccessToken } from "../store/msalSlice";
+// import * as useStoreHooks from "../hooks/useStoreHooks";
+// import msalSlice, { selectAccessToken, setAccessToken } from "../store/msalSlice";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import MsalUtils from "./msalToken";
+// import MsalUtils from "./msalToken";
 
 const localSessionStorageMock: Storage = (() => {
   let store: Record<string, string> = {};
@@ -56,7 +56,7 @@ describe("utils.msalToken", (): void => {
     vi.restoreAllMocks()
   });
 
-  it("Successfully retrives value from session storage", (): void => {
+  it("Successfully retrieves value from session storage", (): void => {
     // // Arrange
     const keysStorage = {
       idToken: [

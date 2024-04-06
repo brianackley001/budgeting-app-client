@@ -4,7 +4,7 @@ import { describe, expect } from "vitest";
 import DateRangeAccordionItem from './DateRangeAccordionItem'
 
 
-describe('DateRangeAccordianItem', async() => {
+describe('DateRangeAccordionItem', async() => {
   test("Presents expected start date placeholder text", () => {
     // Arrange
     render(<DateRangeAccordionItem  eventKey="date-range-accordion-item" 

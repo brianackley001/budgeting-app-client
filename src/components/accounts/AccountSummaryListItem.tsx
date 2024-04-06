@@ -1,5 +1,4 @@
 import ListGroupItem from 'react-bootstrap/ListGroupItem'
-// import { AccountSummaryListItemType } from "../../types/accountSummaryListItem.ts";
 import { Col, Row } from 'react-bootstrap';
 import {getElapsedTime} from "@utils/dateTimeUtils";
 

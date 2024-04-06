@@ -69,10 +69,8 @@ export default function FilterOptions(props: any){
   }
 
   const handleFormSubmit = (isReset) => {
-    if(!isReset){
-      setValidated(true);
-    }
-
+    setValidated(!isReset);
+    
     const accountIdCollectionSubmitValue = isReset ? 
       accounts.map(account => account.accountId) : 
       trackedAccounts.length > 0 

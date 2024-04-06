@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import axiosInstance  from "@utils/axiosInstance";
-import { getPagedTransactions, setPaginationAccountIds, setPaginationUserId, syncTransactions } from "@store/transactionSlice";
+import { setPaginationAccountIds, setPaginationUserId, syncTransactions } from "@store/transactionSlice";
 import { logError, logEvent } from "@utils/logger";
 
-interface accountItem {
+interface AccountItem {
   [x: string]: unknown;
   id: string,
   balances: {available: number, current: number, limit: number, isoCurrencyCode: string, unofficialCurrencyCode: string},
@@ -17,15 +17,15 @@ interface accountItem {
   institutionName: string,
   userId: string
 }
-interface institutionItem {
+interface InstitutionItem {
   id: string,
   name: string
 }
 
 // Define a type for the slice state
 interface AccountState {
-  accounts: accountItem[],
-  institutions: institutionItem[],
+  accounts: AccountItem[],
+  institutions: InstitutionItem[],
   syncAccountRequest: {
     inProgress: boolean,
     errors:string [],
@@ -124,7 +124,7 @@ export function getItemAccounts(userId, itemId) {
         // Reflect the latest accounts in the user.accounts context
         await dispatch(setAccounts(response.data));
         // Refresh the transactions as well...
-        await syncTransactions(userId);
+        syncTransactions(userId);
       } catch (error) {
         console.log(error);
         logError(error as Error);

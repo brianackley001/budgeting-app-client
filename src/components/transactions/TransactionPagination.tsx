@@ -5,7 +5,7 @@ import { getPagedTransactions, setActivePageItems, setTransactionPagination } fr
 import { paginationLinkSet } from "@utils/transactionUtils"
 
 
-export default function TrasactionPagination(props) {
+export default function TransactionPagination(props) {
   const { collectionTotal, itemsPerPage, currentPage } = props;
   const dispatch = useAppDispatch();
 
@@ -57,7 +57,7 @@ export default function TrasactionPagination(props) {
   return (
     <>
       <br />
-      {pages && pages > 1 &&
+      {pages > 1 &&
         <Pagination className='transactionPaginationContainer' data-testid="transaction-pagination-container">
           
           {currentPage <=interactivePages.length &&  <Pagination.Prev onClick={handlePrevClick} key={-5} />}

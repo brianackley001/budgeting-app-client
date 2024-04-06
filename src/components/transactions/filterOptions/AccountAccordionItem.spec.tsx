@@ -3,7 +3,7 @@ import { describe, expect } from "vitest";
 import AccountAccordionItem from './AccountAccordionItem';
 
 
-describe("Account Accordian Item", async() => {
+describe("Account Accordion Item", async() => {
   const accounts = [
     { accountId: 1, name: 'Account 1', includeAccountTransactions: true,  institutionName: 'Institution 1'},
     { accountId: 2, name: 'Account 2', includeAccountTransactions: false,  institutionName: 'Institution 2' },
@@ -35,7 +35,7 @@ describe("Account Accordian Item", async() => {
     expect(screen.queryByTestId('account-accordion-item-account-excluded-warning-container-1'), "account-accordion-item-account-excluded-warning-container-1").toBeNull();
     //screen.debug();
   });
-  test("shouldrender checkboxes as expected based on prop data (disabled / checked)", () => {
+  test("should render checkboxes as expected based on prop data (disabled / checked)", () => {
     //Assert
     expect(screen.queryByTestId("account-accordion-item-account-form-checkbox-1")).toBeChecked();
     expect(screen.queryByTestId("account-accordion-item-account-form-checkbox-2")).not.toBeChecked();

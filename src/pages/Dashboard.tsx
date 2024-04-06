@@ -1,14 +1,11 @@
 
 import { useState } from 'react';
-import{ Button, Card, Spinner } from "react-bootstrap";
+import{ Card } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
 import {AccountRefreshButton} from "@components/buttons/AccountRefreshButton.tsx";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRotate } from '@fortawesome/free-solid-svg-icons'
 import {getAccountBalances} from '@store/accountSlice.ts';
-// import { title } from 'process';
 import {logTrace} from "@utils/logger";
 
 
@@ -37,26 +34,23 @@ export const Dashboard = () => {
     }, 125);  
   };
   return (
-    <>
-      <div className="dashboardAccountContainer">
-        <Card>
-          <Card.Body>
-            <Card.Title>Accounts {accountItems && accountItems.length > 0 && <span className='cardHeaderIconRight'>
-              <AccountRefreshButton /></span>}
-            </Card.Title>
-            {accountItems && accountItems.length > 0 &&
-             <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>}
-            {accountItems && accountItems.length > 0 &&
-              <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>}
-            {accountItems && accountItems.length < 1 &&
-              <Card.Subtitle className="mb-2 mt-2 text-bold">Please Navigate to the "Accounts" page and use the "Add Account" button to link a financial account</Card.Subtitle>}
-            <span className='card-text'>
-              <AccountSummaryList items={accountItems} />
-            </span>
-          </Card.Body>
-        </Card>
-      </div>
-      {/* To-Do: Add Trends */}
-    </>
+    <div className="dashboardAccountContainer">
+      <Card>
+        <Card.Body>
+          <Card.Title>Accounts {accountItems && accountItems.length > 0 && <span className='cardHeaderIconRight'>
+            <AccountRefreshButton /></span>}
+          </Card.Title>
+          {accountItems && accountItems.length > 0 &&
+            <Card.Subtitle className="mb-2 mt-4 text-muted">Net Worth</Card.Subtitle>}
+          {accountItems && accountItems.length > 0 &&
+            <Card.Subtitle className="mb-2 mt-2 text-bold">{netWorthDisplayValue}</Card.Subtitle>}
+          {accountItems && accountItems.length < 1 &&
+            <Card.Subtitle className="mb-2 mt-2 text-bold">Please Navigate to the "Accounts" page and use the "Add Account" button to link a financial account</Card.Subtitle>}
+          <span className='card-text'>
+            <AccountSummaryList items={accountItems} />
+          </span>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };

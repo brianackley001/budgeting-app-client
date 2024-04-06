@@ -47,7 +47,7 @@ const reqResInterceptor = async (config) => {
   return config;
 };
 
-const reqErrInterceptor = async (error) => Promise.reject(error);
+const reqErrInterceptor = async (error: Error) => Promise.reject(error);
 
 const resResInterceptor = async (response) => {
   // Handle successful responses as needed
@@ -69,7 +69,7 @@ const resErrInterceptor = async (error) => {
     );
     try {
       if (activeAccount) {
-        const tokenResponse = await msalInstance
+        await msalInstance
           .acquireTokenSilent({
             scopes: loginRequest.scopes,
             account: activeAccount,
@@ -107,7 +107,7 @@ const resErrInterceptor = async (error) => {
   } else {
     console.log(`(resErrInterceptor) Error: ${error}`);
   }
-  return Promise.reject(error);
+  return Promise.reject(error as Error);
 };
 
 axiosInstance.interceptors.request.use(reqResInterceptor, reqErrInterceptor);

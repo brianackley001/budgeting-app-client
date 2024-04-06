@@ -25,7 +25,6 @@ function AccountSectionAccordion({ items, balanceIsDebt, testLabels, iconColorVa
     iconSelection = faMoneyCheckDollar;
   }
   return (
-    <>
       <Accordion data-testid={testLabels.container} defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Card.Body>
@@ -49,7 +48,6 @@ function AccountSectionAccordion({ items, balanceIsDebt, testLabels, iconColorVa
           </Card.Body>
         </Accordion.Item>
       </Accordion>
-    </>
 )};
 
 export default AccountSectionAccordion;
