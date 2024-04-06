@@ -6,7 +6,7 @@ import { getLinkedItems } from "@store/plaidSlice";
 import { setSyncRequestItems } from "@store/syncRequestSlice";
 import { setSyncTransactionRequest } from "@store/transactionSlice";
 import { setSyncUserRequest } from "@store/userSlice";
-import { getPlaidGeneralErrorMessage, isPlaidLoginError, isPlaidOtherError} from "@utils/syncRequestErrorMessageUtils";
+import { getSyncRequestErrorDetails} from "@utils/syncRequestErrorMessageUtils";
 
   /**
    * Manages the sync request process for the application (e.g., sync user transactions, user account balances, etc.).
@@ -97,44 +97,25 @@ const useSyncRequestManager = () => {
    * Displays an alert message to the user indicating the end of a sync operation with errors.
    */
   const showErrorMessage = async () => {
-    let plaidLoginError = false;
-    let message = "";
-    let headerText = "";
-    if (syncUserRequest.errors.length > 0) {
-      message = syncUserRequest.errors.join(", ");
-      headerText = "Error syncing your user account...";
-    } else {
-      if (syncAccountRequest.errors.length > 0) {
-        plaidLoginError = isPlaidLoginError(syncAccountRequest.errors);
-        message = isPlaidLoginError(syncAccountRequest.errors)
-          ? "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials."
-          : isPlaidOtherError(syncAccountRequest.errors)
-          ? getPlaidGeneralErrorMessage(syncAccountRequest.errors)
-          : syncAccountRequest.errors.join(", ");
-        headerText = "Error syncing your accounts...";
-      }
-      if (syncTransactionRequest.errors.length > 0) {
-        plaidLoginError = isPlaidLoginError(syncTransactionRequest.errors);
-        message = isPlaidLoginError(syncTransactionRequest.errors)
-          ? "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials."
-          : isPlaidOtherError(syncTransactionRequest.errors)
-          ? getPlaidGeneralErrorMessage(syncTransactionRequest.errors)
-          : syncTransactionRequest.errors.join(", ");
-        headerText = "Error syncing your transactions...";
-      }
-    }
+    let { headerText: headerTextResult, message: messageResult, plaidLoginError: plaidLoginErrorResult } =
+      getSyncRequestErrorDetails(
+        syncUserRequest.errors,
+        syncAccountRequest.errors,
+        syncTransactionRequest.errors
+      );
+
     dispatch(
       setAlertState({
-        headerText: headerText,
+        headerText: headerTextResult,
         inProgress: false,
-        messageText: message,
+        messageText: messageResult,
         showAlert: true,
         variantStyle: "danger",
       })
     );
     
     // If there is a Plaid login error, then pull the user and linkedItems data from the server.
-    if (plaidLoginError) {
+    if (plaidLoginErrorResult) {
       dispatch(getLinkedItems(userId));
     }
     

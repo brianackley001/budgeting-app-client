@@ -23,3 +23,51 @@ export  const isPlaidOtherError = (errors) => {
     return error.error_type && error.error_code !== "ITEM_LOGIN_REQUIRED";
   });
 };
+
+export const getSyncRequestErrorDetails = (
+  syncUserRequestErrors,
+  syncAccountRequestErrors,
+  syncTransactionRequestErrors
+) => {
+  let plaidLoginError = false;
+  let plaidOtherError = false;
+  let message = "";
+  let headerText = "";
+  
+  if (syncUserRequestErrors.length > 0) {
+    message = syncUserRequestErrors.join(", ");
+    headerText = "Error syncing your user account...";
+  } else {
+    const errorsCollection = syncAccountRequestErrors.length > 0 ? syncAccountRequestErrors : syncTransactionRequestErrors;
+    plaidLoginError = isPlaidLoginError(errorsCollection);
+    plaidOtherError = isPlaidOtherError(errorsCollection);
+  }
+
+  if (syncAccountRequestErrors.length > 0) {
+    if(plaidLoginError){
+      message = "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials.";
+    }
+    if(plaidOtherError){
+      message = getPlaidGeneralErrorMessage(syncAccountRequestErrors);
+    }
+    if(!plaidLoginError && !plaidOtherError){
+      message = syncAccountRequestErrors.join(", ");
+    }
+    headerText = "Error syncing your accounts...";
+  }
+
+  if (syncTransactionRequestErrors.length > 0) {
+    if(plaidLoginError){
+      message = "One or more of your account credentials needs to be reviewed. Please visit the Accounts page to update your credentials.";
+    }
+    if(plaidOtherError){
+      message = getPlaidGeneralErrorMessage(syncTransactionRequestErrors);
+    }
+    if(!plaidLoginError && !plaidOtherError){
+      message = syncTransactionRequestErrors.join(", ");
+    }
+
+    headerText = "Error syncing your transactions...";
+  }
+  return { headerText, message, plaidLoginError };
+};

@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
-import {
-  getPagedTransactions,
-  setTransactionPagination,
-  setPaginationPageSize,
-  syncTransactions,
-  setSyncTransactionRequest,
-} from "@store/transactionSlice";
+import { setPaginationPageSize, syncTransactions } from "@store/transactionSlice";
 import { logError, logEvent } from "@utils/logger";
 
 interface ILinkedItem {

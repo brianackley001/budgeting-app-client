@@ -71,30 +71,29 @@ export default function FilterOptions(props: any){
   const handleFormSubmit = (isReset) => {
     setValidated(!isReset);
     
-    const accountIdCollectionSubmitValue = isReset ? 
-      accounts.map(account => account.accountId) : 
-      trackedAccounts.length > 0 
-        ? trackedAccounts 
+    let accountIdCollectionSubmitValue = [];
+    let pageNumber = 1;
+    if (isReset){
+      accountIdCollectionSubmitValue =  accounts.map(account => account.accountId);
+    }
+    else {
+      accountIdCollectionSubmitValue = trackedAccounts.length > 0
+        ? trackedAccounts
         : accounts.filter(account => account.includeAccountTransactions).map(account => account.accountId);
+    }
 
-    const pageNumber = isReset ? 
-        1 : 
-        (trackedFromAmount > 0 || trackedToAmount > 0 || trackedCategory.length > 0 || 
-        trackedEndDate.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || 
-        trackedUserNotes.length > 0) ? 1 : paginationConfig.pageNumber;
-
-    const updatedPaginationConfig = {
+    let updatedPaginationConfig = {
       ...paginationConfig,
       accountIds: accountIdCollectionSubmitValue,
-      amountFrom: isReset ? 0 : trackedFromAmount > 0 ? trackedFromAmount : 0,
-      amountTo: isReset ? 0 : trackedToAmount > 0 ? trackedToAmount : 0,
-      categorySearchValue: isReset ? "" : trackedCategory.length > 0 ? trackedCategory.toUpperCase() : "", // PLAID Category format = "CATEGORY_SUBCATEGORY"
-      endDate: isReset ? "" : trackedEndDate.length > 0 ? trackedEndDate : "",
-      merchantNameSearchValue: isReset ? "" : trackedMerchantName.length > 0 ? trackedMerchantName : "",
+      amountFrom: isReset ? 0 : trackedFromAmount,
+      amountTo: isReset ? 0 : trackedToAmount,
+      categorySearchValue: isReset ? "" : trackedCategory.toUpperCase(),
+      endDate: isReset ? "" : trackedEndDate,
+      merchantNameSearchValue: isReset ? "" :  trackedMerchantName,
       pageNumber: pageNumber,
-      startDate: isReset ? "" : trackedStartDate.length > 0 ? trackedStartDate : "",
-      tagSearchValue: isReset ? "" : trackedTags.length > 0 ? trackedTags.join(",") : "",
-      userNotesSearchValue: isReset ? "" : trackedUserNotes.length > 0 ? trackedUserNotes : ""
+      startDate: isReset ? "" : trackedStartDate ,
+      tagSearchValue: isReset ? "" : trackedTags.join(","),
+      userNotesSearchValue: isReset ? "" : trackedUserNotes
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));

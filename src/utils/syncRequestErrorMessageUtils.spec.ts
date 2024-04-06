@@ -1,5 +1,5 @@
 import { describe, expect } from "vitest";
-import{getPlaidGeneralErrorMessage, isPlaidLoginError, isPlaidOtherError} from "./syncRequestErrorMessageUtils";
+import{getPlaidGeneralErrorMessage, getSyncRequestErrorDetails, isPlaidLoginError, isPlaidOtherError} from "./syncRequestErrorMessageUtils";
 
 describe ("getPlaidGeneralErrorMessage", () => {
   test.each([
@@ -47,3 +47,21 @@ describe ("isPlaidLoginError", () => {
         expect(result).toEqual(expected)
       })
     });
+
+    describe('getSyncRequestErrorDetails', () => {
+      test.each([
+        { userErrors: ["error1",  "error2"], accountErrors:[], transactionErrors:[], expectedMessage: "error1, error2", expectedHeader: "Error syncing your user account..." },
+        { userErrors: [], accountErrors:["error1",  "error2"], transactionErrors:[], expectedMessage: "error1, error2", expectedHeader: "Error syncing your accounts..." },
+        { userErrors: [], accountErrors:[], transactionErrors:["error1",  "error2"], expectedMessage: "error1, error2", expectedHeader: "Error syncing your transactions..." },
+      ])('returns $expectedMessage and $expectedHeader in collection for $userErrors $accountErrors $transactionErrors : getSyncRequestErrorDetails($userErrors,$accountErrors,$transactionErrors)', (
+        { userErrors,accountErrors,transactionErrors,  expectedMessage, expectedHeader }) => {
+        // Arrange
+        let sut = getSyncRequestErrorDetails;
+        
+        // Act
+        let {headerText: headerTextResult, message: messageResult, plaidLoginError: plaidLoginErrorResult } = sut (userErrors, accountErrors, transactionErrors);
+        expect(headerTextResult).toEqual(expectedHeader);
+        expect(messageResult).toEqual(expectedMessage);
+        expect(plaidLoginErrorResult).toEqual(false);
+      })
+    } );
