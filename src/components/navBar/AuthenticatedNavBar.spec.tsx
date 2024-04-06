@@ -16,7 +16,6 @@ import {SignOutButton} from "../buttons/SignOutButton.jsx"
       test("Renders the Authenticated NavBar", () => {
         render(<BrowserRouter><AuthenticatedNavBar /></BrowserRouter>)
         expect(screen.getByText('Mint Lite')).toBeInTheDocument();
-        // expect(screen.findByText('Accounts')).toBeTruthy();
         //screen.debug();
       });
       test("should contain 'Accounts' nav link", () => {
