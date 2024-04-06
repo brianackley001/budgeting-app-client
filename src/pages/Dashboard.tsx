@@ -1,7 +1,7 @@
 import{ Card } from "react-bootstrap";
 import AccountSummaryList from "@components/accounts/AccountSummaryList.tsx";
 import {AccountRefreshButton} from "@components/buttons/AccountRefreshButton.tsx";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
+import { useAppSelector } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import {logTrace} from "@utils/logger";
 
