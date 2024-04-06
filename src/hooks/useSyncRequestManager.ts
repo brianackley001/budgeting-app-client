@@ -132,10 +132,8 @@ const useSyncRequestManager = () => {
       message = "Your transactions have been synced.";
       headerText = "Sync complete";
     } else {
-      if (syncAccountRequest.errors.length === 0) {
         message = "Your accounts have been synced.";
         headerText = "Sync complete";
-      }
     }
     dispatch(
       setAlertState({
