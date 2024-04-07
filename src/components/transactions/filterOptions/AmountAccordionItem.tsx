@@ -1,10 +1,12 @@
-import { Accordion, Col, Form, InputGroup, Row } from "react-bootstrap"
+import { Accordion, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 export default function AmountAccordionItem(props) {
   const { eventKey, onSelect, trackedFromAmount, trackedToAmount } = props;
   return (
     <Accordion.Item eventKey={eventKey}>
-      <Accordion.Header data-testid="amount-accordion-item-header">Amount</Accordion.Header>
+      <Accordion.Header data-testid="amount-accordion-item-header">{(trackedFromAmount.length > 0 || trackedToAmount.length > 0)  && <FontAwesomeIcon icon={faFilter} flip="horizontal" size='xs'  className="iconStyle text-primary" />}Amount</Accordion.Header>
       <Accordion.Body data-testid="amount-accordion-item-body">
         <Row>
           <Col xs={6}>

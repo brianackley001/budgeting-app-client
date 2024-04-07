@@ -1,10 +1,12 @@
 import { Accordion, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
-export default function TagAccordianItem(props) {
+export default function TagAccordionItem(props) {
   const { eventKey, onSelect, tags, trackedTags } = props;
   return (
     <Accordion.Item eventKey={eventKey}>
-      <Accordion.Header data-testid="tag-accordion-item-header">Tags</Accordion.Header>
+      <Accordion.Header data-testid="tag-accordion-item-header">{trackedTags.length > 0 && <FontAwesomeIcon icon={faFilter} flip="horizontal" size='xs'  className="iconStyle text-primary" />}Tags</Accordion.Header>
       <Accordion.Body data-testid="tag-accordion-item-body">
         {
           tags.map((tag, index) => (
