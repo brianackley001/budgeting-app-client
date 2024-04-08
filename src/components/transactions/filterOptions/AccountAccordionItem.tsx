@@ -1,15 +1,24 @@
-import React, { Fragment } from 'react'; 
+import React, { Fragment, useEffect, useState } from 'react'; 
 import { Accordion, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faFilter, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+
 
 export default function AccountAccordionItem(props) {
   const { accounts, accountTypeIdLabel, accountTypeLabel, eventKey, onSelect, trackedAccounts } = props;
+  const [accountFilteringInEffect, setAccountFilteringInEffect] = useState(false);
+
+  useEffect(() => {
+    const accountsIds = accounts.map((account) => account.accountId);
+    const isAllAccountsTracked = accountsIds.every((accountId) => trackedAccounts.includes(accountId));
+    setAccountFilteringInEffect(!isAllAccountsTracked);
+  }, [accounts, trackedAccounts]);
+
   return (
     <>
       {accounts.length > 0 &&
         <Accordion.Item eventKey={eventKey} data-testid="account-accordion-item-container">
-          <Accordion.Header data-testid="account-accordion-item-header">{accountTypeLabel}</Accordion.Header>
+          <Accordion.Header data-testid="account-accordion-item-header">{accountFilteringInEffect && <FontAwesomeIcon icon={faFilter} flip="horizontal" size='xs'  className="iconStyle text-primary" />}{accountTypeLabel}</Accordion.Header>
           <Accordion.Body data-testid="account-accordion-item-body">
             {
               accounts.map((accountItem) => (
