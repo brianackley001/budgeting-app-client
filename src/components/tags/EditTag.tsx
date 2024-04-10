@@ -68,6 +68,9 @@ export default function EditTag(props) {
       setFormTagValue("");
       setValidated(false);
     }
+    else{
+      setValidated(true);
+    }
   };
   const handleTextAreaChange = (event) => {
     setFormTagValue(event.target.value);

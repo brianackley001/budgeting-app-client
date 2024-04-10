@@ -37,24 +37,26 @@ function AccountListItem({item}) {
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === true) {
       event.preventDefault();
       event.stopPropagation();
-    }
+      console.log('form submitted');
+      // Save User Object to DB (accounts are child nodes of User in the DB):
+      let account = {
+        ...item,
+        customName: formAccountName,
+        includeAccountTransactions: formUseInTransactions
+      }
+      dispatch(upsertAccount(userId, account));
 
-    setValidated(true);
-    console.log('form submitted');
-    // Save User Object to DB (accounts are child nodes of User in the DB):
-    let account = {
-      ...item,
-      customName: formAccountName,
-      includeAccountTransactions: formUseInTransactions
+      event.preventDefault();
+      handleCollapseClick();
+      setValidated(false);
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
     }
-    dispatch(upsertAccount(userId,account ));
-
-    event.preventDefault();
-    handleCollapseClick();
-    setValidated(false);
   };
 
   return (
@@ -102,7 +104,7 @@ function AccountListItem({item}) {
                   style={{fontSize: ".90em"}} />
                 <Form.Control.Feedback data-testid="accordion-form-account-name-is-valid" >Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid" data-testid="accordion-form-account-name-is-invalid">
-                  Please provide a valid account name.
+                  Please provide a valid (custom) account name.
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
