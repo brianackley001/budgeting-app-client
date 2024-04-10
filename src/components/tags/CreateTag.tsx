@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { createTransactionTag } from '@/store/userSlice';
 
 /**
- * Renders mesaging to user that no transaction data matches the current filter criteria
+ * Create new tag for transaction list items
  * @param props
  */
 
@@ -54,6 +54,9 @@ export default function CreateTag(props) {
       setFormTagValue("");
       setValidated(false);
     }
+    else{
+      setValidated(true);
+    }
   }
 
   const handleTextAreaChange = (event) => {
@@ -88,10 +91,10 @@ export default function CreateTag(props) {
                   <Col xs={8}>
                     <Form.Group as={Col} controlId="formGridCreateTagDescription">
                       <Form.Label>Tag Name</Form.Label>
-                      <Form.Control required
+                      <Form.Control 
+                        required
                         placeholder="Tag Name"
                         type="text"
-                        name="tagDescription"
                         minLength={1}
                         data-testid="tag-create-form-tag-name"
                         autoFocus

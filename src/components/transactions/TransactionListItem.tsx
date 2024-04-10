@@ -31,48 +31,50 @@ export const TransactionListItem = (item) =>{
 
 // Methods: 
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.stopPropagation();
-    }
-    setValidated(true);
-    console.log('form submitted');
+    event.preventDefault();
+    event.stopPropagation();
 
-    // API Call to update transaction
-    try {
-      const result = await axiosInstance.post(`/transaction/${item.transactionId}`,
-        {
-          id: event.currentTarget.elements['formGridTransactionId'].value,
-          transactionId: event.currentTarget.elements['formGridTransactionId'].value,
-          accountId: event.currentTarget.elements['formGridAccountId'].value,
-          userDescription: event.currentTarget.elements['formGridTransactionDescription'].value,
-          userNotes: event.currentTarget.elements['formGridNotes'].value,
-          tags: trackedTags,
-        });
-      //Update the specific transaction in pagedItems cache
-      dispatch(setUpdatedTransactionItem(result.data));
-
-      handleToggleEditMode();
-      setValidated(false);
-
-      if (result.status < 400) {
-        handleSaveMessageSuccess(
-          `${result.data.date} ${result.data.userDescription.length > 0 ?
-            result.data.userDescription :
-            result.data.merchant}`)
-      } else {
-        handleSaveMessageError(
-          `${event.currentTarget.elements['formGridTransactionDescription'].value}`)
+    if (form.checkValidity() === true) {
+      // API Call to update transaction
+      try {
+        const result = await axiosInstance.post(`/transaction/${item.transactionId}`,
+          {
+            id: event.currentTarget.elements['formGridTransactionId'].value,
+            transactionId: event.currentTarget.elements['formGridTransactionId'].value,
+            accountId: event.currentTarget.elements['formGridAccountId'].value,
+            userDescription: event.currentTarget.elements['formGridTransactionDescription'].value,
+            userNotes: event.currentTarget.elements['formGridNotes'].value,
+            tags: trackedTags,
+          });
+        //Update the specific transaction in pagedItems cache
+        dispatch(setUpdatedTransactionItem(result.data));
+  
+        handleToggleEditMode();
+        setValidated(false);
+  
+        if (result.status < 400) {
+          handleSaveMessageSuccess(
+            `${result.data.date} ${result.data.userDescription.length > 0 ?
+              result.data.userDescription :
+              result.data.merchant}`)
+        } else {
+          handleSaveMessageError(
+            `${event.currentTarget.elements['formGridTransactionDescription'].value}`)
+        }
+        setValidated(true);
+        handleModalClose();
       }
-      handleModalClose();
+      catch (e) {
+        console.log(e);
+        handleSaveMessageError(
+          `${e}`)
+      }
     }
-    catch (e) {
-      console.log(e);
-      handleSaveMessageError(
-        `${e}`)
+    else{
+      setValidated(true);
     }
+
   };
   
   const handleModalClose = () => {
