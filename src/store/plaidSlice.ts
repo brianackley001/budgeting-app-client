@@ -17,7 +17,28 @@ const initialState: PlaidState = {
   publicToken: ''
 }
 
+// Thunk function
+export function deleteLinkedItem(userId, itemId) {
+  return async function (dispatch) {
+    //API Call:
+    try {
+      logEvent("deleteLinkedItem THUNK START", { userId: userId, itemId: itemId });
+      
+      const response = await axiosInstance.post(`item/remove`, {
+        userId: userId,
+        itemId: itemId,
+      });
 
+      await dispatch(setLinkedItems(response.data.updatedLinkedItems));
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      logError(error as Error);
+    } finally {
+      logEvent("deleteLinkedItem THUNK END", { userId: userId, itemId: itemId });
+    }
+  };
+}
 // Thunk function
 export function getLinkedItems(userId) {
   return async function (dispatch) {
