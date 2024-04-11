@@ -4,12 +4,22 @@ import InstitutionHeaderItem from "./InstitutionHeaderItem";
 let institution;
 
 beforeAll(() => {
-  // use vi.mock for child component ./AccountListItem.tsx
+  // use vi.mock for child component RefreshCredentialsButton.tsx
   vi.mock('../buttons/RefreshCredentialsButton.tsx', () =>{
     return {
       RefreshCredentialsButton: () => {
         return (
           <div data-testid="refresh-credentials-button">Repair Credentials Component MOCK</div>
+        )
+      }
+    }
+  });
+  // use vi.mock for child component DeleteInstitutionButton.tsx
+  vi.mock('../buttons/DeleteInstitutionButton.tsx', () =>{
+    return {
+      DeleteInstitutionButton: () => {
+        return (
+          <div data-testid="refresh-credentials-button">Delete Institution Button Component MOCK</div>
         )
       }
     }

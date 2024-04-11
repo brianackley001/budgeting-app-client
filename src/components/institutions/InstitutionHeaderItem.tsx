@@ -3,6 +3,7 @@ import { Button, Card, Dropdown, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faGear, faPencil } from '@fortawesome/free-solid-svg-icons'
 import { RefreshCredentialsButton } from "@components/buttons/RefreshCredentialsButton";
+import { DeleteInstitutionButton } from '@components/buttons/DeleteInstitutionButton';
 
 /**
  * Renders Institution Header item with display and edit capabilities
@@ -21,10 +22,6 @@ export default function InstitutionHeaderItem({institution}) {
   const handleEditShow = () => {
     setShowEdit(true)
   };
-  const handleSave = () => {
-    console.log('save');
-    handleEditClose();
-  }
 
   function handleTextareaChange(e) {
     setFormInstitutionName(e.target.value);
@@ -110,9 +107,7 @@ export default function InstitutionHeaderItem({institution}) {
           <Button variant="secondary" onClick={handleDeleteClose} data-testid="institution-delete-modal-close-button">
             Close
           </Button>
-          <Button variant="primary" onClick={handleDeleteClose} data-testid="institution-delete-modal-save-button">
-            Delete
-          </Button>
+          <DeleteInstitutionButton itemId={institution.itemId} handleClose={handleDeleteClose} institutionName={institution.accounts[0].institutionName} />
         </Modal.Footer>
       </Modal>
     </>
