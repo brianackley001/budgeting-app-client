@@ -37,12 +37,6 @@ export const ExportTransactionCsvButton = (props) => {
     //await dispatch(getAccountBalances(userId));
   };
 
-  // useEffect(() => {
-  //   if (isAccountBalanceLoading && !syncAccountRequest.inProgress) {
-  //     setIsAccountBalanceLoading(false);
-  //   }
-  // }, [isAccountBalanceLoading, syncAccountRequest.inProgress]);
-
   return (
     <Button variant="outline-primary">
         <FontAwesomeIcon icon={faFileCsv} onClick={() => exportTransactions()} title="Export Transactions to CSV file" /> Export Transactions

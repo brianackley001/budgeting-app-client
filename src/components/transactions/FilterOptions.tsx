@@ -122,10 +122,16 @@ export default function FilterOptions(props: any){
   }
   
   useEffect(() => {
-    if (trackedAccounts.length > 0 || trackedCategory.length > 0 || trackedEndDate.length > 0 || trackedFromAmount > 0 || trackedMerchantName.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || trackedToAmount > 0 || trackedUserNotes.length > 0) {
+    //Accounts:
+    const accountsIds = accounts.map((account) => account.accountId);
+    const isAllAccountsTracked = accountsIds.every((accountId) => trackedAccounts.includes(accountId));
+    if (!isAllAccountsTracked || trackedCategory.length > 0 || trackedEndDate.length > 0 || trackedFromAmount > 0 || trackedMerchantName.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || trackedToAmount > 0 || trackedUserNotes.length > 0) {
       setShowExportButton(true);
     }
-  }, [trackedAccounts, trackedCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
+    else {
+      setShowExportButton(false);
+    }
+  }, [accounts, trackedAccounts, trackedCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
 
    return (
     <>
@@ -180,8 +186,9 @@ export default function FilterOptions(props: any){
             <Row>
               <Col xs={2}>&nbsp;</Col>
               <Col xs={8} className="mx-auto mt-5">
-                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}}className="mx-5">Reset</Button>
-                {showExportButton && <ExportTransactionCsvButton showExport={true} paginationConfig={paginationConfig} />}
+                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}} className="mx-5">Reset</Button>
+                {showExportButton && 
+                  <ExportTransactionCsvButton showExport={true} paginationConfig={paginationConfig} />}
                 <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="mx-5">Apply Filters
                 </Button>
               </Col>
