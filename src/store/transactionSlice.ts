@@ -72,7 +72,8 @@ interface TransactionState {
     errors: [],
     standAloneRequest: false,
   },
-  transactionPagination: TransactionPagination
+  transactionPagination: TransactionPagination,
+  transactionViewIsFiltered: boolean,
 }
 // Define the initial state using that type
 const initialState: TransactionState = {
@@ -125,6 +126,7 @@ const initialState: TransactionState = {
     userId: "",
     userNotesSearchValue: "",
   },
+  transactionViewIsFiltered: false,
 };
 
 export const isNewSearchRequest = (requestedTransactionPagination: TransactionPagination, prevTransactionPagination: TransactionPagination) => {
@@ -279,6 +281,9 @@ export const transactionSlice = createSlice({
     setTransactionPagination: (state, action) => {
       state.transactionPagination = action.payload
     },
+    setTransactionViewIsFiltered: (state, action) => {
+      state.transactionViewIsFiltered = action.payload
+    },
     setUpdatedTransactionItem: (state, action) => {
       state.pagedTransactions.pages.forEach((page, pageIndex) => {
         let targetItemIndex = page.items.findIndex((item) => item.id === action.payload.id);
@@ -307,6 +312,7 @@ export const {
   setPaginationUserId,
   setSyncTransactionRequest,
   setTransactionPagination,
+  setTransactionViewIsFiltered,
   setUpdatedTransactionItem } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
-import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
+import { getPagedTransactions, setTransactionPagination, setTransactionViewIsFiltered } from "@store/transactionSlice";
 import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
@@ -11,7 +11,6 @@ import DateRangeAccordionItem from "./filterOptions/DateRangeAccordionItem";
 import MerchantNameAccordionItem from "./filterOptions/MerchantNameAccordion";
 import NotesAccordionItem from "./filterOptions/NotesAccordionItem";
 import TagAccordionItem from "./filterOptions/TagAccordionItem";
-import { ExportTransactionCsvButton } from "@components/buttons/ExportTransactionCsvButton";
 
 export default function FilterOptions(props: any){
   const { accounts, filteringInEffect, paginationConfig, placement, tags } = props;
@@ -99,6 +98,11 @@ export default function FilterOptions(props: any){
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
+
+    if(isReset){
+      dispatch(setTransactionViewIsFiltered(false));
+    }
+    
     handleClose();
   }
 
@@ -126,10 +130,10 @@ export default function FilterOptions(props: any){
     const accountsIds = accounts.map((account) => account.accountId);
     const isAllAccountsTracked = accountsIds.every((accountId) => trackedAccounts.includes(accountId));
     if (!isAllAccountsTracked || trackedCategory.length > 0 || trackedEndDate.length > 0 || trackedFromAmount > 0 || trackedMerchantName.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || trackedToAmount > 0 || trackedUserNotes.length > 0) {
-      setShowExportButton(true);
+      dispatch(setTransactionViewIsFiltered(true));
     }
     else {
-      setShowExportButton(false);
+      dispatch(setTransactionViewIsFiltered(false));
     }
   }, [accounts, trackedAccounts, trackedCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
 
@@ -187,8 +191,6 @@ export default function FilterOptions(props: any){
               <Col xs={2}>&nbsp;</Col>
               <Col xs={8} className="mx-auto mt-5">
                 <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}} className="mx-5">Reset</Button>
-                {showExportButton && 
-                  <ExportTransactionCsvButton showExport={true} paginationConfig={paginationConfig} />}
                 <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="mx-5">Apply Filters
                 </Button>
               </Col>
