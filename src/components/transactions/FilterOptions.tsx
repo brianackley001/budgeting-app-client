@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreHooks";
-import { getPagedTransactions, setTransactionPagination } from "@store/transactionSlice";
+import { getPagedTransactions, setTransactionPagination, setTransactionViewIsFiltered } from "@store/transactionSlice";
 import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
@@ -18,6 +18,7 @@ export default function FilterOptions(props: any){
 
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [showExportButton, setShowExportButton]  = useState(false);
 
   // Track form field values for submission:
   const [trackedAccounts, setTrackedAccounts] = useState( paginationConfig.accountIds.length === accounts.filter(account => account.includeAccountTransactions).length 
@@ -29,7 +30,7 @@ export default function FilterOptions(props: any){
   const [trackedMerchantName, setTrackedMerchantName] = useState(paginationConfig.merchantNameSearchValue.length > 0 ? paginationConfig.merchantNameSearchValue : "")
   const [trackedStartDate, setTrackedStartDate] = useState(paginationConfig.startDate.length > 0 ? paginationConfig.startDate : "");
   const [trackedTags, setTrackedTags] = useState(paginationConfig.tagSearchValue.length > 0 ? paginationConfig.tagSearchValue.split(",") : []);
-  const [trackedToAmount, setTrackedToAmount] = useState(paginationConfig.amountTo.length > 0 ? paginationConfig.amountTo : 0);;
+  const [trackedToAmount, setTrackedToAmount] = useState(paginationConfig.amountTo.length > 0 ? paginationConfig.amountTo : 0);
   const [trackedUserNotes, setTrackedUserNotes] = useState(paginationConfig.userNotesSearchValue.length > 0 ? paginationConfig.userNotesSearchValue : "");
 
   //Event Handler Methods:
@@ -97,6 +98,11 @@ export default function FilterOptions(props: any){
     };
     dispatch(setTransactionPagination(updatedPaginationConfig));
     dispatch(getPagedTransactions(updatedPaginationConfig));
+
+    if(isReset){
+      dispatch(setTransactionViewIsFiltered(false));
+    }
+    
     handleClose();
   }
 
@@ -118,8 +124,20 @@ export default function FilterOptions(props: any){
       setTrackedTags(trackedTags.filter(id => id !== checkedName))
     }
   }
+  
+  useEffect(() => {
+    //Accounts:
+    const accountsIds = accounts.map((account) => account.accountId);
+    const isAllAccountsTracked = accountsIds.every((accountId) => trackedAccounts.includes(accountId));
+    if (!isAllAccountsTracked || trackedCategory.length > 0 || trackedEndDate.length > 0 || trackedFromAmount > 0 || trackedMerchantName.length > 0 || trackedStartDate.length > 0 || trackedTags.length > 0 || trackedToAmount > 0 || trackedUserNotes.length > 0) {
+      dispatch(setTransactionViewIsFiltered(true));
+    }
+    else {
+      dispatch(setTransactionViewIsFiltered(false));
+    }
+  }, [accounts, trackedAccounts, trackedCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
 
-  return (
+   return (
     <>
       <span className="cardHeaderIconRight">
         <Button variant={filteringInEffect ? "warning": "primary"} onClick={handleShow} className="me-2">
@@ -172,7 +190,7 @@ export default function FilterOptions(props: any){
             <Row>
               <Col xs={2}>&nbsp;</Col>
               <Col xs={8} className="mx-auto mt-5">
-                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}}className="mx-5">Reset</Button>
+                <Button variant="secondary" onClick={() =>{handleFormSubmit(true)}} className="mx-5">Reset</Button>
                 <Button variant="primary" onClick={() =>{handleFormSubmit(false)}} className="mx-5">Apply Filters
                 </Button>
               </Col>

@@ -72,7 +72,8 @@ interface TransactionState {
     errors: [],
     standAloneRequest: false,
   },
-  transactionPagination: TransactionPagination
+  transactionPagination: TransactionPagination,
+  transactionViewIsFiltered: boolean,
 }
 // Define the initial state using that type
 const initialState: TransactionState = {
@@ -125,13 +126,69 @@ const initialState: TransactionState = {
     userId: "",
     userNotesSearchValue: "",
   },
+  transactionViewIsFiltered: false,
 };
 
 export const isNewSearchRequest = (requestedTransactionPagination: TransactionPagination, prevTransactionPagination: TransactionPagination) => {
   return !isEqual(requestedTransactionPagination, prevTransactionPagination) && requestedTransactionPagination.pageNumber === 1; 
 };
 
-// Thunk function
+// Thunk function(s)
+export function getExportedTransactions(transactionPagination: TransactionPagination) {
+  return async function (dispatch, getState) {
+    const userId = getState().userSlice.userId;
+    // Using data from redux (slice, RTK Query whatever) can cause problems as the values are immutable - clone the object to manipulate it
+    const requestPagination = JSON.parse(JSON.stringify(transactionPagination));
+    requestPagination.pageSize = transactionPagination.total;
+    requestPagination.pageNumber = 1;
+    
+
+      //API Call:
+      try {
+        logEvent("exportFilteredTransactions", 
+        {
+          pageNumber: "1", 
+          pageSize: transactionPagination.total.toString(), 
+          sortBy: transactionPagination.sortBy, 
+          sortDirection: transactionPagination.sortDirection,
+          merchantNameSearchValue: transactionPagination.merchantNameSearchValue,
+          userNotesSearchValue: transactionPagination.userNotesSearchValue,
+          accountIds: transactionPagination.accountIds.join(","),
+          categorySearchValue: transactionPagination.categorySearchValue,
+          tagSearchValue: transactionPagination.tagSearchValue,
+          amountFrom: transactionPagination.amountFrom.toString(),
+          amountTo: transactionPagination.amountTo.toString(),
+          startDate: transactionPagination.startDate,
+          endDate: transactionPagination.endDate,
+          userId: transactionPagination.userId
+        });
+        const response = await axiosInstance.post(
+          "transactions",
+          requestPagination
+        );
+
+        const csvData = response.data.items.map((item) => {
+          return {
+            Date: item.date,
+            Merchant: item.merchantName,
+            Amount: item.amount,
+            Category: item.personalFinanceCategory.primary,
+            Description: item.userDescription,
+            Tags: item.tags.join(","),
+            Notes: item.userNotes,
+          }
+        });
+        return csvData;
+        
+      } catch (error) {
+        console.log(error);
+        logError(error as Error);
+      } finally {
+        dispatch(setIsLoading(false));
+      }
+  }
+};
+
 export function getPagedTransactions(
   transactionPagination: TransactionPagination
 ) {
@@ -279,6 +336,9 @@ export const transactionSlice = createSlice({
     setTransactionPagination: (state, action) => {
       state.transactionPagination = action.payload
     },
+    setTransactionViewIsFiltered: (state, action) => {
+      state.transactionViewIsFiltered = action.payload
+    },
     setUpdatedTransactionItem: (state, action) => {
       state.pagedTransactions.pages.forEach((page, pageIndex) => {
         let targetItemIndex = page.items.findIndex((item) => item.id === action.payload.id);
@@ -307,6 +367,7 @@ export const {
   setPaginationUserId,
   setSyncTransactionRequest,
   setTransactionPagination,
+  setTransactionViewIsFiltered,
   setUpdatedTransactionItem } = transactionSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type

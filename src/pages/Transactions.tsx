@@ -11,6 +11,7 @@ import { TransactionListItem } from "@components/transactions/TransactionListIte
 import TransactionPagination from "@components/transactions/TransactionPagination";
 import {logTrace} from "@utils/logger";
 import { filteringOptionsInEffect, formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
+import { ExportTransactionCsvButton } from '@/components/buttons/ExportTransactionCsvButton';
 
 
 export const Transactions = () => {
@@ -24,6 +25,7 @@ export const Transactions = () => {
         state.transactionSlice.pagedTransactions.pages.find(page => page.pageNumber === paginationConfig.pageNumber));
   const transactionPaginationSize = useAppSelector(state => state.userSlice.preferences.transactionItemsPerPage);
   const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
+  const transactionViewIsFiltered = useAppSelector(state => state.transactionSlice.transactionViewIsFiltered);
 
   useEffect(() => {
     setFilteringInEffect(!isLoading && 
@@ -39,6 +41,7 @@ export const Transactions = () => {
       {((transactionItems && transactionItems.items !== undefined && transactionItems.items.length > 0) || filteringInEffect) &&
       <Row>
         <Col xs={12}>
+          {transactionViewIsFiltered && <ExportTransactionCsvButton paginationConfig={paginationConfig}></ExportTransactionCsvButton>}
           <FilterOptions 
             placement="start" 
             accounts={accountItems} 
