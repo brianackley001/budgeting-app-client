@@ -18,7 +18,6 @@ export const ExportTransactionCsvButton = (props) => {
 
     // Retrieve transactions to export to CSV file:
     const data = await dispatch(getExportedTransactions(paginationConfig));
-    console.log("Exported transactions to CSV file: ", data);
     handleFileFormat(data);
   };
 
