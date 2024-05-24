@@ -69,7 +69,7 @@ export default function TransactionPagination(props) {
 
           {interactivePages.map((page, index) => (
             page > 1 && page != pages && <Pagination.Item active={currentPage == page} onClick={() => handlePageClick(page)} key={index}>{page}</Pagination.Item> ||
-            !showLast && <Pagination.Item active={currentPage == pages} onClick={() => handlePageClick(page)} key={index}>{page}</Pagination.Item>
+            !showLast && page > 1  && <Pagination.Item active={currentPage == pages} onClick={() => handlePageClick(page)} key={index}>{page}</Pagination.Item>
           ))}
           
 
