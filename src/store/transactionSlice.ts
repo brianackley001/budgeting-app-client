@@ -174,7 +174,7 @@ export function getExportedTransactions(transactionPagination: TransactionPagina
             Amount: item.amount,
             Category: item.personalFinanceCategory.primary,
             Description: item.userDescription,
-            Tags: item.tags.join(","),
+            Tags: item.tags.join(" - "),
             Notes: item.userNotes,
           }
         });
