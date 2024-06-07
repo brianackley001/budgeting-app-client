@@ -45,20 +45,48 @@ const NetWorthChart = props => {
     ["401K", chart401KInvestmentTotal, `401K: ${chart401KInvestmentTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` ],
     ["Investments", chartInvestmentTotal, `Investments:${chartInvestmentTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` ],
   ];
+  const columnData = [
+    [
+      "Element",
+      "",
+      { role: "style" },
+      {
+        sourceColumn: 0,
+        role: "annotation",
+        type: "string",
+        calc: "stringify",
+      },
+    ],
+    ["Loans", -chartLoanTotal, "color:#eedf11", `${chartLoanTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`],
+    ["Credit", -chartCreditTotal,  "color:#ea154a",  `${chartCreditTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`],
+    ["Checking", chartCheckingTotal,  "color:#bac896", `${chartCheckingTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`],
+    ["Savings", chartSavingsTotal, "color:#3dddf6", `${chartSavingsTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`],
+    ["401K", chart401KInvestmentTotal, "color:#654de6", `${chart401KInvestmentTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` ],
+    ["Investments", chartInvestmentTotal, "color:#11EE71",  `${chartInvestmentTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}` ],
+  ];
+  const columnOptions={
+    legend: { position: "none" },
+    title: "Net Worth Summary"
+  }
 
   return (
     <div>
       <Chart
-      chartType="PieChart"
-      data={[columns, ...rows]}
-      options={options}
-      width={"100%"}
-      height={"600px"}
-    />
+        chartType="ColumnChart"
+        width="100%"
+        height="400px"
+        data={columnData}
+        options={columnOptions}
+      />
+      <Chart
+        chartType="PieChart"
+        data={[columns, ...rows]}
+        options={options}
+        width={"100%"}
+        height={"600px"}
+      />
     </div>
   );
 };
-
-// slices: {0: {color: 'black'}, 3: {color: 'red'}}
 
 export default NetWorthChart;

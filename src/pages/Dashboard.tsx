@@ -6,7 +6,7 @@ import { useAppSelector } from "@/hooks/useStoreHooks";
 import { useAcquireAccessToken } from "@hooks/useAcquireAccessToken.js";
 import {logTrace} from "@utils/logger";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartPie, faList } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlassChart, faList } from '@fortawesome/free-solid-svg-icons';
 import NetWorthChart from '@components/charts/NetWorthChart';
 
 export const Dashboard = () => {
@@ -33,7 +33,7 @@ export const Dashboard = () => {
           <Card.Title>Accounts {accountItems && accountItems.length > 0 && <span className='cardHeaderIconRight'>
           <Button variant={"outline-secondary"} className="buttonSpacer"  onClick={() => toggleSummaryView()} >
             {!showChart &&
-              <FontAwesomeIcon icon={faChartPie}title="Show Chart" />}
+              <FontAwesomeIcon icon={faMagnifyingGlassChart}title="Show Chart" />}
             {showChart &&
               <FontAwesomeIcon icon={faList} title="Show List" />}
           </Button>
