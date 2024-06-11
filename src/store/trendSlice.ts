@@ -38,7 +38,7 @@ export function getNetIncomeSummary(accountIds, startDate, endDate) {
             startDate: startDate,
             endDate: endDate,
           });
-          console.log(response.data);
+          //console.log(response.data);
           dispatch(setNetIncomeSummaryItems(response.data));
         } catch (error) {
           console.log(error);
