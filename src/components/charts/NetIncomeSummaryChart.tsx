@@ -13,19 +13,21 @@ const NetIncomeSummaryChart = props => {
     const {startDate, endDate} =  getIncomeSummaryDateRange();
     const [isLoaded, setIsLoaded] = useState(false);
     const [formattedChartData, setFormattedChartData] = useState([]);
-    const chartOptions = {
-        title: "Net Income Summary",
-        subtitle: 'Income and Expenses',
-    }
+    // const chartOptions = {
+    //     title: "Net Income Summary",
+    //     subtitle: 'Income and Expenses',
+    // }
     const columns = [
       { type: "string", id: "Date" },
-      { type: "number", id: "Amount" },
-      { type: "string", role: "style"},
-    ];
+      { type: "number", id: "Income" },
+      { type: "number", id: "Spending" },
+      // { type: "string", role: "style"},
+    ]; // 
+    const columnLabels = ['Date', 'Income', 'Expense'];
     const columnOptions={
-      legend: { position: 'top', maxLines: 3 },
-      bar: { groupWidth: '30px' },
-      title: "Net Worth Summary"
+      bar: { groupWidth: '75%' },
+      title: "Net Income Summary",
+      subtitle: 'Income and Expenses'
     }
 
     
@@ -55,8 +57,8 @@ const NetIncomeSummaryChart = props => {
       <Chart
         chartType="ColumnChart"
         width="100%"
-        height="700px"
-        data={[columns, ...formattedChartData]}
+        height="500px"
+        data={[columnLabels, ...formattedChartData]}
         options={{columnOptions}}
       />
     </div>

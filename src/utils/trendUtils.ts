@@ -31,13 +31,27 @@ export const mapIncomeSummaryData = (data) => {
     "Nov",
     "Dec",
   ];
-  const mappedData = data.map((item) => {
-    return [
-      monthNames[item.month - 1] + " " + item.year,
-      item.amount,
-      item.amount > 0 ? "#09C057" : "#F94C6B",
-    ];
-  });
+  //  Expectation: 6 month look-back. Therefore, group spending & income for each month into 6 groups.
+  //  API collection is returned with expenses, income ordering
+  let mappedData = new Array;
+  let expenseIndex = 0
+  let incomeIndex= 1;
+  for(var i = 0; i < 6; i++){
+    mappedData.push([
+      monthNames[data[expenseIndex].month - 1] + " " + data[expenseIndex].year,
+      -data[incomeIndex].amount,
+      -data[expenseIndex].amount]
+    );
+    expenseIndex = expenseIndex + 2;
+    incomeIndex = incomeIndex + 2;
+  }
+  // const mappedData = data.map((item) => {
+  //   return [
+  //     monthNames[item.month - 1] + " " + item.year,
+  //     item.amount,
+  //     item.amount > 0 ? "#09C057" : "#F94C6B",
+  //   ];
+  // });
   console.log("mappedData", mappedData);
   return mappedData;
 };
