@@ -13,7 +13,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@microsoft/applicationinsights-web": "^3.1.0",
     "@popperjs/core": "^2.11.8",
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/user-event": "^14.5.2",
     "@types/react-redux": "^7.1.33",
     "axios": "^1.6.2",
