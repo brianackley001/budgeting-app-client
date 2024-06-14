@@ -1,4 +1,6 @@
 import { Chart } from "react-google-charts";
+import { PieChart } from '@mui/x-charts/PieChart';
+import Typography from '@mui/material/Typography';
 
 
 const NetWorthChart = props => {
@@ -68,6 +70,7 @@ const NetWorthChart = props => {
     legend: { position: "none" },
     title: "Net Worth Summary"
   }
+  const pieParams = { height: 500, width: 500};
 
   return (
     <div>
@@ -78,12 +81,35 @@ const NetWorthChart = props => {
         data={columnData}
         options={columnOptions}
       />
-      <Chart
+      {/* <Chart
         chartType="PieChart"
         data={[columns, ...rows]}
         options={options}
         width={"100%"}
         height={"600px"}
+      /> */}
+      
+      <Typography variant="h5" align="center">Net Worth Summary</Typography>
+      <PieChart
+        margin={{ top: 100, bottom: 100, left: 100, right:200 }}
+        series={[
+          {
+            arcLabel: (item) =>  `${item.value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`,
+            arcLabelMinAngle: 30,
+            data: [
+              { id: 0, value: -chartLoanTotal, label: 'Loans', color: "#eedf11" },
+              { id: 1, value: -chartCreditTotal, label: 'Credit', color: "#ea154a" },
+              { id: 2, value: chartCheckingTotal, label: 'Checking', color: "#bac896" },
+              { id: 3, value: chartSavingsTotal, label: 'Savings', color: "#3dddf6" },
+              { id: 4, value: chart401KInvestmentTotal, label: '401K', color: "#654de6" },
+              { id: 5, value: chartInvestmentTotal, label: 'Investments', color: "#11EE71" },
+            ],
+            highlightScope: { faded: 'global', highlighted: 'item' },
+            faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+          },
+        ]}
+        width={700}
+        height={700}
       />
     </div>
   );
