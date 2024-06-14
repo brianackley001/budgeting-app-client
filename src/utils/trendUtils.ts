@@ -36,22 +36,18 @@ export const mapIncomeSummaryData = (data) => {
   let mappedData = new Array;
   let expenseIndex = 0
   let incomeIndex= 1;
-  for(var i = 0; i < 6; i++){
-    mappedData.push([
-      monthNames[data[expenseIndex].month - 1] + " " + data[expenseIndex].year,
-      -data[incomeIndex].amount,
-      -data[expenseIndex].amount]
-    );
+  for(var i = 0; i < 7; i++){
+    mappedData.push({
+      month:
+        monthNames[data[expenseIndex].month - 1] +
+        " " +
+        data[expenseIndex].year,
+      incomeAmount: -data[incomeIndex].amount,
+      expenseAmount: -data[expenseIndex].amount,
+    });
     expenseIndex = expenseIndex + 2;
     incomeIndex = incomeIndex + 2;
   }
-  // const mappedData = data.map((item) => {
-  //   return [
-  //     monthNames[item.month - 1] + " " + item.year,
-  //     item.amount,
-  //     item.amount > 0 ? "#09C057" : "#F94C6B",
-  //   ];
-  // });
-  console.log("mappedData", mappedData);
+  console.log("mapIncomeSummaryData.mappedData: ", mappedData);
   return mappedData;
 };

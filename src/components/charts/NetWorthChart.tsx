@@ -1,7 +1,5 @@
-import { Chart } from "react-google-charts";
 import { PieChart } from '@mui/x-charts/PieChart';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import Typography from '@mui/material/Typography';
 
 
