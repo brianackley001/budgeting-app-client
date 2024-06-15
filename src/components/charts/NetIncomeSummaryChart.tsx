@@ -7,14 +7,11 @@ import { getNetIncomeSummary } from "@store/trendSlice";
 import { logError, logEvent } from "@utils/logger";
 
 const NetIncomeSummaryChart = props => {
-    
     const { accountIds, isLoading} = props;
     const dispatch = useAppDispatch();
     const chartData = useAppSelector((state) => state.trendSlice.netIncomeSummary);
     const {startDate, endDate} =  getIncomeSummaryDateRange();
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [formattedChartData, setFormattedChartData] = useState([]);
-
+    const [formattedChartData, setFormattedChartData] = useState(new Array);
     const valueFormatter = (value: number | null) => `${value!.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
 
     
@@ -26,24 +23,25 @@ const NetIncomeSummaryChart = props => {
           } catch (error) {
             console.log(error);
             logError(error as Error);
-          } finally {
-            setIsLoaded(true);
-          }
+          } 
         };
     
-        if (!isLoaded) {
+        if (!chartData || chartData.length < 1) {
+          console.log(`chartData is empty: ${JSON.stringify(chartData)}`);
+          console.log(`chartData length: ${chartData.length}`);
             fetchNetIncomeSummaryData();
-            const mappedData = mapIncomeSummaryData(chartData);
-            setFormattedChartData(mappedData);
         }
-      }, [isLoaded, isLoading]);
+        const mappedData = mapIncomeSummaryData(chartData);
+        setFormattedChartData(mappedData);
+      }, [chartData]);
     
   return (
     <div>
-      {/* {formattedChartData && formattedChartData.length > 0 &&  */}
       <Typography variant="h5" align="center">
-        Monthly Expenses and Income
+        Monthly Spending and Income
       </Typography>
+      
+      {formattedChartData && formattedChartData.length > 0 &&
       <BarChart
         dataset={formattedChartData}
         series={[
@@ -60,7 +58,7 @@ const NetIncomeSummaryChart = props => {
           bottom: 40,
           left: 100,
         }}
-      />
+      />}
     </div>
   );
 };

@@ -10,15 +10,22 @@ interface NetIncomeSummaryItem {
     month: number,
     year:  string
   };
+  interface MonthOverMonthSummaryItem {
+    amount: number,
+    month: number,
+    day:  string
+  }
   interface TrendState {
     isLoading: boolean,
-    netIncomeSummary: NetIncomeSummaryItem[]
+    netIncomeSummary: NetIncomeSummaryItem[],
+    monthOverMonthSummary: MonthOverMonthSummaryItem[]
   }
   
   // Define the initial state using that type
   const initialState: TrendState = {
     isLoading: false,
-    netIncomeSummary: []
+    netIncomeSummary: [],
+    monthOverMonthSummary: []
   }
 
   
@@ -48,6 +55,32 @@ export function getNetIncomeSummary(accountIds, startDate, endDate) {
         }
     }
   };
+  export function getMonthOverMonthSummary(accountIds, startDate, endDate) {
+      return async function (dispatch) {
+          //API Call:
+          try {
+            dispatch(setIsLoading(true));
+            logEvent("getMonthOverMonthSummary", {
+              accountIds: accountIds.join(","),
+              startDate: startDate,
+              endDate: endDate,
+            });
+  
+            const response = await axiosInstance.post("trends/monthlyTotal", {
+              accountIds: accountIds,
+              startDate: startDate,
+              endDate: endDate,
+            });
+            //console.log(response.data);
+            dispatch(setMonthOverMonthSummaryItems(response.data));
+          } catch (error) {
+            console.log(error);
+            logError(error as Error);
+          } finally {
+            dispatch(setIsLoading(false));
+          }
+      }
+    };
   
   export const trendSlice = createSlice({
     name: 'trend',
@@ -61,12 +94,16 @@ export function getNetIncomeSummary(accountIds, startDate, endDate) {
       setNetIncomeSummaryItems: (state, action) => {
         state.netIncomeSummary = action.payload;
       },
+      setMonthOverMonthSummaryItems: (state, action) => {
+        state.monthOverMonthSummary = action.payload;
+      },
     },
   })
   
-  export const { setIsLoading, setNetIncomeSummaryItems} = trendSlice.actions
+  export const { setIsLoading, setNetIncomeSummaryItems, setMonthOverMonthSummaryItems} = trendSlice.actions
   
   // Other code such as selectors can use the imported `RootState` type
   export const selectNetIncomeSummaryItems = (state: RootState) => state.trendSlice.netIncomeSummary
+  export const selectMonthOverMonthSummaryItems = (state: RootState) => state.trendSlice.monthOverMonthSummary
   
   export default trendSlice.reducer
