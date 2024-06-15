@@ -45,14 +45,21 @@ const MonthOverMonthSummaryChart = (props) => {
       }
     };
 
+    const mapData = async() =>{
+      const mappedData = mapMonthOverMonthSummaryData(chartData);
+      setFormattedCurrentMonthChartData(mappedData.runningTotalCurrentMonth);
+      setFormattedPreviousMonthChartData(mappedData.runningTotalPreviousMonth);
+    }
+
     if (!chartData || chartData.length == 0) {
       fetchMonthOverMonthSummaryData();
     }
 
-    const mappedData = mapMonthOverMonthSummaryData(chartData);
-    setFormattedCurrentMonthChartData(mappedData.runningTotalCurrentMonth);
-    setFormattedPreviousMonthChartData(mappedData.runningTotalPreviousMonth);
-  }, [chartData]);
+    if(chartData && chartData.length > 0 && formattedPreviousMonthChartData.length < 1){
+      mapData();
+    }
+
+  }, [chartData, formattedPreviousMonthChartData, formattedCurrentMonthChartData]);
 
   return (
     <div>

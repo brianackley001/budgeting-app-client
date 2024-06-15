@@ -76,7 +76,7 @@ const dataset = [
             },
           },
         ]}
-        borderRadius={12}
+        borderRadius={8}
         series={[
           {
             data: [

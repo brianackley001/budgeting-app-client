@@ -19,21 +19,26 @@ const NetIncomeSummaryChart = props => {
         const fetchNetIncomeSummaryData = async () => {
           try {
             logEvent("NetIncomeSummaryChart: fetchNetIncomeSummaryData", {startDate: startDate, endDate: endDate});
-            dispatch(getNetIncomeSummary(accountIds, startDate, endDate));
+            await dispatch(getNetIncomeSummary(accountIds, startDate, endDate));
           } catch (error) {
             console.log(error);
             logError(error as Error);
           } 
         };
+        const mapData = async() =>{
+          const mappedData = mapIncomeSummaryData(chartData);
+          setFormattedChartData(mappedData);
+        }
     
         if (!chartData || chartData.length < 1) {
           console.log(`chartData is empty: ${JSON.stringify(chartData)}`);
           console.log(`chartData length: ${chartData.length}`);
-            fetchNetIncomeSummaryData();
+          fetchNetIncomeSummaryData();
         }
-        const mappedData = mapIncomeSummaryData(chartData);
-        setFormattedChartData(mappedData);
-      }, [chartData]);
+        if (chartData && chartData.length > 0 && formattedChartData.length < 1) {
+          mapData();
+        }
+      }, [chartData, formattedChartData]);
     
   return (
     <div>
@@ -52,7 +57,7 @@ const NetIncomeSummaryChart = props => {
         width={700}
         height={700}
         grid={{ horizontal: true }}
-        borderRadius={12}
+        borderRadius={8}
         margin={{
           top: 40,
           bottom: 40,
