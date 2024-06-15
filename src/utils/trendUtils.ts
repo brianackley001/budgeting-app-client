@@ -65,7 +65,7 @@ export const mapIncomeSummaryData = (data) => {
         " " +
         data[expenseIndex].year,
       incomeAmount: -data[incomeIndex].amount,
-      expenseAmount: -data[expenseIndex].amount,
+      expenseAmount: data[expenseIndex].amount,
     });
     expenseIndex = expenseIndex + 2;
     incomeIndex = incomeIndex + 2;
