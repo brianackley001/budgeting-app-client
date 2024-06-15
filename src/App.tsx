@@ -13,6 +13,7 @@ import { Accounts } from '@pages/Accounts';
 import { Transactions } from '@pages/Transactions';
 import { Settings } from '@pages/Settings';
 import { Dashboard } from '@pages/Dashboard';
+import { Trends } from '@pages//Trends';
 import AlertDismissible from '@components/notifications/progressAlert';
 
 import { UnAuthenticatedNavBar } from '@components/navBar/UnAuthenticatedNavBar';
@@ -41,6 +42,11 @@ export default function App() {
             <Route
               path="/transactions"
               element={<Transactions />}
+              errorElement={ErrorPage}
+            />
+            <Route
+              path="/trends"
+              element={<Trends />}
               errorElement={ErrorPage}
             />
             <Route

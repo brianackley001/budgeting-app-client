@@ -5,6 +5,7 @@ import userSlice from './userSlice';
 import accountSlice from './accountSlice';
 import alertSlice from './alertSlice';
 import transactionSlice from './transactionSlice';
+import trendSlice from './trendSlice';
 import syncRequestSlice from './syncRequestSlice';
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
     plaidSlice: plaidSlice,
     syncRequestSlice: syncRequestSlice,
     transactionSlice: transactionSlice,
+    trendSlice: trendSlice,
     userSlice: userSlice
   },
 });
