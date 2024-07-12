@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import{ Button } from "react-bootstrap";
+import{ Button, Dropdown } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@hooks/useStoreHooks";
 import { setLinkedItems } from "@store/plaidSlice"; 
 import { useSetSyncAccount } from "@hooks/useSyncAccount";
@@ -7,7 +7,7 @@ import { useSyncRequestManager } from "@hooks/useSyncRequestManager";
 import { logEvent } from "@utils/logger";
 import  axiosInstance  from '@utils/axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import {
   usePlaidLink,
   PlaidLinkOnSuccessMetadata
@@ -16,7 +16,7 @@ import {
 
 export const RefreshCredentialsButton = (props) => {
   const userId = useAppSelector(state => state.userSlice.userId);
-  const {itemId} = props;
+  const {itemId, isError} = props;
   const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null);
   const [refreshInProgress, setRefreshInProgress] = useState(false);
   const dispatch = useAppDispatch();
@@ -73,8 +73,16 @@ export const RefreshCredentialsButton = (props) => {
   }, [refreshInProgress, plaidLinkToken]);
 
   return (
+    <>
+    {isError && 
     <Button variant="danger" size="sm" data-testid="button-item-credentials-refresh" onClick={() => refreshItemCredentials()}>
-      <FontAwesomeIcon icon={faCircleExclamation} color="white" className='iconStyle' /><span>Repair Credentials</span>
-  </Button>
+        <FontAwesomeIcon icon={faCircleExclamation} color="white" className='iconStyle' /><span>Repair Credentials</span>
+    </Button>}
+    {!isError && 
+    <Dropdown.Item onClick={refreshItemCredentials} as="button" data-testid="delete-institution-dropdown-item-button">
+      <FontAwesomeIcon icon={faRightFromBracket} size='lg' className="iconStyle" style={{ color: "gray" }} />Refresh Credentials
+    </Dropdown.Item>}
+    </>
+    
   );
 };

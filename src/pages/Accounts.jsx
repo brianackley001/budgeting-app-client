@@ -10,8 +10,20 @@ export const Accounts = () => {
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
   const linkedItems = useAppSelector(state => state.plaidSlice.linkedItems);
   const [institutions, setInstitutions] = useState([]);
+  const [institutionInit, setInstitutionsInit] = useState(false);
    
   useEffect(() => {
+    const sortInstitutions =async () => {
+      // If an institution has an itemError, move it to position zero/top for maximum visibility
+      institutions.forEach((institution, index) => {
+        if (institution.itemError) {
+          institutions.splice(index, 1);
+          institutions.unshift(institution);
+        }
+      });
+
+      setInstitutionsInit(true);
+    }
     setInstitutions(
       Array.from(new Set(accountItems.map((item) => item.institutionId)))
         .map((institutionId) => {
@@ -30,14 +42,7 @@ export const Accounts = () => {
         })
         .sort((a, b) => a.institutionId.localeCompare(b.institutionId))
     );
-
-    // If an institution has an itemError, move it to position zero/top for maximum visibility
-    institutions.forEach((institution, index) => {
-      if (institution.itemError) {
-        institutions.splice(index, 1);
-        institutions.unshift(institution);
-      }
-    });
+    if(!institutionInit) sortInstitutions();
   }, [accountItems, linkedItems]);
   return (
     <div className="dashboardAccountContainer">

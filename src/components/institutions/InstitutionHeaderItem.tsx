@@ -31,7 +31,7 @@ export default function InstitutionHeaderItem({institution}) {
     <>
       <Card.Subtitle className="headerBottomMargin">{institution.accounts[0].institutionName}
         {hasCredentialError && <span className='cardHeaderIconRight' aria-label="Refresh Credentials" title="Refresh Credentials">
-          <RefreshCredentialsButton itemId={institution.itemId}></RefreshCredentialsButton>
+          <RefreshCredentialsButton itemId={institution.itemId} isError={true}></RefreshCredentialsButton>
         </span>}
         {!hasCredentialError &&
           <span className='cardHeaderIconRight' aria-label="Edit Institution" title="Edit Institution">
@@ -44,6 +44,7 @@ export default function InstitutionHeaderItem({institution}) {
                 <Dropdown.Item onClick={handleEditShow} as="button" data-testid="edit-institution-dropdown-item-button">
                   <FontAwesomeIcon icon={faPencil} size='lg' className="iconStyle" style={{ color: "gray" }} />Edit
                 </Dropdown.Item>
+                <RefreshCredentialsButton itemId={institution.itemId} isError={false}></RefreshCredentialsButton>
                 <Dropdown.Item onClick={handleDeleteShow} as="button" data-testid="delete-institution-dropdown-item-button">
                   <FontAwesomeIcon icon={faTrashCan} size='lg' className="iconStyle" style={{ color: "gray" }} />Delete
                 </Dropdown.Item>
