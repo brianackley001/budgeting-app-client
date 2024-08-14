@@ -22,6 +22,14 @@ export const Settings = () => {
     const response = await axiosInstance.post(`/transactionsUserSync`, 
       {userId: userId, accountIds: accounts.map((account) => account.accountId)});
   };
+  const executeSyncAllAction = async() => { 
+    console.log("executeSyncAllAction");
+    logEvent("map-all-userId-to-all-transactions", { userId: userId, accounts: accounts.length.toString()});
+    
+    // validate item/institution error is resolved
+    const response = await axiosInstance.post(`/transactionsUserSyncAll`, 
+      {userId: userId});
+  };
   return (
     <div className="dashboardAccountContainer">
       <Card>
@@ -68,6 +76,21 @@ export const Settings = () => {
               
             </Card.Body>
           </Card>
+
+          <Card className="mb-5">
+            <Card.Subtitle className="mb-2 mt-2 mx-2 text-bold">
+            Sync All User IDs & Transactions
+              <span className='cardHeaderIconRight' aria-label="Sync All User IDs & Transactions" title="Sync All User IDs & Transactions">
+                <Button variant="primary" 
+                  className="ml-auto"
+                  data-testid="button-sign-in"
+                  onClick={() => executeSyncAllAction()}>Sync All</Button>
+              </span>
+            </Card.Subtitle>
+            <Card.Body>
+    
+  </Card.Body>
+</Card>
 
         </Card.Body>
       </Card>
