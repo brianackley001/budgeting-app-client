@@ -9,6 +9,7 @@ import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setAlertState} from "@store/alertSlice";
 import { setUpdatedTransactionItem } from "@store/transactionSlice";
 import { formatMerchantDisplayName } from "@utils/transactionUtils.ts";
+import {formatCategory} from "@utils/transactionUtils";
 import axiosInstance from "@utils/axiosInstance";
 
 /**
@@ -159,7 +160,7 @@ export const TransactionListItem = (item) =>{
         {formTranDescription}
       </td>
       <td className="transactionGridLineItem">{item.amount}</td>
-      <td className="transactionGridLineItem">{item.category}</td>
+      <td className="transactionGridLineItem">{formatCategory(item.category)}</td>
     </tr>
 
       <Modal show={showDetail}

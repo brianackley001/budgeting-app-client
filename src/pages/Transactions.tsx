@@ -68,7 +68,8 @@ export const Transactions = () => {
                     name={item.name}
                     date={formatDate(item.date)}
                     amount={formatAmount(item.amount)}
-                    category={formatCategory(item.personalFinanceCategory.detailed)}
+                    category={item.personalFinanceCategory.detailed}
+                    categoryParent = {item.personalFinanceCategory.primary}
                     bankAccountName={item.accountName}
                     accountId={item.accountId}
                     transactionId={item.id}
