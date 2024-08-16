@@ -10,6 +10,27 @@ export const TransactionCategorizationSelect = (props) => {
     const [formTaxonomyDescription, setFormTaxonomyDescription] = useState(selectedTaxonomyDescription);
     const [parentCategories, setParentCategories] = useState(item.categories.filter((c, i) => item.categories.findIndex((x) => c.primary === x.primary)===i));
     const [subCategories, setSubCategories] = useState(item.categories.filter((c) => c.primary == item.categoryParent));
+    const [subSelectStyle, setSubSelectStyle] = useState("");
+
+    
+  const handleCategoryChange = (event) => {
+    const selectedCategory = event.target.options[event.target.selectedIndex].value;
+    setFormSubCategory(selectedCategory);
+    if(selectedCategory !== "none"){
+      setSubSelectStyle("");
+    }
+  }
+  const handleParentCategoryChange = (event) => {
+    const selectedCategory = event.target.options[event.target.selectedIndex].value;
+    if(formParentCategory !== selectedCategory){
+      setFormParentCategory(selectedCategory);
+      setSubCategories(item.categories.filter((c) => c.primary == selectedCategory));
+      setFormSubCategory("");
+      setSubSelectStyle("required-dropdown-select");
+    }
+    setFormSubCategory("")
+    console.log(`handleParentCategoryChange.selectedCategory: ${selectedCategory}`);
+  }
     return (
       <>
         <Row className="mb-3">
@@ -18,9 +39,7 @@ export const TransactionCategorizationSelect = (props) => {
               <Form.Label>Category</Form.Label>
               <Form.Select
                 data-testid="transaction-categorization-parent-select"
-                onChange={(event) => {
-                  props.onSelect(event);
-                }}
+                onChange={handleParentCategoryChange}
                 aria-label="Select Category"
                 name="transactionCategorizationParent"
                 defaultValue={formParentCategory}
@@ -41,12 +60,11 @@ export const TransactionCategorizationSelect = (props) => {
               <Form.Label>Sub-Category</Form.Label>
               <Form.Select
                 data-testid="transaction-categorization-sub-select"
-                onChange={(event) => {
-                  props.onSelect(event);
-                }}
+                onChange={handleCategoryChange}
                 defaultValue={formSubCategory}
                 aria-label="Select Sub-Category"
                 name="transactionCategorizationSub"
+                className={subSelectStyle}
               >
                 <option value="none">Select...</option>
                 {subCategories.map((subCategory) => (

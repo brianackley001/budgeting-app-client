@@ -193,16 +193,7 @@ export const TransactionListItem = (item) =>{
                       <Col xs={3}>
                         <Form.Group className="mb-3" controlId="formGridTransactionDate">
                           <Form.Label>Date</Form.Label>
-                          <Form.Control
-                            style={{ fontSize: ".75em" }}
-                            value={formTranDateValue}
-                            name="transactionDate"
-                            type="date"
-                            aria-label="Disabled input example"
-                            disabled
-                            readOnly
-                            onChange={handleTextAreaChange}
-                          />
+                          <Form.Control plaintext readOnly defaultValue={formTranDateValue} style={{ fontSize: ".75em", fontWeight: "bold" }} />
                         </Form.Group>
                       </Col>
                       <Col xs={7}>
@@ -222,34 +213,10 @@ export const TransactionListItem = (item) =>{
                           </Form.Control.Feedback>
                         </Form.Group>
                       </Col>
-                      {/* <Col xs={3}>
-                        <Form.Group as={Col} controlId="formGridCategory">
-                          <Form.Label>Category</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="categoryName"
-                            data-testid="transaction-detail-form-transaction-category"
-                            defaultValue={item.category}
-                            aria-label="Disabled input example"
-                            disabled
-                            readOnly
-                            title={item.category}
-                            style={{ fontSize: ".75em" }} />
-                        </Form.Group>
-                      </Col> */}
                       <Col xs={2}>
                         <Form.Group as={Col} controlId="formGridAmount">
                           <Form.Label>Amount</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="amountName"
-                            data-testid="transaction-detail-form-transaction-amount"
-                            defaultValue={item.amount}
-                            aria-label="Disabled input example"
-                            disabled
-                            readOnly
-                            className="text-lowercase"
-                            style={{ fontSize: ".75em" }} />
+                          <Form.Control plaintext readOnly defaultValue={item.amount} style={{ fontSize: ".85em", fontWeight: "bold" }} />
                         </Form.Group>
                       </Col>
                     </Row>
