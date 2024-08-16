@@ -25,7 +25,7 @@ export const TransactionListItem = (item) =>{
 
   // Form Models
   const [validated, setValidated] = useState(false);
-  const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
+  //const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
   const [formTranDescription, setFormTranDescription] = useState(formatMerchantDisplayName(item.merchantName, item.name));
   const [formTranNotes, setFormTranNotes] = useState(item.userNotes ?? "");
   const [trackedTags, setTrackedTags] = useState(item.tags ?? []);
@@ -132,12 +132,6 @@ export const TransactionListItem = (item) =>{
   
   const handleTextAreaChange = (event) =>{
     switch(event.target.id) {
-      case "formGridTransactionDate":
-        setFormTranDateValue(event.target.value);
-        break;
-      // case "formGridCategory":
-      //   setFormTranCategory(event.target.value);
-      //   break;
       case "formGridNotes":
         setFormTranNotes(event.target.value);
         break;
@@ -190,16 +184,22 @@ export const TransactionListItem = (item) =>{
                       <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchantName, item.name)}</b>" on <b>{item.date}</b></Col>
                     </Row>
                     <Row className="mb-3">
-                      <Col xs={3}>
+                      <Col xs={2}>
                         <Form.Group className="mb-3" controlId="formGridTransactionDate">
                           <Form.Label>Date</Form.Label>
-                          <Form.Control plaintext readOnly defaultValue={formTranDateValue} style={{ fontSize: ".75em", fontWeight: "bold" }} />
+                          <Form.Control plaintext readOnly defaultValue={item.date} style={{ fontSize: ".75em", fontWeight: "bold" }} />
                         </Form.Group>
                       </Col>
-                      <Col xs={7}>
+                      <Col xs={2}>
+                        <Form.Group as={Col} controlId="formGridAmount">
+                          <Form.Label>Amount</Form.Label>
+                          <Form.Control plaintext readOnly defaultValue={item.amount} style={{ fontSize: ".85em", fontWeight: "bold" }} />
+                        </Form.Group>
+                      </Col>
+                      <Col xs={8}>
                         <Form.Group as={Col} controlId="formGridTransactionDescription">
                           <Form.Label>Description</Form.Label>
-                          <Form.Control
+                          <Form.Control as="textarea"
                             required
                             name="transactionDescription"
                             data-testid="transaction-detail-form-transaction-name"
@@ -211,12 +211,6 @@ export const TransactionListItem = (item) =>{
                           <Form.Control.Feedback type="invalid" data-testid="transaction-detail-form-transaction-name-is-invalid">
                             Please provide a valid  description.
                           </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col xs={2}>
-                        <Form.Group as={Col} controlId="formGridAmount">
-                          <Form.Label>Amount</Form.Label>
-                          <Form.Control plaintext readOnly defaultValue={item.amount} style={{ fontSize: ".85em", fontWeight: "bold" }} />
                         </Form.Group>
                       </Col>
                     </Row>
