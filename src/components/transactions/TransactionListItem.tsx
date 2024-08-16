@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faNoteSticky  } from '@fortawesome/free-solid-svg-icons';
 // import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
 import TransactionDetailReadOnly from "./TransactionDetailReadOnly";
+import { TransactionCategorizationSelect } from "@components/transactions/TransactionCategorizationSelect";
 import TagAccordionItem from './filterOptions/TagAccordionItem';
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setAlertState} from "@store/alertSlice";
@@ -24,7 +25,6 @@ export const TransactionListItem = (item) =>{
 
   // Form Models
   const [validated, setValidated] = useState(false);
-  const [formTranCategory, setFormTranCategory] = useState(item.category);
   const [formTranDateValue, setFormTranDateValue] = useState(new Date(item.date).toLocaleDateString('en-CA'));
   const [formTranDescription, setFormTranDescription] = useState(formatMerchantDisplayName(item.merchantName, item.name));
   const [formTranNotes, setFormTranNotes] = useState(item.userNotes ?? "");
@@ -135,9 +135,9 @@ export const TransactionListItem = (item) =>{
       case "formGridTransactionDate":
         setFormTranDateValue(event.target.value);
         break;
-      case "formGridCategory":
-        setFormTranCategory(event.target.value);
-        break;
+      // case "formGridCategory":
+      //   setFormTranCategory(event.target.value);
+      //   break;
       case "formGridNotes":
         setFormTranNotes(event.target.value);
         break;
@@ -190,7 +190,7 @@ export const TransactionListItem = (item) =>{
                       <Col xs={12}>Appears on your <b>{item.bankAccountName}</b> statement as "<b>{formatMerchantDisplayName(item.merchantName, item.name)}</b>" on <b>{item.date}</b></Col>
                     </Row>
                     <Row className="mb-3">
-                      <Col xs={2}>
+                      <Col xs={3}>
                         <Form.Group className="mb-3" controlId="formGridTransactionDate">
                           <Form.Label>Date</Form.Label>
                           <Form.Control
@@ -205,7 +205,7 @@ export const TransactionListItem = (item) =>{
                           />
                         </Form.Group>
                       </Col>
-                      <Col xs={5}>
+                      <Col xs={7}>
                         <Form.Group as={Col} controlId="formGridTransactionDescription">
                           <Form.Label>Description</Form.Label>
                           <Form.Control
@@ -222,7 +222,7 @@ export const TransactionListItem = (item) =>{
                           </Form.Control.Feedback>
                         </Form.Group>
                       </Col>
-                      <Col xs={3}>
+                      {/* <Col xs={3}>
                         <Form.Group as={Col} controlId="formGridCategory">
                           <Form.Label>Category</Form.Label>
                           <Form.Control
@@ -236,13 +236,13 @@ export const TransactionListItem = (item) =>{
                             title={item.category}
                             style={{ fontSize: ".75em" }} />
                         </Form.Group>
-                      </Col>
+                      </Col> */}
                       <Col xs={2}>
                         <Form.Group as={Col} controlId="formGridAmount">
                           <Form.Label>Amount</Form.Label>
                           <Form.Control
                             type="text"
-                            name="categoryName"
+                            name="amountName"
                             data-testid="transaction-detail-form-transaction-amount"
                             defaultValue={item.amount}
                             aria-label="Disabled input example"
@@ -253,6 +253,7 @@ export const TransactionListItem = (item) =>{
                         </Form.Group>
                       </Col>
                     </Row>
+                    <TransactionCategorizationSelect item={item} categories={item.categories} />
                     <Row className="mb-3">
                       <Col xs={6}>
                         <FormGroup controlId="formGridTransactionId">

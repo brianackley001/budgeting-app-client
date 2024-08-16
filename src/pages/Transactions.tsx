@@ -18,6 +18,7 @@ export const Transactions = () => {
   logTrace('Transactions.tsx');
   
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const taxonomyItems = useAppSelector(state => state.taxonomySlice.items);
   const [filteringInEffect, setFilteringInEffect] = useState(false);
   const isLoading = useAppSelector(state => state.transactionSlice.isLoading);
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
@@ -78,6 +79,7 @@ export const Transactions = () => {
                     userDescription={item.userDescription === null ? "" : item.userDescription}
                     userTags={transactionTags}
                     className="list-group-transaction-hover"
+                    categories={taxonomyItems}
                   />
                 ))}
               </tbody>}
