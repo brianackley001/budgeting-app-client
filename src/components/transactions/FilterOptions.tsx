@@ -25,6 +25,7 @@ export default function FilterOptions(props: any){
     ? [] 
     : paginationConfig.accountIds.map(accountId => accountId.toString()));
   const [trackedCategory, setTrackedCategory] = useState(paginationConfig.categorySearchValue.length > 0 ? paginationConfig.categorySearchValue : "");
+  const [trackedSubCategory, setTrackedSubCategory] = useState(paginationConfig.subCategorySearchValue.length > 0 ? paginationConfig.subCategorySearchValue : "");
   const [trackedEndDate, setTrackedEndDate] = useState(paginationConfig.endDate.length > 0 ? paginationConfig.endDate : "");
   const [trackedFromAmount, setTrackedFromAmount] = useState(paginationConfig.amountFrom.length > 0 ? paginationConfig.amountFrom : 0);
   const [trackedMerchantName, setTrackedMerchantName] = useState(paginationConfig.merchantNameSearchValue.length > 0 ? paginationConfig.merchantNameSearchValue : "")
@@ -56,8 +57,11 @@ export default function FilterOptions(props: any){
     setShow(false);
   };
   
-  const handleCategoryChange = (event) => {
-    setTrackedCategory(event.target.value);
+  const handleCategoryChange = (value) => {
+    setTrackedCategory(value);
+  }
+  const handleSubCategoryChange = (value) => {
+    setTrackedSubCategory(value);
   }
 
   const handleDateRangeChange = (event, dateType) => {
@@ -76,6 +80,8 @@ export default function FilterOptions(props: any){
     let pageNumber = 1;
     if (isReset){
       accountIdCollectionSubmitValue =  accounts.map(account => account.accountId);
+      setTrackedCategory("");
+      setTrackedSubCategory("");
     }
     else {
       accountIdCollectionSubmitValue = trackedAccounts.length > 0
@@ -88,7 +94,8 @@ export default function FilterOptions(props: any){
       accountIds: accountIdCollectionSubmitValue,
       amountFrom: isReset ? 0 : trackedFromAmount,
       amountTo: isReset ? 0 : trackedToAmount,
-      categorySearchValue: isReset ? "" : trackedCategory.toUpperCase(),
+      categorySearchValue: isReset ? "" : trackedCategory,
+      subCategorySearchValue: isReset ? "" : trackedSubCategory,
       endDate: isReset ? "" : trackedEndDate,
       merchantNameSearchValue: isReset ? "" :  trackedMerchantName,
       pageNumber: pageNumber,
@@ -135,7 +142,7 @@ export default function FilterOptions(props: any){
     else {
       dispatch(setTransactionViewIsFiltered(false));
     }
-  }, [accounts, trackedAccounts, trackedCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
+  }, [accounts, trackedAccounts, trackedCategory, trackedSubCategory, trackedEndDate, trackedFromAmount, trackedMerchantName, trackedStartDate, trackedTags, trackedToAmount, trackedUserNotes]);
 
    return (
     <>
@@ -169,14 +176,11 @@ export default function FilterOptions(props: any){
                   <MerchantNameAccordionItem eventKey={"MerchantNameAccordionItemFilter"}
                     onSelect={(eventItem: any) => { handleMerchantNameChange(eventItem) }} 
                     trackedValue={trackedMerchantName} />
-                  <TagAccordionItem eventKey={"TagAccordionItemFilter"}
-                    onSelect={(eventItem: any) => { handleTagCheckboxChange(eventItem) }}
-                    trackedTags={trackedTags} tags={tags} />
-                  <CategoryAccordionItem eventKey={4} onSelect={(eventItem: any) => { handleCategoryChange(eventItem) }}
-                    trackedValue={trackedCategory} />
-                  <NotesAccordionItem eventKey={"NotesAccordionItemFilter"} 
-                    onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
-                    trackedValue={trackedUserNotes} />
+                  <CategoryAccordionItem eventKey={"CategoryAccordionItemFilter"} 
+                    onSelectCategory={(eventValue: string) => { handleCategoryChange(eventValue) }}
+                    onSelectSubCategory={(eventValue: string) => { handleSubCategoryChange(eventValue) }}
+                    trackedCategoryValue={trackedCategory}
+                    trackedSubCategoryValue={trackedSubCategory} />
                   <DateRangeAccordionItem eventKey={"DateRangeAccordionItemFilter"}
                       onSelect={(eventItem: any, dateType: string) => handleDateRangeChange(eventItem, dateType)}
                       trackedStartDate={trackedStartDate} trackedEndDate={trackedEndDate} />
@@ -184,6 +188,12 @@ export default function FilterOptions(props: any){
                     onSelect={(eventItem: any, boundaryValue: string) => handleAmountChange(eventItem, boundaryValue)}
                     trackedFromAmount={trackedFromAmount} 
                     trackedToAmount={trackedToAmount} />
+                  <NotesAccordionItem eventKey={"NotesAccordionItemFilter"} 
+                    onSelect={(eventItem: any) => { handleNotesChange(eventItem) }} 
+                    trackedValue={trackedUserNotes} />
+                  <TagAccordionItem eventKey={"TagAccordionItemFilter"}
+                    onSelect={(eventItem: any) => { handleTagCheckboxChange(eventItem) }}
+                    trackedTags={trackedTags} tags={tags} />
                 </Accordion>
               </Col>
             </Row>

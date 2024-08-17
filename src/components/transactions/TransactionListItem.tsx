@@ -300,6 +300,7 @@ export const TransactionListItem = (item) =>{
                       onParentCategorySelect={handleParentCategorySelectChange}
                       onSubcategorySelect={handleSubcategorySelectChange}
                       item={item}
+                      mode="edit"
                       categories={item.categories}
                     />
                     <Row className="mb-3">

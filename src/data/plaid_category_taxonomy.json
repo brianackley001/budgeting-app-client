@@ -185,8 +185,14 @@
         "primary": "FOOD_AND_DRINK"
     },
     {
+        "description": "Purchases at coffee shops or cafes",
+        "primary": "FOOD_AND_DRINK",
+        "detailed": "FOOD_AND_DRINK_COFFEE"
+    },
+    {
         "description": "Dining expenses for fast food chains",
-        "primary": "FOOD_AND_DRINK,FOOD_AND_DRINK_COFFEE"
+        "primary": "FOOD_AND_DRINK",
+        "detailed": "FOOD_AND_DRINK_FAST_FOOD"
     },
     {
         "description": "Purchases for fresh produce and groceries, including farmers' markets",
