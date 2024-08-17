@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
 import TransactionDetailReadOnly from './TransactionDetailReadOnly';
+import {formatCategory, formatSubCategory} from "@utils/transactionUtils.ts"
 
 
 describe('TransactionDetailReadOnly', async() => {
@@ -12,7 +13,8 @@ describe('TransactionDetailReadOnly', async() => {
       merchantName: "Test Merchant",
       name: "Test Name",
       amount: 100.00,
-      category: "Test Category",
+      category: "TRANSFER_OUT_ACCOUNT_TRANSFER",
+      categoryParent: "TRANSFER_OUT",
       userNotes: "Test Notes",
       tags: ["Test-A", "Test-B", "Test-C", "IsTracked-Z"]
     };
@@ -27,7 +29,9 @@ describe('TransactionDetailReadOnly', async() => {
     expect(screen.getByText("Amount:")).toBeInTheDocument;
     expect(screen.getByText(item.amount)).toBeInTheDocument;
     expect(screen.getByText("Category:")).toBeInTheDocument;
-    expect(screen.getByText(item.category)).toBeInTheDocument;
+    expect(screen.getByText(`${formatCategory(item.categoryParent)}`)).toBeInTheDocument;
+    expect(screen.getByText("Sub-Category:")).toBeInTheDocument;
+    expect(screen.getByText(`${formatSubCategory(item.categoryParent, item.category)}`)).toBeInTheDocument;
     expect(screen.getByText("Notes:")).toBeInTheDocument;
     expect(screen.getByText(item.userNotes)).toBeInTheDocument;
     expect(screen.getByText("Tags:")).toBeInTheDocument;
@@ -44,7 +48,8 @@ describe('TransactionDetailReadOnly', async() => {
       merchantName: "Test Merchant",
       name: "Test Name",
       amount: 100.00,
-      category: "Test Category",
+      category: "TRANSFER_OUT_ACCOUNT_TRANSFER",
+      categoryParent: "TRANSFER_OUT",
       userNotes: "Test Notes",
       tags: ["Test-A", "Test-B", "Test-C", "IsTracked-Z"],
       userDescription: "Test User Description"
@@ -60,7 +65,9 @@ describe('TransactionDetailReadOnly', async() => {
     expect(screen.getByText("Amount:")).toBeInTheDocument;
     expect(screen.getByText(item.amount)).toBeInTheDocument;
     expect(screen.getByText("Category:")).toBeInTheDocument;
-    expect(screen.getByText(item.category)).toBeInTheDocument;
+    expect(screen.getByText(`${formatCategory(item.categoryParent)}`)).toBeInTheDocument;
+    expect(screen.getByText("Sub-Category:")).toBeInTheDocument;
+    expect(screen.getByText(`${formatSubCategory(item.categoryParent, item.category)}`)).toBeInTheDocument;
     expect(screen.getByText("Notes:")).toBeInTheDocument;
     expect(screen.getByText(item.userNotes)).toBeInTheDocument;
     expect(screen.getByText("Tags:")).toBeInTheDocument;
@@ -78,7 +85,8 @@ describe('TransactionDetailReadOnly', async() => {
       merchantName: "",
       name: "Test Name",
       amount: 100.00,
-      category: "Test Category",
+      category: "TRANSFER_OUT_ACCOUNT_TRANSFER",
+      categoryParent: "TRANSFER_OUT",
       userNotes: "Test Notes",
       tags: ["Test-A", "Test-B", "Test-C", "IsTracked-Z"]
     };
@@ -93,7 +101,9 @@ describe('TransactionDetailReadOnly', async() => {
     expect(screen.getByText("Amount:")).toBeInTheDocument;
     expect(screen.getByText(item.amount)).toBeInTheDocument;
     expect(screen.getByText("Category:")).toBeInTheDocument;
-    expect(screen.getByText(item.category)).toBeInTheDocument;
+    expect(screen.getByText(`${formatCategory(item.categoryParent)}`)).toBeInTheDocument;
+    expect(screen.getByText("Sub-Category:")).toBeInTheDocument;
+    expect(screen.getByText(`${formatSubCategory(item.categoryParent, item.category)}`)).toBeInTheDocument;
     expect(screen.getByText("Notes:")).toBeInTheDocument;
     expect(screen.getByText(item.userNotes)).toBeInTheDocument;
     expect(screen.getByText("Tags:")).toBeInTheDocument;
@@ -110,7 +120,8 @@ describe('TransactionDetailReadOnly', async() => {
       merchantName: "",
       name: "Item Name",
       amount: 100.00,
-      category: "Test Category",
+      category: "TRANSFER_OUT_ACCOUNT_TRANSFER",
+      categoryParent: "TRANSFER_OUT",
       userNotes: "Test Notes",
       tags: ["Test-A", "Test-B", "Test-C", "IsTracked-Z"]
     };
@@ -125,7 +136,9 @@ describe('TransactionDetailReadOnly', async() => {
     expect(screen.getByText("Amount:")).toBeInTheDocument;
     expect(screen.getByText(item.amount)).toBeInTheDocument;
     expect(screen.getByText("Category:")).toBeInTheDocument;
-    expect(screen.getByText(item.category)).toBeInTheDocument;
+    expect(screen.getByText(`${formatCategory(item.categoryParent)}`)).toBeInTheDocument;
+    expect(screen.getByText("Sub-Category:")).toBeInTheDocument;
+    expect(screen.getByText(`${formatSubCategory(item.categoryParent, item.category)}`)).toBeInTheDocument;
     expect(screen.getByText("Notes:")).toBeInTheDocument;
     expect(screen.getByText(item.userNotes)).toBeInTheDocument;
     expect(screen.getByText("Tags:")).toBeInTheDocument;

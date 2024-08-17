@@ -1,6 +1,6 @@
 import React from "react";
 import{ Badge , Row, Col} from "react-bootstrap";
-import {formatMerchantDisplayName} from "@utils/transactionUtils.ts"
+import {formatCategory, formatMerchantDisplayName, formatSubCategory} from "@utils/transactionUtils.ts"
 
 /**
  * Renders information about the transaction list item
@@ -28,7 +28,11 @@ export default function  TransactionDetailReadOnly(props){
       </Row>
       <Row>
         <Col xs={6}>Category:</Col>
-        <Col xs={6} >{item.category}</Col>
+        <Col xs={6} >{formatCategory(item.categoryParent)}</Col>
+      </Row>
+      <Row>
+        <Col xs={6}>Sub-Category:</Col>
+        <Col xs={6} >{formatSubCategory(item.categoryParent, item.category)}</Col>
       </Row>
       <Row>
         <Col xs={12} className="mt-4 mb-4"><hr style={{ width: "86%", margin: "auto" }} /></Col>

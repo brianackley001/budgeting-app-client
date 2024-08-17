@@ -348,6 +348,7 @@ export const transactionSlice = createSlice({
             userNotes: action.payload.userNotes,
             tags: action.payload.tags,
             userDescription: action.payload.userDescription,
+            personalFinanceCategory: action.payload.personalFinanceCategory,
           } 
         }
       });

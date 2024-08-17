@@ -42,6 +42,16 @@ export const formatMerchantDisplayName = (merchantName, itemName) => {
   return displayValue;
 };
 
+
+export const formatSubCategory = (category, subCategory) => {
+  let trimmedSubCategory = subCategory.replace(`${category}_`, "");
+  let words = trimmedSubCategory.split("_");
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+  }
+  return words.join(" ");
+};
+
 export const paginationLinkSet = (currentPage: number, clickedPage: number, setCount: number, totalPageCount: number, prev: boolean, next: boolean) => {
   // Presuming 5 actionable page number link-set as maximum pagination buttons
   let paginationLinkSet: number[] = [];

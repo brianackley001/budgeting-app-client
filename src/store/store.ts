@@ -7,6 +7,7 @@ import alertSlice from './alertSlice';
 import transactionSlice from './transactionSlice';
 import trendSlice from './trendSlice';
 import syncRequestSlice from './syncRequestSlice';
+import taxonomySlice from './taxonomySlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     plaidSlice: plaidSlice,
     syncRequestSlice: syncRequestSlice,
     transactionSlice: transactionSlice,
+    taxonomySlice: taxonomySlice,
     trendSlice: trendSlice,
     userSlice: userSlice
   },

@@ -18,6 +18,7 @@ export const Transactions = () => {
   logTrace('Transactions.tsx');
   
   const accountItems = useAppSelector(state => state.accountSlice.accounts);
+  const taxonomyItems = useAppSelector(state => state.taxonomySlice.items);
   const [filteringInEffect, setFilteringInEffect] = useState(false);
   const isLoading = useAppSelector(state => state.transactionSlice.isLoading);
   const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
@@ -68,7 +69,8 @@ export const Transactions = () => {
                     name={item.name}
                     date={formatDate(item.date)}
                     amount={formatAmount(item.amount)}
-                    category={formatCategory(item.personalFinanceCategory.detailed)}
+                    category={item.personalFinanceCategory.detailed}
+                    categoryParent = {item.personalFinanceCategory.primary}
                     bankAccountName={item.accountName}
                     accountId={item.accountId}
                     transactionId={item.id}
@@ -77,6 +79,7 @@ export const Transactions = () => {
                     userDescription={item.userDescription === null ? "" : item.userDescription}
                     userTags={transactionTags}
                     className="list-group-transaction-hover"
+                    categories={taxonomyItems}
                   />
                 ))}
               </tbody>}
