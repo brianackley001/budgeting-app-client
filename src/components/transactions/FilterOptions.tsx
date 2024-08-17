@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "@/hooks/useStoreHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreHooks";
 import { getPagedTransactions, setTransactionPagination, setTransactionViewIsFiltered } from "@store/transactionSlice";
 import { Accordion, Button, Col, Form, Offcanvas, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -14,7 +14,8 @@ import TagAccordionItem from "./filterOptions/TagAccordionItem";
 
 export default function FilterOptions(props: any){
   const { accounts, filteringInEffect, paginationConfig, placement, tags } = props;
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();  
+  const taxonomyItems = useAppSelector((state) => state.taxonomySlice.items);
 
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -179,6 +180,7 @@ export default function FilterOptions(props: any){
                   <CategoryAccordionItem eventKey={"CategoryAccordionItemFilter"} 
                     onSelectCategory={(eventValue: string) => { handleCategoryChange(eventValue) }}
                     onSelectSubCategory={(eventValue: string) => { handleSubCategoryChange(eventValue) }}
+                    taxonomyItems={taxonomyItems}
                     trackedCategoryValue={trackedCategory}
                     trackedSubCategoryValue={trackedSubCategory} />
                   <DateRangeAccordionItem eventKey={"DateRangeAccordionItemFilter"}

@@ -2,12 +2,10 @@ import { useState } from "react";
 import { Accordion, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { useAppSelector } from "@/hooks/useStoreHooks";
 import { formatCategory, formatSubCategory } from "@utils/transactionUtils";
 
 export default function CategoryAccordionItem(props) {
-  const {eventKey,onSelectCategory,onSelectSubCategory,trackedCategoryValue,trackedSubCategoryValue} = props;
-  const taxonomyItems = useAppSelector((state) => state.taxonomySlice.items);
+  const {eventKey, onSelectCategory, onSelectSubCategory, taxonomyItems, trackedCategoryValue, trackedSubCategoryValue} = props;
   const [parentCategories, setParentCategories] = useState(taxonomyItems.filter((c, i) => taxonomyItems.findIndex((x) => c.primary === x.primary) === i));
   const [subCategories, setSubCategories] = useState(trackedCategoryValue.length > 0 ? 
     taxonomyItems.filter((c) => c.primary == trackedCategoryValue) :

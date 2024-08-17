@@ -3,26 +3,29 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect } from "vitest";
 import CategoryAccordionItem from './CategoryAccordionItem';
 
-describe('CategoryAccordianItem', async() => {
-  test("Presents expected textarea placeholder text", () => {
+describe('CategoryAccordionItem', async() => {
+  const eventKey = "category-accordion-item";
+  const taxonomyItems = [
+    {primary: "INCOME", detailed: "INCOME_WAGES", description: "Test"},
+    {primary: "INCOME", detailed: "INCOME_INTEREST", description: "Test"},
+    {primary: "INCOME", detailed: "INCOME_DIVIDENDS", description: "Test"},
+    {primary: "INCOME", detailed: "INCOME_OTHER", description: "Test"},
+    {primary: "FOOD_AND_DRINK", detailed: "FOOD_AND_DRINK_COFFEE", description: "Test"},
+    {primary: "FOOD_AND_DRINK", detailed: "FOOD_AND_DRINK_OTHER", description: "Test"},
+  ]
+  test("Presents expected dropdown selects for categories", () => {
     // Arrange
-    render(<CategoryAccordionItem  eventKey="category-accordion-item" 
-      onSelect={() => {}} 
-      trackedValue="" /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
+    render(<CategoryAccordionItem  
+      eventKey={eventKey}
+      onSelectCategory={() => {}} 
+      onSelectSubCategory={() => {}} 
+      taxonomyItems={taxonomyItems}
+      trackedSubCategoryValue=""
+      trackedCategoryValue="" /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
     //Act
     //Assert
-    expect(screen.getByPlaceholderText("Search for...")).toBeInTheDocument();
-    //screen.debug();
-  });
-
-  test("Textarea value displays expected trackedValue", () => {
-    // Arrange
-    render(<CategoryAccordionItem  eventKey="category-accordion-item" 
-      onSelect={() => {}} 
-      trackedValue="test" /> as React.ReactElement<any, string | React.JSXElementConstructor<any>> );
-    //Act
-    //Assert
-    expect(screen.getByTestId("category-accordion-item-search-text-value")).toHaveValue("test");
+    expect(screen.getByTestId('transaction-categorization-parent-select')).toBeInTheDocument();
+    expect(screen.getByTestId('transaction-categorization-sub-select')).toBeInTheDocument();
     //screen.debug();
   });
 });
