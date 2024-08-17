@@ -119,22 +119,6 @@ export default function TransactionDetailForm(props){
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-          {/* <Col xs={3}>
-            <Form.Group as={Col} controlId="formGridCategory">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type="text"
-                name="categoryName"
-                data-testid="transaction-detail-form-transaction-category"
-                //defaultValue={item.category} 
-                aria-label="Disabled input example"
-                disabled
-                readOnly
-                title={item.category}
-                value={item.category}
-                style={{ fontSize: ".75em" }} />
-            </Form.Group>
-          </Col> */}
           <Col xs={2}>
             <Form.Group as={Col} controlId="formGridAmount">
               <Form.Label>Amount</Form.Label>
