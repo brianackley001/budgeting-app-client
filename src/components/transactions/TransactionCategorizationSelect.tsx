@@ -1,6 +1,8 @@
 import { useState } from "react";
-import {Form, Row, Col} from 'react-bootstrap';
+import {Form, Row, Col, OverlayTrigger, Tooltip  } from 'react-bootstrap';
 import {formatCategory, formatSubCategory} from "@utils/transactionUtils";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const TransactionCategorizationSelect = (props) => {
     const { item, categories, onParentCategorySelect, onSubcategorySelect } = props;
@@ -15,6 +17,8 @@ export const TransactionCategorizationSelect = (props) => {
     
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.options[event.target.selectedIndex].value;
+    const selectedTaxonomyDescription = categories.find((category) => category.detailed === selectedCategory)?.description;
+    setFormTaxonomyDescription(selectedTaxonomyDescription);
     setFormSubCategory(selectedCategory);
     onSubcategorySelect(selectedCategory);
     if(selectedCategory !== ""){
@@ -60,7 +64,11 @@ export const TransactionCategorizationSelect = (props) => {
           </Col>
           <Col xs={6}>
             <Form.Group as={Col} controlId="formSubCategory">
-              <Form.Label>Sub-Category</Form.Label>
+              <Form.Label>Sub-Category
+                <OverlayTrigger key={"top"} placement="top" overlay={<Tooltip id="tooltip-top">{formTaxonomyDescription}</Tooltip>}>
+                  <span><FontAwesomeIcon icon={faCircleQuestion} color="gray" className="iconStyle mx-2"/></span>
+                </OverlayTrigger>
+              </Form.Label>
               <Form.Select
                 required
                 data-testid="transaction-categorization-sub-select"
@@ -79,6 +87,9 @@ export const TransactionCategorizationSelect = (props) => {
               </Form.Select>
             </Form.Group>
           </Col>
+          {/* <Col xs={1}>
+            <span><FontAwesomeIcon icon={faCircleQuestion} className="iconStyle mx-auto mt-5" color="btn-info" /></span>
+          </Col> */}
         </Row>
       </>
     );
