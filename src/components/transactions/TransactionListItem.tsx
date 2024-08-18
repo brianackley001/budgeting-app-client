@@ -9,8 +9,7 @@ import TagAccordionItem from './filterOptions/TagAccordionItem';
 import { useAppDispatch } from "@/hooks/useStoreHooks";
 import { setAlertState} from "@store/alertSlice";
 import { setUpdatedTransactionItem } from "@store/transactionSlice";
-import { formatMerchantDisplayName } from "@utils/transactionUtils.ts";
-import {formatCategory} from "@utils/transactionUtils";
+import { formatConcatenatedCategoryDisplay,formatCategory, formatMerchantDisplayName } from "@utils/transactionUtils.ts";
 import axiosInstance from "@utils/axiosInstance";
 
 /**
@@ -175,7 +174,8 @@ export const TransactionListItem = (item) =>{
         </td>
         <td className="transactionGridLineItem">{item.amount}</td>
         <td className="transactionGridLineItem">
-          {formatCategory(item.category)}
+          {/* {formatCategory(item.category)} */}
+          {formatConcatenatedCategoryDisplay(item.categoryParent, item.category)}
         </td>
       </tr>
 

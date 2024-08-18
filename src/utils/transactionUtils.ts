@@ -24,6 +24,13 @@ export const formatCategory = (category) => {
   return words.join(" ");
 };
 
+export const formatConcatenatedCategoryDisplay = (category, subCategory) => {
+  let subCategoryDisplay = formatSubCategory(category, subCategory);
+  let categoryDisplay = formatCategory(category);
+  return `${categoryDisplay}: ${subCategoryDisplay} `;
+};
+
+
 export const formatDate = (date) => {
   return new Date(date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
 };
