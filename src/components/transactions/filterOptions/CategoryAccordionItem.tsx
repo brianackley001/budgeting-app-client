@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Accordion, Form } from "react-bootstrap";
+import { Accordion, Form,OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faCircleQuestion, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { formatCategory, formatSubCategory } from "@utils/transactionUtils";
+
 
 export default function CategoryAccordionItem(props) {
   const {eventKey, onSelectCategory, onSelectSubCategory, taxonomyItems, trackedCategoryValue, trackedSubCategoryValue} = props;
@@ -10,14 +11,13 @@ export default function CategoryAccordionItem(props) {
   const [subCategories, setSubCategories] = useState(trackedCategoryValue.length > 0 ? 
     taxonomyItems.filter((c) => c.primary == trackedCategoryValue) :
     taxonomyItems);
+  const [formTaxonomyDescription, setFormTaxonomyDescription] = useState("");
 
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.options[event.target.selectedIndex].value;
     onSelectSubCategory(selectedCategory);
-    // if(trackedCategoryValue === ""){
-    //   var newParentCategory = taxonomyItems.find((c) => c.detailed === selectedCategory);
-    //   onSelectCategory(newParentCategory?.primary);
-    // }
+    const selectedTaxonomyDescription = taxonomyItems.find((category) => category.detailed === selectedCategory)?.description;
+    setFormTaxonomyDescription(selectedTaxonomyDescription);
   };
   const handleParentCategoryChange = (event) => {
     const selectedCategory = event.target.options[event.target.selectedIndex].value;
@@ -54,7 +54,11 @@ export default function CategoryAccordionItem(props) {
         </Form.Group>
 
         <Form.Group controlId="formSubCategory">
-          <Form.Label>Sub-Category</Form.Label>
+          <Form.Label>Sub-Category
+            {formTaxonomyDescription.length > 0 && <OverlayTrigger key={"top"} placement="top" overlay={<Tooltip id="tooltip-top">{formTaxonomyDescription}</Tooltip>}>
+              <span><FontAwesomeIcon icon={faCircleQuestion} color="gray" className="iconStyle mx-2"/></span>
+            </OverlayTrigger>}
+          </Form.Label>
           <Form.Select
             required
             data-testid="transaction-categorization-sub-select"
