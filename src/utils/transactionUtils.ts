@@ -137,6 +137,11 @@ export const paginationLinkSet = (currentPage: number, clickedPage: number, setC
     }
     return paginationLinkSet;
   }
+  else if(clickedPage > 0 && clickedPage > currentPage + setCount) { // Jump To Page functionality
+    for(let i = clickedPage; i <= setCount; i++) {
+      paginationLinkSet.push(i);
+    }
+  }
   else if(clickedPage > 0 && currentPage <= setCount) {
     for(let i = 1; i <= setCount; i++) {
       paginationLinkSet.push(i);

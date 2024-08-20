@@ -12,6 +12,7 @@ import TransactionPagination from "@components/transactions/TransactionPaginatio
 import {logTrace} from "@utils/logger";
 import { filteringOptionsInEffect, formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
 import { ExportTransactionCsvButton } from '@/components/buttons/ExportTransactionCsvButton';
+import { TransactionPageJump } from '@/components/transactions/TransactionPageJump';
 
 
 export const Transactions = () => {
@@ -95,6 +96,8 @@ export const Transactions = () => {
           itemsPerPage={transactionPaginationSize} 
           currentPage={paginationConfig.pageNumber}>
         </TransactionPagination>
+        {!isLoading && paginationConfig.total/ transactionPaginationSize >7 && 
+        <TransactionPageJump paginationConfig={paginationConfig}></TransactionPageJump>}
       </Row>}
 
       {!isLoading && (!transactionItems || transactionItems.items.length < 1) && <EmptyTransactionResult />}

@@ -18,3 +18,15 @@
     box-shadow: var(--bs-box-shadow-inset);
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.textbox-error-pre-submit{
+    background-color: lightpink;
+    color: darkred;
+    font-weight: 700;
+    border: darkred 2px solid;
+}
+.textbox-error-pre-submit:focus{
+    background-color: lightpink;
+    color: darkred;
+    font-weight: 700;
+    border: darkred 2px solid;
+}
