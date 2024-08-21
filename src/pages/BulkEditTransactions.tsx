@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Alert, Form, Button } from "react-bootstrap";
+import { Card, Col, Row, Alert, Form, Button, Spinner } from "react-bootstrap";
 import { useAppSelector } from "@/hooks/useStoreHooks";
 import {formatCategory, formatSubCategory} from "@utils/transactionUtils";
 import { logTrace } from "@utils/logger";
@@ -8,27 +8,48 @@ import { faBackwardStep } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 
 export const BulkEditTransactions = () => {
-  logTrace("BulkEditTransactions.tsx");
-  const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
-  const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
-  const taxonomyItems = useAppSelector(state => state.taxonomySlice.items);
-  const [formCategoryValue, setFormCategoryValue] = useState(paginationConfig.categorySearchValue);
-  const [formSubCategoryValue, setFormSubCategoryValue] = useState(paginationConfig.subCategorySearchValue);
-  const [parentCategories, setParentCategories] = useState(taxonomyItems.filter((c, i) => taxonomyItems.findIndex((x) => c.primary === x.primary) === i));
-  const [subCategories, setSubCategories] = useState(paginationConfig.categorySearchValue.length > 0 ? 
-    taxonomyItems.filter((c) => c.primary == formCategoryValue) :
-    taxonomyItems);
+    logTrace("BulkEditTransactions.tsx");
+    const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
+    const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
+    const taxonomyItems = useAppSelector(state => state.taxonomySlice.items);
+    const [formCategoryValue, setFormCategoryValue] = useState(paginationConfig.categorySearchValue);
+    const [formSubCategoryValue, setFormSubCategoryValue] = useState(paginationConfig.subCategorySearchValue);
+    const [formBulkNotesValue, setFormBulkNotesValue] = useState("");
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [parentCategories, setParentCategories] = useState(taxonomyItems.filter((c, i) => taxonomyItems.findIndex((x) => c.primary === x.primary) === i));
+    const [subCategories, setSubCategories] = useState(paginationConfig.categorySearchValue.length > 0 ? 
+        taxonomyItems.filter((c) => c.primary == formCategoryValue) :
+        taxonomyItems);
+    const [trackedTags, setTrackedTags] = useState(transactionTags ?? []);
 
-  const handleCategoryChange = (event) => {
-    const selectedCategory = event.target.options[event.target.selectedIndex].value;
-    setFormSubCategoryValue(selectedCategory);
-    const selectedTaxonomyDescription = taxonomyItems.find((category) => category.detailed === selectedCategory)?.description;
-  };
-  const handleParentCategoryChange = (event) => {
-    const selectedCategory = event.target.options[event.target.selectedIndex].value;
-    setFormCategoryValue(selectedCategory);
-    setSubCategories(taxonomyItems.filter((c) => c.primary == selectedCategory));
-  };
+    const handleFormSubmit = async (event) => {
+        const form = event.currentTarget;
+        event.preventDefault();
+        event.stopPropagation();
+        setFormSubmitted(true);
+    };
+
+    const handleCategoryChange = (event) => {
+        const selectedCategory = event.target.options[event.target.selectedIndex].value;
+        setFormSubCategoryValue(selectedCategory);
+        const selectedTaxonomyDescription = taxonomyItems.find((category) => category.detailed === selectedCategory)?.description;
+    };
+    const handleParentCategoryChange = (event) => {
+        const selectedCategory = event.target.options[event.target.selectedIndex].value;
+        setFormCategoryValue(selectedCategory);
+        setSubCategories(taxonomyItems.filter((c) => c.primary == selectedCategory));
+    };
+    const handleTextAreaChange = (event) => {
+        setFormBulkNotesValue(event.target.value);
+    };
+    const handleTagCheckboxChange = (event) => {
+        const checkedName = event.target.name;
+        if (event.target.checked) {
+        setTrackedTags([...trackedTags, checkedName])
+        } else {
+        setTrackedTags(trackedTags.filter(id => id !== checkedName))
+        }
+    }
 
   return(
     <div className="dashboardAccountContainer">
@@ -62,7 +83,7 @@ export const BulkEditTransactions = () => {
                                     <li>Start Date: {paginationConfig.endDate}</li>}
                             </ul>
                             
-                            <Link
+                            {!formSubmitted &&<Link
                                 to="/transactions"
                                 data-testid="navlink-bulk-edit-transactions"
                                 className="mx-2"
@@ -73,7 +94,16 @@ export const BulkEditTransactions = () => {
                                     title="Bulk Update selected Transactions"
                                 />&nbsp;Back to Transactions
                                 </Button>
-                            </Link>
+                                </Link>}
+                                {formSubmitted && <Button variant="secondary" size="sm"  disabled>
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        />&nbsp;Updating Transactions...
+                                </Button>}
                         </Alert>
                     </Col>
                 </Row>
@@ -137,8 +167,9 @@ export const BulkEditTransactions = () => {
                                 id={tag}
                                 name="tag"
                                 label={tag}
+                                onSelect={handleTagCheckboxChange}
                                 data-testid="transaction-detail-form-transaction-tags"
-                                checked={paginationConfig.tagSearchValue.includes(tag)}
+                                defaultChecked={paginationConfig.tagSearchValue.includes(tag)}
                             />
                             
                         ))}
@@ -151,22 +182,31 @@ export const BulkEditTransactions = () => {
                                 aria-label="With textarea"
                                 name="categoryName"
                                 data-testid="transaction-detail-form-transaction-notes"
-                                // value={formTranNotes}
-                                // onChange={handleTextAreaChange}
+                                value={formBulkNotesValue}
+                                onChange={handleTextAreaChange}
                                 style={{ fontSize: ".75em" }}
                             />
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={4}>&nbsp;</Col>
+                        <Col xs={5}>&nbsp;</Col>
                         <Col xs={2}>
-                        <Button variant="outline-secondary" type="submit" data-testid="transaction-detail-form-submit">Cancel</Button>
+                        <Button variant="primary" onClick={handleFormSubmit} 
+                            data-testid="transaction-bulk-update-form-submit" 
+                            className="mt-5" 
+                            disabled={formSubmitted}>
+                           {formSubmitted && <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                />}
+                            &nbsp;Update
+                        </Button>
                         </Col>
-                        <Col xs={2}>
-                        <Button variant="primary" type="submit" data-testid="transaction-detail-form-submit">Save</Button>
-                        </Col>
-                        <Col xs={4}>&nbsp;</Col>
+                        <Col xs={5}>&nbsp;</Col>
                     </Row>
                 </Form>
             </Card.Body>
