@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Row, Alert, Form, Button, Spinner } from "react-bootstrap";
-import { useAppSelector } from "@/hooks/useStoreHooks";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreHooks";
 import {formatCategory, formatSubCategory} from "@utils/transactionUtils";
 import { logTrace } from "@utils/logger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackwardStep } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
+import { bulkUpdateTransactions } from "@/store/transactionSlice";
+import { setAlertState } from "@/store/alertSlice";
 
 export const BulkEditTransactions = () => {
     logTrace("BulkEditTransactions.tsx");
+    const dispatch = useAppDispatch();
     const paginationConfig = useAppSelector(state => state.transactionSlice.transactionPagination);
     const transactionTags = useAppSelector(state => state.userSlice.transactionTags);
     const taxonomyItems = useAppSelector(state => state.taxonomySlice.items);
@@ -16,40 +19,106 @@ export const BulkEditTransactions = () => {
     const [formSubCategoryValue, setFormSubCategoryValue] = useState(paginationConfig.subCategorySearchValue);
     const [formBulkNotesValue, setFormBulkNotesValue] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formSubmittedSuccess, setFormSubmittedSuccess] = useState(false);
     const [parentCategories, setParentCategories] = useState(taxonomyItems.filter((c, i) => taxonomyItems.findIndex((x) => c.primary === x.primary) === i));
     const [subCategories, setSubCategories] = useState(paginationConfig.categorySearchValue.length > 0 ? 
         taxonomyItems.filter((c) => c.primary == formCategoryValue) :
         taxonomyItems);
-    const [trackedTags, setTrackedTags] = useState(transactionTags ?? []);
+    const [trackedTags, setTrackedTags] = useState<string[]>([]);
 
     const handleFormSubmit = async (event) => {
-        const form = event.currentTarget;
-        event.preventDefault();
-        event.stopPropagation();
-        setFormSubmitted(true);
+      const form = event.currentTarget;
+      event.preventDefault();
+      event.stopPropagation();
+      setFormSubmitted(true);
+      setFormSubmittedSuccess(false);
+      const formValues = {
+        category: formCategoryValue,
+        subCategory: formSubCategoryValue,
+        userNotes: formBulkNotesValue,
+        tags: trackedTags,
+      };
+      try {
+        const response = await dispatch(
+          bulkUpdateTransactions(paginationConfig, formValues)
+        );
+        if (response.success) {
+          setFormSubmittedSuccess(true);
+          handleSaveMessageSuccess(response.message);
+        } else {
+          handleSaveMessageError(response.message);
+        }
+      } catch (error) {
+        console.log(error);
+        handleSaveMessageError(`${error}`);
+      } finally {
+        setFormSubmitted(false);
+      }
     };
 
     const handleCategoryChange = (event) => {
-        const selectedCategory = event.target.options[event.target.selectedIndex].value;
-        setFormSubCategoryValue(selectedCategory);
-        const selectedTaxonomyDescription = taxonomyItems.find((category) => category.detailed === selectedCategory)?.description;
+      const selectedCategory =
+        event.target.options[event.target.selectedIndex].value;
+      setFormSubCategoryValue(selectedCategory);
+      const selectedTaxonomyDescription = taxonomyItems.find(
+        (category) => category.detailed === selectedCategory
+      )?.description;
     };
     const handleParentCategoryChange = (event) => {
-        const selectedCategory = event.target.options[event.target.selectedIndex].value;
-        setFormCategoryValue(selectedCategory);
-        setSubCategories(taxonomyItems.filter((c) => c.primary == selectedCategory));
+      const selectedCategory =
+        event.target.options[event.target.selectedIndex].value;
+      setFormCategoryValue(selectedCategory);
+      setSubCategories(
+        taxonomyItems.filter((c) => c.primary == selectedCategory)
+      );
     };
     const handleTextAreaChange = (event) => {
-        setFormBulkNotesValue(event.target.value);
+      setFormBulkNotesValue(event.target.value);
     };
     const handleTagCheckboxChange = (event) => {
-        const checkedName = event.target.name;
-        if (event.target.checked) {
-        setTrackedTags([...trackedTags, checkedName])
-        } else {
-        setTrackedTags(trackedTags.filter(id => id !== checkedName))
-        }
-    }
+      const checkedNameValue = event.target.id;
+      if (event.target.checked) {
+        setTrackedTags([...trackedTags, checkedNameValue]);
+      } else {
+        setTrackedTags(trackedTags.filter((id) => id !== checkedNameValue));
+      }
+    };
+    const handleSaveMessageError = (messageLabel) => {
+      dispatch(
+        setAlertState({
+          headerText: "Bulk Update Error",
+          icon: {
+            iconType: "error",
+            isVisible: true,
+            iconSize: "",
+            iconColor: "white",
+          },
+          inProgress: false,
+          messageText: `Unable to bulk update selected transactions (${messageLabel}). Please try again later`,
+          showAlert: true,
+          variantStyle: "danger",
+        })
+      );
+    };
+
+    const handleSaveMessageSuccess = (messageLabel) => {
+      dispatch(
+        setAlertState({
+          headerText: "Transaction Updated",
+          icon: {
+            iconType: "success",
+            isVisible: true,
+            iconSize: "",
+            iconColor: "white",
+          },
+          inProgress: false,
+          messageText: messageLabel,
+          showAlert: true,
+          variantStyle: "success",
+        })
+      );
+    };
+
 
   return(
     <div className="dashboardAccountContainer">
@@ -60,8 +129,10 @@ export const BulkEditTransactions = () => {
             <Card.Body>
                 <Row>
                     <Col xs={12}>
-                        <Alert variant="info">
-                            You have selected <b>{paginationConfig.total}</b> transactions for bulk update. Your filtering criteria:<br />
+                        <Alert variant={formSubmittedSuccess ? "success" : "info"} data-testid="bulk-edit-alert">
+                            {formSubmittedSuccess && <span><p>You have successfully updated <b>{paginationConfig.total}</b> transactions via bulk update.</p><p>(see form below for updated values).</p></span>} 
+                            {!formSubmittedSuccess &&<span>You have selected <b>{paginationConfig.total}</b> transactions for bulk update.</span>} 
+                            Your filtering criteria:<br />
                             <ul>
                                 {paginationConfig.categorySearchValue.length > 1 && 
                                     <li>Category: {formatCategory(paginationConfig.categorySearchValue)}</li>}
@@ -167,7 +238,7 @@ export const BulkEditTransactions = () => {
                                 id={tag}
                                 name="tag"
                                 label={tag}
-                                onSelect={handleTagCheckboxChange}
+                                onChange={handleTagCheckboxChange}
                                 data-testid="transaction-detail-form-transaction-tags"
                                 defaultChecked={paginationConfig.tagSearchValue.includes(tag)}
                             />

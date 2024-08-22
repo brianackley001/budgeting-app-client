@@ -137,6 +137,50 @@ export const isNewSearchRequest = (requestedTransactionPagination: TransactionPa
 };
 
 // Thunk function(s)
+export function bulkUpdateTransactions(transactionPagination: TransactionPagination, formValues: any) {
+  return async function (dispatch) {
+    const requestPagination = JSON.parse(JSON.stringify(transactionPagination));
+    requestPagination.pageSize = transactionPagination.total;
+    requestPagination.pageNumber = 1;
+
+    //API Call:
+    try {
+      dispatch(setIsLoading(true));
+      logEvent("bulkUpdateTransactions", 
+        {
+          pageNumber: "1", 
+          pageSize: transactionPagination.total.toString(), 
+          sortBy: transactionPagination.sortBy, 
+          sortDirection: transactionPagination.sortDirection,
+          merchantNameSearchValue: transactionPagination.merchantNameSearchValue,
+          userNotesSearchValue: transactionPagination.userNotesSearchValue,
+          accountIds: transactionPagination.accountIds.join(","),
+          categorySearchValue: transactionPagination.categorySearchValue,
+          subCategorySearchValue: transactionPagination.subCategorySearchValue,
+          tagSearchValue: transactionPagination.tagSearchValue,
+          amountFrom: transactionPagination.amountFrom.toString(),
+          amountTo: transactionPagination.amountTo.toString(),
+          startDate: transactionPagination.startDate,
+          endDate: transactionPagination.endDate,
+          userId: transactionPagination.userId
+        });
+        
+        const response = await axiosInstance.post(
+          "transactions/bulkUpdate",
+          {requestPagination: requestPagination, formValues: formValues},
+        );
+
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        logError(error as Error);
+        return {error: (error as Error).message};
+      } finally {
+        dispatch(setIsLoading(false));
+      }
+  }
+};
+  
 export function getExportedTransactions(transactionPagination: TransactionPagination) {
   return async function (dispatch, getState) {
     const userId = getState().userSlice.userId;
