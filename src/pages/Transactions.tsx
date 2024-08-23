@@ -12,6 +12,7 @@ import TransactionPagination from "@components/transactions/TransactionPaginatio
 import {logTrace} from "@utils/logger";
 import { filteringOptionsInEffect, formatAmount, formatCategory, formatDate} from "@utils/transactionUtils";
 import { ExportTransactionCsvButton } from '@/components/buttons/ExportTransactionCsvButton';
+import { BulkUpdateTransactionsButton }  from '@/components/buttons/BulkUpdateTransactionsButton';
 import { TransactionPageJump } from '@/components/transactions/TransactionPageJump';
 
 
@@ -44,6 +45,7 @@ export const Transactions = () => {
       <Row>
         <Col xs={12}>
           {transactionViewIsFiltered && <ExportTransactionCsvButton paginationConfig={paginationConfig}></ExportTransactionCsvButton>}
+          {transactionViewIsFiltered && <BulkUpdateTransactionsButton paginationConfig={paginationConfig} transactionItems={transactionItems}></BulkUpdateTransactionsButton>}
           <FilterOptions 
             placement="start" 
             accounts={accountItems} 

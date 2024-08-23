@@ -14,6 +14,7 @@ import { Transactions } from '@pages/Transactions';
 import { Settings } from '@pages/Settings';
 import { Dashboard } from '@pages/Dashboard';
 import { Trends } from '@pages//Trends';
+import { BulkEditTransactions} from '@pages/BulkEditTransactions';
 import AlertDismissible from '@components/notifications/progressAlert';
 
 import { UnAuthenticatedNavBar } from '@components/navBar/UnAuthenticatedNavBar';
@@ -52,6 +53,11 @@ export default function App() {
             <Route
               path="/settings"
               element={<Settings />}
+              errorElement={ErrorPage}
+            />
+            <Route
+              path="/bulk-edit-transactions"
+              element={<BulkEditTransactions />}
               errorElement={ErrorPage}
             />
           </Routes>
