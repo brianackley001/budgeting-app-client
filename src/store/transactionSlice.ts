@@ -138,7 +138,7 @@ export const isNewSearchRequest = (requestedTransactionPagination: TransactionPa
 
 // Thunk function(s)
 export function bulkUpdateTransactions(transactionPagination: TransactionPagination, formValues: any) {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     const requestPagination = JSON.parse(JSON.stringify(transactionPagination));
     requestPagination.pageSize = transactionPagination.total;
     requestPagination.pageNumber = 1;
@@ -168,6 +168,14 @@ export function bulkUpdateTransactions(transactionPagination: TransactionPaginat
         const response = await axiosInstance.post(
           "transactions/bulkUpdate",
           {requestPagination: requestPagination, formValues: formValues},
+        );
+
+        // refresh cached items based on updated data
+        const pages = getState().transactionSlice.pagedTransactions.pages;
+        response.data.updatedTransactions.forEach(
+          (updatedTransaction: TransactionItem) => {
+            setUpdatedTransactionItem(updatedTransaction);
+          }
         );
 
         return response.data;

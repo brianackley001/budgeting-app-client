@@ -8,14 +8,29 @@ import { Link } from 'react-router-dom';
 
 
 export const BulkUpdateTransactionsButton = (props) => {
-    const { paginationConfig} = props;
+    const { paginationConfig, transactionItems} = props;
     const userId = useAppSelector(state => state.userSlice.userId);
+    const [filterCategoryValue, setFilterCategoryValue] = useState("");
+    const [filterSubCategoryValue, setFilterSubCategoryValue] = useState("");
+    const navUrl = `/bulk-edit-transactions`;
     logEvent("BulkUpdateTransactionsButton: NavigateToBulkUpdateTransactions", { userId: userId, requestedItemTotal: paginationConfig.total });
-
+    
+    useEffect(() => {
+      //Accounts:
+      const sampleItem = transactionItems.items[0];
+      setFilterCategoryValue(
+        sampleItem?.personalFinanceCategory?.primary || ""
+      );
+      setFilterSubCategoryValue(
+        sampleItem?.personalFinanceCategory?.detailed || ""
+      );
+      //setNavUrl(`/bulkEditTransactions?category=${filterCategoryValue}&subcategory=${filterSubCategoryValue}`);
+    }, [transactionItems, filterCategoryValue, filterSubCategoryValue]);
+  
   return (
     <>
       <Link
-        to="/bulk-edit-transactions"
+        to={{pathname: navUrl, search: `?category=${filterCategoryValue}&subcategory=${filterSubCategoryValue}`}}
         data-testid="navlink-bulk-edit-transactions"
         className="mx-2"
       >

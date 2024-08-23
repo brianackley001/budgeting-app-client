@@ -45,7 +45,7 @@ export const Transactions = () => {
       <Row>
         <Col xs={12}>
           {transactionViewIsFiltered && <ExportTransactionCsvButton paginationConfig={paginationConfig}></ExportTransactionCsvButton>}
-          {transactionViewIsFiltered && <BulkUpdateTransactionsButton paginationConfig={paginationConfig}></BulkUpdateTransactionsButton>}
+          {transactionViewIsFiltered && <BulkUpdateTransactionsButton paginationConfig={paginationConfig} transactionItems={transactionItems}></BulkUpdateTransactionsButton>}
           <FilterOptions 
             placement="start" 
             accounts={accountItems} 
