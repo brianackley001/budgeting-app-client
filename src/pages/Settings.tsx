@@ -4,6 +4,7 @@ import { useAppSelector } from "@/hooks/useStoreHooks";
 import { logTrace } from "@utils/logger";
 import EditTag from '@/components/tags/EditTag';
 import CreateTag from "@/components/tags/CreateTag";
+import {ImportTransactionCsv} from '@/components/transactions/ImportTransactionCsv';
 import { logEvent } from "@utils/logger";
 import  axiosInstance  from '@utils/axiosInstance';
 import { useState } from "react";
@@ -21,7 +22,6 @@ export const Settings = () => {
     console.log("executeSyncAction");
     logEvent("map-userId-to-transactions", { userId: userId, accounts: accounts.length.toString()});
     
-    // validate item/institution error is resolved
     const response = await axiosInstance.post(`/transactionsUserSync`, 
       {userId: userId, accountIds: accounts.map((account) => account.accountId)});
   };
@@ -34,41 +34,55 @@ export const Settings = () => {
       {userId: userId});
   };
 
-    const fileReader = new FileReader();
+  //   const fileReader = new FileReader();
 
-    const handleOnCsvSelectChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+  //   const handleOnCsvSelectChange = (e) => {
+  //       setFile(e.target.files[0]);
+  //   };
     
-  const csvFileToArray = string => {
-    const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
-    const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
+  // const csvFileToArray = string => {
+  //   const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
+  //   const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
-    const array = csvRows.map(i => {
-      const values = i.split(",");
-      const obj = csvHeader.reduce((object, header, index) => {
-        object[header] = values[index];
-        return object;
-      }, {});
-      return obj;
-    });
+  //   const array = csvRows.map(i => {
+  //     const values = i.split(",");
+  //     const obj = csvHeader.reduce((object, header, index) => {
+  //       object[header] = values[index];
+  //       return object;
+  //     }, {});
+  //     return obj;
+  //   });
 
-    setArray(array);
-    console.log(array);
-  };
+  //   //setArray(array);
+  //   //console.log(array);
+    
+  //   if(array.length > 0){
+  //     const chunkSize = 500;
+  //     for (let i = 0; i < array.length; i += chunkSize) {
+  //       const chunk = array.slice(i, i + chunkSize);
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
+  //       logEvent("upload-historical-transactions", { userId: userId, records: array.length.toString()});
+  //       (async () => {
+  //         const response = await axiosInstance.post(`/transactions/importHistorical`, 
+  //           {userId: userId, transactions: chunk});
+  //           console.log(response);
+  //       })();
+  //     }
+  //   };
+  // };
 
-    if (file) {
-      fileReader.onload = function (event) {
-        const text = event.target?.result;
-        csvFileToArray(text);
-      };
+  // const handleOnSubmit = (e) => {
+  //   e.preventDefault();
 
-      fileReader.readAsText(file);
-    }
-  };
+  //   if (file) {
+  //     fileReader.onload = function (event) {
+  //       const text = event.target?.result;
+  //       csvFileToArray(text);
+  //     };
+
+  //     fileReader.readAsText(file);
+  //   }
+  // };
   return (
     <div className="dashboardAccountContainer">
       <Card>
@@ -101,29 +115,7 @@ export const Settings = () => {
             </Card.Body>
           </Card>
           
-          <Card className="mb-5">
-            <Card.Subtitle className="mb-2 mt-2 mx-2 text-bold">
-            Import Historical Transaction data
-              <span className='cardHeaderIconRight' aria-label="Import Historical Transaction data" title="Import Historical Transaction data">
-              <form>
-                <input 
-                    type={"file"}
-                    id={"csvFileInput"}
-                    accept={".csv"}
-                    onChange={handleOnCsvSelectChange}/>
-                <Button variant="primary" 
-                  className="ml-auto"
-                  data-testid="button-import-csv"
-                  onClick={(e) => {
-                    handleOnSubmit(e);
-                }}>Import</Button>
-            </form>
-              </span>
-            </Card.Subtitle>
-            <Card.Body>
-              
-            </Card.Body>
-          </Card>
+          <ImportTransactionCsv userId={userId} />
 
           <Card className="mb-5">
             <Card.Subtitle className="mb-2 mt-2 mx-2 text-bold">
