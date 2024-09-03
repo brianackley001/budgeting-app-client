@@ -57,10 +57,10 @@ export const ImportTransactionCsv = (props) => {
           setProgressBarValue(
             Math.round((currentChunkValue / progressBarIncrementValue) * 100)
           );
-          console.log(`Processed ${response.data.processed} of ${response.data.requested} items`);
-          totalItemsProcessed += response.data.processed;
+          console.log(`Processed ${response.data.queued} of ${response.data.requested} items queued (${response.data.previousImports} items previously imported)`);
+          totalItemsProcessed += response.data.queued;
           currentChunkValue++;
-          await timeout(150);
+          //await timeout(150);
         } catch (err) {
           console.log(err);
           logError(err as Error);
