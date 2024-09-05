@@ -37,7 +37,7 @@ export const ImportTransactionCsv = (props) => {
 }
   const postData = async () => {
     let totalItemsProcessed = 0;
-    console.log(`postData BEGIN`);
+    
     if (transactionItems.length > 0) {
       logEvent("upload-historical-transactions", {
         userId: userId,
@@ -66,9 +66,6 @@ export const ImportTransactionCsv = (props) => {
           logError(err as Error);
         }
       }
-
-
-      console.log(`postData END`);
       console.log(`Total items processed: ${totalItemsProcessed}`);
       setProgressBarValue(0);
       setTransactionItems([]);
